@@ -23,6 +23,10 @@ public class EnemyHelicopter {
     public int xCoordinate;
     public int yCoordinate;
     
+    // Position of the helicopter's center on the screen.
+    public int xCenter;
+    public int yCenter;
+    
     // Moving speed and direction.
     private static final double movingXspeedInit = -4;
     private static double movingXspeed = movingXspeedInit;
@@ -58,6 +62,10 @@ public class EnemyHelicopter {
         // Sets enemy position.
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
+        
+        // Sets enemy's center position
+        this.xCenter = xCoordinate + helicopterBodyImg.getWidth() / 2;
+        this.yCenter = yCoordinate + helicopterBodyImg.getHeight() / 2;
         
         // Initialize animation object.
         helicopterFrontPropellerAnim = new Animation(helicopterFrontPropellerAnimImg, 158, 16, 3, 20, true, xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller, 0);
@@ -126,6 +134,17 @@ public class EnemyHelicopter {
         helicopterFrontPropellerAnim.Draw(g2d);
         g2d.drawImage(helicopterBodyImg, xCoordinate, yCoordinate, null);
         helicopterRearPropellerAnim.Draw(g2d);
+    }
+    
+    /**
+     *  @return current xCenter and yCenter
+     */
+    public int getXCenter() {
+    		return xCenter;
+    }
+    
+    public int getYCenter() {
+    		return yCenter;
     }
     
 }
