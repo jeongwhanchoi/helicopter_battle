@@ -42,6 +42,10 @@ public class PlayerHelicopter {
     private final int numberOfAmmoInit = 1400;
     public int numberOfAmmo;
     
+    // Helicopter missiles.
+ 	private final int numberOfMissileInit = 80;
+ 	public int numberOfMissile;
+    
     // Images of helicopter and its propellers.
     public BufferedImage helicopterBodyImg;
     private BufferedImage helicopterFrontPropellerAnimImg;
@@ -96,6 +100,7 @@ public class PlayerHelicopter {
         
         this.numberOfRockets = numberOfRocketsInit;
         this.numberOfAmmo = numberOfAmmoInit;
+        this.numberOfMissile = numberOfMissile;
         
         this.movingXspeed = 0;
         this.movingYspeed = 0;
@@ -158,6 +163,7 @@ public class PlayerHelicopter {
         
         this.numberOfRockets = numberOfRocketsInit;
         this.numberOfAmmo = numberOfAmmoInit;
+        this.numberOfMissile = numberOfMissile;
         
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
@@ -209,6 +215,22 @@ public class PlayerHelicopter {
             return false;
     }
     
+    
+    /**
+	 * Checks if player is fired a missile. It also checks if player can 
+	 * fire a missile (time between rockets, does a player have any missile left).
+	 * 
+	 * @param gameTime The current elapsed game time in nanoseconds.
+	 * @return true if player is fired a missile.
+	 */
+	public boolean isFiredMissile(long gameTime)
+	{
+//		if (Canvas.mouseButtonState(MouseEvent.BUTTON2)
+		if (Canvas.keyboardKeyState(KeyEvent.VK_SPACE) && ((gameTime - Missile.timeOfLastCreatedRocket) >= Missile.timeBetweenNewRockets && this.numberOfMissile > 0))
+			return true; 
+		else 
+			return false;
+	}
     
     /**
      * Checks if player moving helicopter and sets its moving speed if player is moving.

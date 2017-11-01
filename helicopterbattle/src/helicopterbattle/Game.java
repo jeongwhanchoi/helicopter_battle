@@ -38,8 +38,12 @@ public class Game {
     // List of all the machine gun bullets.
     private ArrayList<Bullet> bulletsList;
     
+    // List of all the missiles
+    private ArrayList<Missile> missilesList;
+    
     // List of all the rockets.
     private ArrayList<Rocket> rocketsList;
+    
     // List of all the rockets smoke.
     private ArrayList<RocketSmoke> rocketSmokeList;
     
@@ -110,6 +114,7 @@ public class Game {
         
         bulletsList = new ArrayList<Bullet>();
         
+        missilesList = new ArrayList<Missile>();
         rocketsList = new ArrayList<Rocket>();
         rocketSmokeList = new ArrayList<RocketSmoke>();
         
@@ -153,6 +158,8 @@ public class Game {
             EnemyHelicopter.helicopterRearPropellerAnimImg = ImageIO.read(helicopterRearPropellerAnimImgUrl);
             
             // Images of rocket and its smoke.
+            URL missileImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket.png");
+            Missile.rocketImg = ImageIO.read(missileImgUrl);
             URL rocketImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket.png");
             Rocket.rocketImg = ImageIO.read(rocketImgUrl);
             URL rocketSmokeImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket_smoke.png");
@@ -194,6 +201,7 @@ public class Game {
         
         Bullet.timeOfLastCreatedBullet = 0;
         Rocket.timeOfLastCreatedRocket = 0;
+        Missile.timeOfLastCreatedRocket = 0;
         
         // Empty all the lists.
         enemyHelicopterList.clear();
@@ -201,6 +209,7 @@ public class Game {
         rocketsList.clear();
         rocketSmokeList.clear();
         explosionsList.clear();
+        missilesList.clear();
         
         // Statistics
         runAwayEnemies = 0;
@@ -225,10 +234,13 @@ public class Game {
         // When a player is out of rockets and machine gun bullets, and all lists 
         // of bullets, rockets and explosions are empyt(end showing) we finish the game.
         if(player.numberOfAmmo <= 0 && 
-           player.numberOfRockets <= 0 && 
+           player.numberOfRockets <= 0 &&
+           player.numberOfMissile <= 0 &&
            bulletsList.isEmpty() && 
            rocketsList.isEmpty() && 
-           explosionsList.isEmpty())
+           explosionsList.isEmpty() &&
+           missilesList.isEmpty() &&
+           rocketSmokeList.isEmpty())
         {
             Framework.gameState = Framework.GameState.GAMEOVER;
             return;
@@ -237,6 +249,7 @@ public class Game {
         if(isPlayerAlive()){
             isPlayerShooting(gameTime, mousePosition);
             didPlayerFiredRocket(gameTime);
+            didPlayerFiredMissile(gameTime);
             player.isMoving();
             player.Update();
         }
@@ -248,6 +261,7 @@ public class Game {
         updateBullets();
         
         /* Rockets */
+        updateMissile(gameTime); // It also checks for collisions (if any of the missiles hit any of the enemy helicopter).
         updateRockets(gameTime); // It also checks for collisions (if any of the rockets hit any of the enemy helicopter).
         updateRocketSmoke(gameTime);
         
@@ -288,6 +302,12 @@ public class Game {
         for(int i = 0; i < bulletsList.size(); i++)
         {
             bulletsList.get(i).Draw(g2d);
+        }
+        
+        // Draws all the missiles.
+        for(int i = 0; i < missilesList.size(); i++)
+        {
+        		missilesList.get(i).Draw(g2d);
         }
         
         // Draws all the rockets. 
@@ -332,13 +352,14 @@ public class Game {
      * @param gameTime Elapsed game time.
      */
     public void DrawStatistic(Graphics2D g2d, long gameTime){
-        g2d.drawString("Time: " + formatTime(gameTime),                Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
-        g2d.drawString("Rockets left: "      + player.numberOfRockets, Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
-        g2d.drawString("Ammo left: "         + player.numberOfAmmo,    Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
-        g2d.drawString("Destroyed enemies: " + destroyedEnemies,       Framework.frameWidth/2 - 65, Framework.frameHeight/3 + 150);
-        g2d.drawString("Runaway enemies: "   + runAwayEnemies,         Framework.frameWidth/2 - 65, Framework.frameHeight/3 + 170);
+        g2d.drawString("Time: " + formatTime(gameTime),                   Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
+        g2d.drawString("Rockets left: "      + player.numberOfRockets,    Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
+        g2d.drawString("Ammo left: "         + player.numberOfAmmo,       Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
+        g2d.drawString("Missile left: "         + player.numberOfMissile, Framework.frameWidth/2 - 60, Framework.frameHeight/3 + 150);
+        g2d.drawString("Destroyed enemies: " + destroyedEnemies,          Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 175);
+        g2d.drawString("Runaway enemies: "   + runAwayEnemies,            Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
         g2d.setFont(font);
-        g2d.drawString("Statistics: ",                                 Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
+        g2d.drawString("Statistics: ",                                    Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
     }
     
     /**
@@ -466,6 +487,26 @@ public class Game {
             r.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
             rocketsList.add(r);
         }
+    }
+    
+    
+    /**
+     * Checks if the player is fired the missile and creates it if hed did.
+     * It also checks if player can fire the rocket.
+     * 
+     * @param gameTime
+     */
+    private void didPlayerFiredMissile(long gameTime)
+    {
+    		if(player.isFiredMissile(gameTime))
+    		{
+    			Rocket.timeOfLastCreatedRocket = gameTime;
+    			player.numberOfMissile--;
+    			
+    			Missile m = new Missile();
+    			m.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
+    			missilesList.add(m);
+    		}
     }
     
     /**
@@ -633,7 +674,7 @@ public class Game {
             // Creates a rocket smoke.
             RocketSmoke rs = new RocketSmoke();
             int xCoordinate = rocket.xCoordinate - RocketSmoke.smokeImg.getWidth(); // Subtract the size of the rocket smoke image (rocketSmokeImg.getWidth()) so that smoke isn't drawn under/behind the image of rocket.
-            int yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smok will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
+            int yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
             rs.Initialize(xCoordinate, yCoordinte, gameTime, rocket.currentSmokeLifeTime);
             rocketSmokeList.add(rs);
             
@@ -642,7 +683,7 @@ public class Game {
             int smokePositionX = 5 + random.nextInt(8); // We will draw this smoke a little bit ahead of the one we draw before.
             rs = new RocketSmoke();
             xCoordinate = rocket.xCoordinate - RocketSmoke.smokeImg.getWidth() + smokePositionX; // Here we need to add so that the smoke will not be on the same x coordinate as previous smoke. First we need to add 5 because we add random number from 0 to 8 and if the random number is 0 it would be on the same coordinate as smoke before.
-            yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smok will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
+            yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
             rs.Initialize(xCoordinate, yCoordinte, gameTime, rocket.currentSmokeLifeTime);
             rocketSmokeList.add(rs);
             
@@ -654,6 +695,58 @@ public class Game {
                 // Rocket was also destroyed so we remove it.
                 rocketsList.remove(i);
         }
+    }
+    
+    
+    /**
+     * Update missiles.
+     * It moves missiles and add smoke behind it.
+     * Checks if the missile is left the screen.
+     * Checks if any missile is hit any enemy.
+     * 
+     * @param gameTime
+     */
+    private void updateMissile(long gameTime)
+    {
+    		for(int i = 0; i < missilesList.size(); i++)
+    		{
+    			Missile missile = missilesList.get(i);
+    			
+    			// Moves the missile.
+    			missile.Update();
+    			
+    			// Checks if it is left the screen.
+    			if(missile.isItLeftScreen())
+    			{
+    				missilesList.remove(i);
+    				// Missile left the screen so we removed it from the list and now we can continue to the next missile.
+    				continue;
+    			}
+    			
+    			// Creates a missile smoke.
+    			RocketSmoke rs = new RocketSmoke();
+    		    int xCoordinate = missile.xCoordinate - RocketSmoke.smokeImg.getWidth(); // Subtract the size of the rocket smoke image (rocketSmokeImg.getWidth()) so that smoke isn't drawn under/behind the image of rocket.
+            int yCoordinte = missile.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We randomly add a number between 0 and 6 so that the smoke line isn't straight line.
+            rs.Initialize(xCoordinate, yCoordinte, gameTime, missile.currentSmokeLifeTime);
+            rocketSmokeList.add(rs);
+    			
+            // Because the missile is fast we get empty space between smokes so we need to add more smoke. 
+            // The higher is the speed of missiles, the bigger are empty spaces.
+            int smokePositionX = 5 + random.nextInt(8); // We will draw this smoke a little bit ahead of the one we draw before.
+            rs = new RocketSmoke();
+            xCoordinate = missile.xCoordinate - RocketSmoke.smokeImg.getWidth() + smokePositionX; // Here we need to add so that the smoke will not be on the same x coordinate as previous smoke. First we need to add 5 because we add random number from 0 to 8 and if the random number is 0 it would be on the same coordinate as smoke before.
+            yCoordinte = missile.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We randomly add a number between 0 and 6 so that the smoke line isn't straight line.
+            rs.Initialize(xCoordinate, yCoordinte, gameTime, missile.currentSmokeLifeTime);
+            rocketSmokeList.add(rs);
+            
+            // Increase the life time for the next piece of rocket smoke.
+            missile.currentSmokeLifeTime *= 1.02;
+            
+            // Checks if current missile hit any enemy.
+            if( checkIfMissileHitEnemy(missile) )
+            // Missile was also destroyed so we remove it.
+            missilesList.remove(i);
+    		}
     }
     
     /**
@@ -692,6 +785,38 @@ public class Game {
         }
         
         return didItHitEnemy;
+    }
+    
+    private boolean checkIfMissileHitEnemy(Missile missile)
+    {
+    		boolean didItHitEnemy = false;
+    		
+    		// Current missile rectangle. // I inserted number 2 instead of rocketImg.getWidth() because I wanted that missile
+    		// is over helicopter when collision is detected, because actual image of helicopter isn't a rectangle shape.
+    		Rectangle missileRectangle = new Rectangle(missile.xCoordinate, missile.yCoordinate, 2, Rocket.rocketImg.getHeight());
+    		
+    		// Go through all enemies.
+    		for(int j = 0; j < enemyHelicopterList.size(); j++ )
+    		{
+    			EnemyHelicopter eh = enemyHelicopterList.get(j);
+    			
+    			// Current enemy rectangle
+    			Rectangle enemyRectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
+    			
+    			// Is current rocket over current enemy?
+    			if(missileRectangle.intersects(enemyRectangle))
+    			{
+    				didItHitEnemy = true;
+    				
+    				// Missile hit the enemy so we reduce his health.
+    				eh.health -= Missile.damagePower;
+    				
+    				// Missile hit enemy so we don't need to check other enemies.
+    				break;
+    			}
+    		}
+    		
+    		return didItHitEnemy;
     }
     
     /**
