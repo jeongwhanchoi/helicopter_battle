@@ -70,8 +70,48 @@ public class Missile {
 		/**
 		 * Find the target
 		 */
-		public void Follow() {
-			//...
+		public void findTarget(EnemyHelicopter enemy) {
+			final int RANGE = 300;
+			final int BUTTER_ZONE = 100;
+			final int SWEET_SPOT = 25;
+			final int KILL_ZONE = 5;
+			
+			if (this.yCoordinate > enemy.getYCenter() && this.yCoordinate <= enemy.getYCenter() + RANGE) {
+				if (this.yCoordinate > enemy.getYCenter() + BUTTER_ZONE
+						|| this.xCoordinate + this.rocketImg.getWidth() < enemy.getXCenter() - enemy.helicopterBodyImg.getWidth()) {
+					currentYSpeed -= 0.4;
+				} else if (this.yCoordinate > enemy.getYCenter() + SWEET_SPOT) {
+					currentYSpeed = -2;
+				} else if (this.yCoordinate > enemy.getYCenter() + KILL_ZONE) {
+					currentYSpeed = -0.5;
+				} else {
+					currentYSpeed = -0.1;
+				}
+				
+				if (Math.abs(currentYSpeed) > maxYSpeed)
+					currentYSpeed = -maxYSpeed;
+				
+			}
+			else if (this.yCoordinate < enemy.getYCenter() && this.yCoordinate >= enemy.getYCenter() - RANGE) {
+				if (this.yCoordinate < enemy.getYCenter() - BUTTER_ZONE || this.xCoordinate + this.rocketImg.getWidth() < enemy.getXCenter() - enemy.helicopterBodyImg.getWidth()) {
+					currentYSpeed = currentYSpeed + 0.4;
+				} else if (this.yCoordinate < enemy.getYCenter() - SWEET_SPOT) {
+					currentYSpeed = 2;
+				} else if (this.yCoordinate < enemy.getYCenter() - KILL_ZONE) {
+					currentYSpeed = 0.5;
+				} else {
+					currentYSpeed = 0.1;
+				}
+				
+				if (currentYSpeed > maxYSpeed)
+					currentYSpeed = maxYSpeed;
+
+			} 
+			else if (this.yCoordinate == enemy.getYCenter()) {
+				currentYSpeed = 0.1;
+			}
+
+			yCoordinate += currentYSpeed;
 			
 		}
 		
