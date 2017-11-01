@@ -250,6 +250,18 @@ public class PlayerHelicopter {
             else if(movingXspeed > 0)
                 movingXspeed -= stoppingXspeed;
         
+        // Prevent helicopter from moving off-screen along x-axis.
+     	if (this.xCoordinate <= 0) 
+     	{
+     		movingXspeed = 0;
+    			this.xCoordinate = 1;
+    		} 
+     	else if (this.xCoordinate + this.helicopterBodyImg.getWidth() >= Framework.frameWidth)
+     	{
+    			movingXspeed = 0;
+    			this.xCoordinate = Framework.frameWidth - this.helicopterBodyImg.getWidth() - 1;
+    		}
+        
         // Moving on the y coordinate.
         if(Canvas.keyboardKeyState(KeyEvent.VK_W) || Canvas.keyboardKeyState(KeyEvent.VK_UP))
             movingYspeed -= acceleratingYspeed;
@@ -260,6 +272,17 @@ public class PlayerHelicopter {
                 movingYspeed += stoppingYspeed;
             else if(movingYspeed > 0)
                 movingYspeed -= stoppingYspeed;
+        
+        // Prevent helicopter from moving off-screen along y-axis.
+     	if (this.yCoordinate <= 0) 
+     	{
+    			movingYspeed = 0;
+    			this.yCoordinate = 1;
+    		}
+     	else if (this.yCoordinate + this.helicopterBodyImg.getHeight() >= Framework.frameHeight) {
+    			movingYspeed = 0;
+    			this.yCoordinate = Framework.frameHeight - this.helicopterBodyImg.getHeight() - 1;
+     	}
     }
     
     
