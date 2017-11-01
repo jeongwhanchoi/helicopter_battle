@@ -235,7 +235,7 @@ public class Game {
         // of bullets, rockets and explosions are empyt(end showing) we finish the game.
         if(player.numberOfAmmo <= 0 && 
            player.numberOfRockets <= 0 &&
-           player.numberOfMissile <= 0 &&
+           player.numberOfMissiles <= 0 &&
            bulletsList.isEmpty() && 
            rocketsList.isEmpty() && 
            explosionsList.isEmpty() &&
@@ -336,6 +336,7 @@ public class Game {
         g2d.drawString("RUNAWAY: "   + runAwayEnemies,   10, 41);
         g2d.drawString("ROCKETS: "   + player.numberOfRockets, 10, 81);
         g2d.drawString("AMMO: "      + player.numberOfAmmo, 10, 101);
+        g2d.drawString("MISSILE: "   + player.numberOfMissiles, 10, 121);
         
         // Moving images. We draw this cloud in front of the helicopter.
         cloudLayer1Moving.Draw(g2d);
@@ -352,14 +353,14 @@ public class Game {
      * @param gameTime Elapsed game time.
      */
     public void DrawStatistic(Graphics2D g2d, long gameTime){
-        g2d.drawString("Time: " + formatTime(gameTime),                   Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
-        g2d.drawString("Rockets left: "      + player.numberOfRockets,    Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
-        g2d.drawString("Ammo left: "         + player.numberOfAmmo,       Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
-        g2d.drawString("Missile left: "         + player.numberOfMissile, Framework.frameWidth/2 - 60, Framework.frameHeight/3 + 150);
-        g2d.drawString("Destroyed enemies: " + destroyedEnemies,          Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 175);
-        g2d.drawString("Runaway enemies: "   + runAwayEnemies,            Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
+        g2d.drawString("Time: " + formatTime(gameTime),                    Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
+        g2d.drawString("Rockets left: "      + player.numberOfRockets,     Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
+        g2d.drawString("Ammo left: "         + player.numberOfAmmo,        Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
+        g2d.drawString("Missile left: "         + player.numberOfMissiles, Framework.frameWidth/2 - 60, Framework.frameHeight/3 + 150);
+        g2d.drawString("Destroyed enemies: " + destroyedEnemies,           Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 175);
+        g2d.drawString("Runaway enemies: "   + runAwayEnemies,             Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
         g2d.setFont(font);
-        g2d.drawString("Statistics: ",                                    Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
+        g2d.drawString("Statistics: ",                                     Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
     }
     
     /**
@@ -449,8 +450,8 @@ public class Game {
     {
         if(player.health <= 0)
             return false;
-        
-        return true;
+        else
+        		return true;
     }
     
     /**
@@ -501,7 +502,7 @@ public class Game {
     		if(player.isFiredMissile(gameTime))
     		{
     			Rocket.timeOfLastCreatedRocket = gameTime;
-    			player.numberOfMissile--;
+    			player.numberOfMissiles--;
     			
     			Missile m = new Missile();
     			m.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
@@ -715,6 +716,19 @@ public class Game {
     			// Moves the missile.
     			missile.Update();
     			
+    			// Finds the enemy target.
+    			if (enemyHelicopterList.size() > 0) {
+    				for (int j = 0; j < enemyHelicopterList.size(); j++) {
+    					EnemyHelicopter eh = enemyHelicopterList.get(j);
+    					// If rocket's nose is in front of the enemy helicopter's tail, then...
+    					if (missile.xCoordinate + missile.rocketImg.getWidth() < eh.xCoordinate + eh.helicopterBodyImg.getWidth()) {
+    						// ...find the enemy helicopter
+    						missile.findTarget(eh);
+    						break;
+    					}
+    				}
+    			}
+    			
     			// Checks if it is left the screen.
     			if(missile.isItLeftScreen())
     			{
@@ -744,8 +758,8 @@ public class Game {
             
             // Checks if current missile hit any enemy.
             if( checkIfMissileHitEnemy(missile) )
-            // Missile was also destroyed so we remove it.
-            missilesList.remove(i);
+            		// Missile was also destroyed so we remove it.
+            		missilesList.remove(i);
     		}
     }
     
@@ -787,6 +801,13 @@ public class Game {
         return didItHitEnemy;
     }
     
+    
+    /**
+     * Checks if the given missile is hit any of enemy helicopters.
+     * 
+     * @param missile
+     * @return True if it hit any of enemy helicopeters, false otherwise.
+     */
     private boolean checkIfMissileHitEnemy(Missile missile)
     {
     		boolean didItHitEnemy = false;
