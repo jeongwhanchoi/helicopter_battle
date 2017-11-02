@@ -1,6 +1,7 @@
 package helicopterbattle;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -73,8 +74,9 @@ public class Game {
     private int runAwayEnemies;
     private int destroyedEnemies;
     
+    private int statXCoordinate;
 
-    public Game()
+    public Game(final KeyEvent helicopterType)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
         
@@ -82,7 +84,7 @@ public class Game {
             @Override
             public void run(){
                 // Sets variables and objects for the game.
-                Initialize();
+                Initialize(helicopterType);
                 // Load game files (images, sounds, ...)
                 LoadContent();
                 
@@ -95,8 +97,10 @@ public class Game {
     
    /**
      * Set variables and objects for the game.
+     * 
+     * @param helicopterType
      */
-    private void Initialize()
+    private void Initialize(KeyEvent helicopterType)
     {
         random = new Random();
         
@@ -106,7 +110,7 @@ public class Game {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        player = new PlayerHelicopter(Framework.frameWidth / 4, Framework.frameHeight / 4);
+        player = new PlayerHelicopter(Framework.frameWidth / 4, Framework.frameHeight / 4, helicopterType);
         
         enemyHelicopterList = new ArrayList<EnemyHelicopter>();
         
@@ -255,7 +259,10 @@ public class Game {
         }
         
         /* Mouse */
-        limitMousePosition(mousePosition);
+        if(player.helicopterName == "Chinook" || player.helicopterName == "Black Shark")
+        {
+        		limitMousePosition(mousePosition);
+	    }
         
         /* Bullets */
         updateBullets();
@@ -332,11 +339,12 @@ public class Game {
         g2d.setColor(Color.darkGray);
         
         g2d.drawString(formatTime(gameTime), Framework.frameWidth/2 - 45, 21);
-        g2d.drawString("DESTROYED: " + destroyedEnemies, 10, 21);
-        g2d.drawString("RUNAWAY: "   + runAwayEnemies,   10, 41);
-        g2d.drawString("ROCKETS: "   + player.numberOfRockets, 10, 81);
-        g2d.drawString("AMMO: "      + player.numberOfAmmo, 10, 101);
-        g2d.drawString("MISSILE: "   + player.numberOfMissiles, 10, 121);
+        g2d.drawString("HEALTH: "    + player.health, statXCoordinate, 21);
+        g2d.drawString("DESTROYED: " + destroyedEnemies, statXCoordinate, 41);
+        g2d.drawString("RUNAWAY: "   + runAwayEnemies,   statXCoordinate, 61);
+        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 81);
+        g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 111);
+        g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 131);
         
         // Moving images. We draw this cloud in front of the helicopter.
         cloudLayer1Moving.Draw(g2d);
@@ -553,7 +561,7 @@ public class Game {
             Rectangle playerRectangel = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
             Rectangle enemyRectangel = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
             if(playerRectangel.intersects(enemyRectangel)){
-                player.health = 0;
+                player.health -= 50;
                 
                 // Remove helicopter from the list.
                 enemyHelicopterList.remove(i);
@@ -717,11 +725,14 @@ public class Game {
     			missile.Update();
     			
     			// Finds the enemy target.
-    			if (enemyHelicopterList.size() > 0) {
-    				for (int j = 0; j < enemyHelicopterList.size(); j++) {
+    			if (enemyHelicopterList.size() > 0) 
+    			{
+    				for (int j = 0; j < enemyHelicopterList.size(); j++) 
+    				{
     					EnemyHelicopter eh = enemyHelicopterList.get(j);
     					// If rocket's nose is in front of the enemy helicopter's tail, then...
-    					if (missile.xCoordinate + missile.rocketImg.getWidth() < eh.xCoordinate + eh.helicopterBodyImg.getWidth()) {
+    					if (missile.xCoordinate + missile.rocketImg.getWidth() < eh.xCoordinate + eh.helicopterBodyImg.getWidth()) 
+    					{
     						// ...find the enemy helicopter
     						missile.findTarget(eh);
     						break;

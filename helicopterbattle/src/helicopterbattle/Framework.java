@@ -245,6 +245,9 @@ public class Framework extends Canvas {
                 g2d.drawString("Use w, a, d or arrow keys to move the helicopter.", frameWidth / 2 - 117, frameHeight / 2 - 30);
                 g2d.drawString("Use left mouse button to fire bullets and right mouse button to fire rockets.", frameWidth / 2 - 180, frameHeight / 2);
                 g2d.drawString("Press any key to start the game or ESC to exit.", frameWidth / 2 - 114, frameHeight / 2 + 30);
+                g2d.drawString("Select a helicopter.", frameWidth / 2 - 105, frameHeight / 2 + 100);
+                g2d.drawString("[E]stair, [F]rakor, [G]lear, [I]on,", frameWidth / 2 -105, frameHeight / 2 + 140);
+                g2d.drawString("[J]ohr, [M]ark I, [W]aadger, or any other key.", frameWidth / 2 - 105, frameHeight / 2 + 180);
             break;
             case OPTIONS:
                 //...
@@ -260,13 +263,13 @@ public class Framework extends Canvas {
     /**
      * Starts new game.
      */
-    private void newGame()
+    private void newGame(KeyEvent helicopterType)
     {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
         
-        game = new Game();
+        game = new Game(helicopterType);
     }
     
     /**
@@ -327,7 +330,7 @@ public class Framework extends Canvas {
                     restartGame();
             break;
             case MAIN_MENU:
-                newGame();
+                newGame(e);
             break;
         }
     }
