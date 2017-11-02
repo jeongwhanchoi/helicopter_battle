@@ -342,7 +342,7 @@ public class Game {
         g2d.drawString("HEALTH: "    + player.health, statXCoordinate, 21);
         g2d.drawString("DESTROYED: " + destroyedEnemies, statXCoordinate, 41);
         g2d.drawString("RUNAWAY: "   + runAwayEnemies,   statXCoordinate, 61);
-        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 81);
+        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 91);
         g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 111);
         g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 131);
         
