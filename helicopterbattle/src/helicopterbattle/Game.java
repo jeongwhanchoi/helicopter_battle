@@ -297,8 +297,14 @@ public class Game {
         cloudLayer2Moving.Draw(g2d);
         
         if(isPlayerAlive())
+        {
             player.Draw(g2d);
-        
+        		statXCoordinate = 10 + player.helicopterProfileImg.getWidth() + 10;
+        }
+		
+        // Draws helicopter's profile
+        player.DrawAvatar(g2d);
+        		        		
         // Draws all the enemies.
         for(int i = 0; i < enemyHelicopterList.size(); i++)
         {
