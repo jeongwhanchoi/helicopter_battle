@@ -359,7 +359,7 @@ public class PlayerHelicopter {
         
         this.numberOfRockets = numberOfRocketsInit;
         this.numberOfAmmo = numberOfAmmoInit;
-        this.numberOfMissiles = numberOfMissiles;
+        this.numberOfMissiles = numberOfMissilesInit;
         
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
