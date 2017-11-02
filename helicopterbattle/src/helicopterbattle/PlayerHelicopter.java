@@ -168,7 +168,7 @@ public class PlayerHelicopter {
         		else if(helicopterType.getKeyCode() == KeyEvent.VK_C)
         		{
         			helicopterName = "Chinook";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_helloKitty.png";
+        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_chinook.png";
         			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
         			this.healthInit = 150;
         			this.health = healthInit;
