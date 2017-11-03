@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -55,11 +56,16 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT}
     /**
      * Current state of the game
      */
     public static GameState gameState;
+    
+    public Rectangle playButton;
+	public Rectangle helpButton;
+	public Rectangle settingButton;
+	public Rectangle backButton;
     
     /**
      * Elapsed game time in nanoseconds.
@@ -73,6 +79,7 @@ public class Framework extends Canvas {
     
     
     private Font font;
+    private Font buttonFont;
     
     // Images for menu.
     private BufferedImage gameTitleImg;
@@ -106,6 +113,12 @@ public class Framework extends Canvas {
     private void Initialize()
     {
         font = new Font("monospaced", Font.BOLD, 28);
+        buttonFont = new Font("arial", Font.BOLD, 60);
+        playButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100);
+        helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
+        settingButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+        backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+
     }
     
     /**
@@ -167,8 +180,14 @@ public class Framework extends Canvas {
                 case MAIN_MENU:
                     //...
                 break;
+                case HELP:
+                		//...
+                break;
                 case OPTIONS:
                     //...
+                break;
+                case SELECT:
+                		//...
                 break;
                 case GAME_CONTENT_LOADING:
                     //...
@@ -240,18 +259,54 @@ public class Framework extends Canvas {
             break;
             case MAIN_MENU:
                 drawMenuBackground(g2d);
-                g2d.drawImage(gameTitleImg, frameWidth/2 - gameTitleImg.getWidth()/2, frameHeight/4, null);
-                g2d.setColor(Color.black);
-                g2d.drawString("Use w, a, d or arrow keys to move the helicopter.", frameWidth / 2 - 117, frameHeight / 2 - 30);
-                g2d.drawString("Use left mouse button to fire bullets and right mouse button to fire rockets.", frameWidth / 2 - 180, frameHeight / 2);
-                g2d.drawString("Press any key to start the game or ESC to exit.", frameWidth / 2 - 114, frameHeight / 2 + 30);
-                g2d.drawString("Select a helicopter.", frameWidth / 2 - 105, frameHeight / 2 + 100);
-                g2d.drawString("[B]lack Shark, [C]hinook, [H]ello Kitty,", frameWidth / 2 -105, frameHeight / 2 + 140);
-                g2d.drawString(", [L]ittle Bird, [S]NOC, [T]iger, [V]iper", frameWidth / 2 - 105, frameHeight / 2 + 180);
+                g2d.drawImage(gameTitleImg, frameWidth/2 - gameTitleImg.getWidth()/2, frameHeight/5 - 50, null);
+                
+                g2d.setFont(buttonFont);
+                g2d.setColor(Color.white);
+                g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
+                g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
+                g2d.drawString("SETTING", settingButton.x+75, settingButton.y+75);
+                g2d.draw(playButton);
+                g2d.draw(helpButton);
+                g2d.draw(settingButton);
+                
             break;
+            case HELP:
+            		drawMenuBackground(g2d);
+            		g2d.setFont(buttonFont);
+            		g2d.setColor(Color.white);
+            		g2d.drawString("HELP", frameWidth/2 - 70, 140);
+            		g2d.setFont(font);
+            		g2d.drawString("Use w, a, d or arrow keys to move the helicopter.", frameWidth / 2 - 450, frameHeight / 2 - 30);
+                g2d.drawString("Use left mouse button to fire bullets and right mouse button to fire rockets.", frameWidth / 2 - 450, frameHeight / 2 + 30);
+                
+                g2d.setFont(buttonFont);
+                g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+                g2d.draw(backButton);
+            	break;
             case OPTIONS:
-                //...
+            		drawMenuBackground(g2d);
+            		g2d.setFont(buttonFont);
+            		g2d.setColor(Color.white);
+            		g2d.drawString("OPTIONS", frameWidth/2 - 70, 140);
+            		g2d.setFont(buttonFont);
+            		g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+            		g2d.draw(backButton);
             break;
+            case SELECT:
+            		drawMenuBackground(g2d);
+            		g2d.setFont(buttonFont);
+            		g2d.setColor(Color.white);
+            		g2d.drawString("SELECT", frameWidth/3 + 70, 140);
+            		g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+            		g2d.draw(backButton);
+            		
+            		g2d.setFont(font);
+            		g2d.setColor(Color.white);
+            		g2d.drawString("Press the button to start", frameWidth / 5  , frameHeight / 5 + 100);
+            		g2d.drawString("[B]lack Shark, [C]hinook, [H]ello Kitty,", frameWidth / 5 , frameHeight / 5  + 140);
+            		g2d.drawString(", [L]ittle Bird, [S]NOC, [T]iger, [V]iper", frameWidth / 5 , frameHeight / 5 + 180);
+            	break;
             case GAME_CONTENT_LOADING:
                 g2d.setColor(Color.white);
                 g2d.drawString("GAME is LOADING", frameWidth/2 - 50, frameHeight/2);
@@ -330,9 +385,31 @@ public class Framework extends Canvas {
                     restartGame();
             break;
             case MAIN_MENU:
-                newGame(e);
+            		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            			gameState = GameState.SELECT;
+//                newGame(e);
+            		if(e.getKeyCode() == KeyEvent.VK_H)
+            			gameState = GameState.HELP;
+            		if(e.getKeyCode() == KeyEvent.VK_S)
+            			gameState = GameState.OPTIONS;
             break;
+            case SELECT:
+//            		newGame(e);
+            		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+            			gameState = GameState.MAIN_MENU;
+            		else
+            			newGame(e);
+            break;
+            case HELP:
+            		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+            			gameState = GameState.MAIN_MENU;
+            	break;
+            case OPTIONS:
+            		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+            			gameState = GameState.MAIN_MENU;
+            	break;
         }
+        
     }
     
     /**
@@ -346,12 +423,60 @@ public class Framework extends Canvas {
         
     }
     
+    /*public void mousePressed(MouseEvent e)
+    {
+    		int mx = e.getX();
+    		int my = e.getY();
+    		
+    		if(gameState == GameState.MAIN_MENU) {
+    			//Play button
+        		if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100))
+        		{
+        			System.exit(0);
+        		}
+        		
+        		//Help button
+        		if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2, 400, 100)) {
+        			gameState = GameState.HELP;
+        			
+        		//Setting button
+        			//...
+        		}
+    		}
+    		    		
+    		//Back button for HELP
+    		if(gameState == GameState.HELP)
+    		{
+    			if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100))
+    			{
+    				gameState = GameState.MAIN_MENU;
+    			}
+    		}
+    		
+    }
+    public void mouseReleased(MouseEvent e)
+    {
+    	
+    }
+    private boolean mouseOver(int mx, int my, int x, int y, int width, int height)
+    {
+    		if(mx > x && mx < x + width)
+    		{
+    			if(my > y && my < y + height)
+    			{
+    				return true;
+    			}
+    			else return false;
+    		}
+    		else return false;
+    }*/
+    
     private void drawMenuBackground(Graphics2D g2d){
         g2d.drawImage(skyColorImg,    0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.drawImage(cloudLayer1Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.drawImage(cloudLayer2Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.setColor(Color.white);
-        g2d.drawString("WWW.GAMETUTORIAL.NET", 7, frameHeight - 5);
+        g2d.drawString("", 7, frameHeight - 5);
     }
 }

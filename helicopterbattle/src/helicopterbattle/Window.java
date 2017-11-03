@@ -17,7 +17,7 @@ public class Window extends JFrame{
         this.setTitle("Helicopter battle");
         
         // Sets size of the frame.
-        if(true) // Full screen mode
+        if(false) // Full screen mode
         {
             // Disables decorations for this frame.
             this.setUndecorated(true);
