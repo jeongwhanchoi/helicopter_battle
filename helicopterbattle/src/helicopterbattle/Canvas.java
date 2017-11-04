@@ -32,7 +32,7 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
         
         // If you will draw your own mouse cursor or if you just want that mouse cursor disapear, 
         // insert "true" into if condition and mouse cursor will be removed.
-        if(false)
+        if(true)
         {
             BufferedImage blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
             Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImg, new Point(0, 0), null);

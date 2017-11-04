@@ -56,7 +56,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT, MENU_SELECT}
     /**
      * Current state of the game
      */
@@ -87,6 +87,9 @@ public class Framework extends Canvas {
     private BufferedImage skyColorImg;
     private BufferedImage cloudLayer1Img;
     private BufferedImage cloudLayer2Img;
+    private BufferedImage helpImg;
+    
+	private int select;
     
     
     public Framework ()
@@ -118,7 +121,7 @@ public class Framework extends Canvas {
         helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
         settingButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
         backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
-
+        select = 1;
     }
     
     /**
@@ -142,6 +145,9 @@ public class Framework extends Canvas {
             cloudLayer1Img = ImageIO.read(cloudLayer1ImgUrl);
             URL cloudLayer2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_2.png");
             cloudLayer2Img = ImageIO.read(cloudLayer2ImgUrl);
+            
+            URL helpImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/help_01.png");
+            helpImg = ImageIO.read(helpImgUrl); 
         } 
         catch (IOException ex) 
         {
@@ -270,19 +276,22 @@ public class Framework extends Canvas {
                 g2d.draw(helpButton);
                 g2d.draw(settingButton);
                 
+                if(select == 1)
+                		drawMenuSelect(g2d, 1);
+                else if(select == 2)
+                		drawMenuSelect(g2d, 2);
+                else
+                		drawMenuSelect(g2d, 3);
+                
             break;
             case HELP:
             		drawMenuBackground(g2d);
-            		g2d.setFont(buttonFont);
-            		g2d.setColor(Color.white);
-            		g2d.drawString("HELP", frameWidth/2 - 70, 140);
-            		g2d.setFont(font);
-            		g2d.drawString("Use w, a, d or arrow keys to move the helicopter.", frameWidth / 2 - 450, frameHeight / 2 - 30);
-                g2d.drawString("Use left mouse button to fire bullets and right mouse button to fire rockets.", frameWidth / 2 - 450, frameHeight / 2 + 30);
-                
+            		
                 g2d.setFont(buttonFont);
                 g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
                 g2d.draw(backButton);
+                
+                g2d.drawImage(helpImg, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
             	break;
             case OPTIONS:
             		drawMenuBackground(g2d);
@@ -311,6 +320,15 @@ public class Framework extends Canvas {
                 g2d.setColor(Color.white);
                 g2d.drawString("GAME is LOADING", frameWidth/2 - 50, frameHeight/2);
             break;
+            case MENU_SELECT:
+            		if(select == 1)
+            			drawMenuSelect(g2d, 1);
+            		else if(select == 2)
+            			drawMenuSelect(g2d, 2);
+            		else
+            			drawMenuSelect(g2d, 3);
+            		gameState = GameState.MAIN_MENU;
+            	break;
         }
     }
     
@@ -385,16 +403,32 @@ public class Framework extends Canvas {
                     restartGame();
             break;
             case MAIN_MENU:
-            		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            		/*if(e.getKeyCode() == KeyEvent.VK_ENTER)
             			gameState = GameState.SELECT;
-//                newGame(e);
             		if(e.getKeyCode() == KeyEvent.VK_H)
             			gameState = GameState.HELP;
             		if(e.getKeyCode() == KeyEvent.VK_S)
-            			gameState = GameState.OPTIONS;
+            			gameState = GameState.OPTIONS;*/
+            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+            		{
+            			select ++;
+            			if(select > 3)
+            				select -= 3;
+            		}
+            		if(e.getKeyCode() == KeyEvent.VK_UP)
+            		{
+            			select --;
+            			if(select < 1)
+            				select += 3;
+            		}
+                	if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		gameState = GameState.SELECT;
+                	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                			gameState = GameState.HELP;
+                	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                			gameState = GameState.OPTIONS;
             break;
             case SELECT:
-//            		newGame(e);
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
             		else
@@ -407,6 +441,20 @@ public class Framework extends Canvas {
             case OPTIONS:
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
+            	break;
+            case MENU_SELECT:
+            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+            			{
+            				select ++;
+            				if(select > 3)
+            					select -= 3;
+            			}
+            		if(e.getKeyCode() == KeyEvent.VK_UP)
+        			{
+        				select --;
+        				if(select < 1)
+        					select += 3;
+        			}
             	break;
         }
         
@@ -478,5 +526,32 @@ public class Framework extends Canvas {
         g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.setColor(Color.white);
         g2d.drawString("", 7, frameHeight - 5);
+    }
+    
+    private void drawMenuSelect(Graphics2D g2d, int menu)
+    {
+		g2d.setColor(Color.darkGray);
+    		switch(menu)
+    		{
+    		case 1:
+    			g2d.fillRect(playButton.x, playButton.y, playButton.width, playButton.height);
+    			g2d.setFont(buttonFont);
+    			g2d.setColor(Color.white);
+    			g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
+    			break;
+    		case 2:
+    			g2d.fillRect(helpButton.x, helpButton.y, helpButton.width, helpButton.height);
+    			g2d.setFont(buttonFont);
+    			g2d.setColor(Color.white);
+    			g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
+    			break;
+    		case 3:
+    			g2d.fillRect(settingButton.x, settingButton.y, settingButton.width, settingButton.height);
+    			g2d.setFont(buttonFont);
+    			g2d.setColor(Color.white);
+    			g2d.drawString("SETTING", settingButton.x+75, settingButton.y+75);
+    			break;
+    		}
+    		
     }
 }
