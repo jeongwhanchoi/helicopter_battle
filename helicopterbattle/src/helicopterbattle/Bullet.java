@@ -28,6 +28,8 @@ public class Bullet {
     private double movingXspeed;
     private double movingYspeed;
     
+	public int damagePoints;
+    
     // Images of helicopter machine gun bullet. Image is loaded and set in Game class in LoadContent() method.
     public static BufferedImage bulletImg;
     
@@ -45,6 +47,16 @@ public class Bullet {
         this.yCoordinate = yCoordinate;
         
         setDirectionAndSpeed(mousePosition);
+    }
+    
+    public Bullet(double xCoordinate, double yCoordinate, double movingXspeed, double movingYspeed, int damagePoints, BufferedImage bullet)
+    {
+    		this.xCoordinate = xCoordinate;
+    		this.yCoordinate = yCoordinate;
+    		this.movingXspeed = movingXspeed;
+    		this.movingYspeed = movingYspeed;
+    		this.damagePoints = damagePoints;
+    		Bullet.bulletImg = bullet;
     }
     
     

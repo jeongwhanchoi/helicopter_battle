@@ -15,6 +15,7 @@ public class EnemyHelicopter {
     private static final long timeBetweenNewEnemiesInit = Framework.secInNanosec * 3;
     public static long timeBetweenNewEnemies = timeBetweenNewEnemiesInit;
     public static long timeOfLastCreatedEnemy = 0;
+    public static boolean spawnEnemies = true;
     
     // Health of the helicopter.
     public int health;
@@ -82,6 +83,7 @@ public class EnemyHelicopter {
         EnemyHelicopter.timeBetweenNewEnemies = timeBetweenNewEnemiesInit;
         EnemyHelicopter.timeOfLastCreatedEnemy = 0;
         EnemyHelicopter.movingXspeed = movingXspeedInit;
+        EnemyHelicopter.spawnEnemies = true;
     }
     
     

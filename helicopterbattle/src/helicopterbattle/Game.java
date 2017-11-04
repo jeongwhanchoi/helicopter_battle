@@ -19,7 +19,6 @@ import javax.imageio.ImageIO;
  */
 
 public class Game {
-    
     // Use this to generate a random number.
     private Random random;
     
@@ -38,6 +37,9 @@ public class Game {
     
     // List of all the machine gun bullets.
     private ArrayList<Bullet> bulletsList;
+    
+    // List of all the machine gun bullets of the boss.
+//    private ArrayList<Bullet> bossBulletsList;
     
     // List of all the missiles
     private ArrayList<Missile> missilesList;
@@ -70,12 +72,18 @@ public class Game {
     // Font that we will use to write statistic to the screen.
     private Font font;
     
+    private int level;
+    
     // Statistics (destroyed enemies, run away enemies)
     private int runAwayEnemies;
     private int destroyedEnemies;
     
     private int statXCoordinate;
 
+    private boolean bossFight;
+    private int numOfEnemiesForBoss;
+    private Boss boss;
+    
     public Game(final KeyEvent helicopterType)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
@@ -132,6 +140,8 @@ public class Game {
         
         runAwayEnemies = 0;
         destroyedEnemies = 0;
+        numOfEnemiesForBoss = 5;
+        level = 1;
     }
     
     /**
@@ -160,6 +170,12 @@ public class Game {
             EnemyHelicopter.helicopterFrontPropellerAnimImg = ImageIO.read(helicopterFrontPropellerAnimImgUrl);
             URL helicopterRearPropellerAnimImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/2_rear_propeller_anim.png");
             EnemyHelicopter.helicopterRearPropellerAnimImg = ImageIO.read(helicopterRearPropellerAnimImgUrl);
+            
+            // Load images for boss
+            URL helicopter1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/boss_1.png");
+            Boss.helicopter1Img = ImageIO.read(helicopter1ImgUrl);
+            URL helicopter2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/boss_2.png");
+            Boss.helicopter2Img = ImageIO.read(helicopter2ImgUrl);
             
             // Images of rocket and its smoke.
             URL missileImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket.png");
@@ -214,10 +230,12 @@ public class Game {
         rocketSmokeList.clear();
         explosionsList.clear();
         missilesList.clear();
+//        bossBulletsList.clear();
         
         // Statistics
         runAwayEnemies = 0;
         destroyedEnemies = 0;
+        level = 1;
     }
     
     
@@ -274,10 +292,16 @@ public class Game {
         
         /* Enemies */
         createEnemyHelicopter(gameTime);
-        updateEnemies();
+        updateEnemies(gameTime);
         
         /* Explosions */
         updateExplosions();
+        
+        /*if(bossFight && boss.rageMode)
+        {
+        		updateStones(gameTime);
+        		updateStonesSmoke(gameTime);
+        }*/
     }
     
     /**
@@ -309,6 +333,19 @@ public class Game {
         for(int i = 0; i < enemyHelicopterList.size(); i++)
         {
             enemyHelicopterList.get(i).Draw(g2d);
+        }
+        
+        if(bossFight)
+        {
+        		boss.Draw(g2d);
+        		/*for(int i = 0; i < stonesList.size(); i++)
+        		{
+        			stoneList.get(i).draw(g2d);
+        		}*/
+        		/*for(int i=0; i < bossBulletsList.size(); i++)
+        		{
+        			bossBulletsList.get(i).Draw(g2d);
+        		}*/
         }
         
         // Draws all the bullets. 
@@ -351,6 +388,18 @@ public class Game {
         g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 111);
         g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 131);
         g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
+        
+        g2d.drawString("LEVEL: " + level, Framework.frameWidth/2 + 300, 21);
+        
+        if(bossFight)
+        {
+        		g2d.drawString("HP: " + boss.health, (int)boss.xCoordinate, (int)boss.yCoordinate + 20);
+        }
+        /*g2d.drawString("HP: " + player.health, player.xCoordinate, player.yCoordinate - 5);
+        for(EnemyHelicopter eh : enemyHelicopterList)
+        {
+        		g2d.drawString("HP: " + eh.health, eh.xCoordinate, eh.yCoordinate - 5);
+        }*/
         
         // Moving images. We draw this cloud in front of the helicopter.
         cloudLayer1Moving.Draw(g2d);
@@ -468,6 +517,12 @@ public class Game {
         		return true;
     }
     
+    /*private static Vector2d mousePositionToVector(int xOrigin, int yOrigin, Point mousePosition)
+    {
+    		Vector2d direction = new Vector2d(mousePosition.x - xOrigin, mousePosition.y - yOrigin);
+    		return direction.multiply(1.0 / direction.length());
+    }*/
+    
     /**
      * Checks if the player is shooting with the machine gun and creates bullets if he shooting.
      * 
@@ -531,7 +586,35 @@ public class Game {
      */
     private void createEnemyHelicopter(long gameTime)
     {
-        if(gameTime - EnemyHelicopter.timeOfLastCreatedEnemy >= EnemyHelicopter.timeBetweenNewEnemies)
+    		if(bossFight)
+    		{
+    			return;
+    		}
+    		if(destroyedEnemies == level * numOfEnemiesForBoss)
+    		{
+    			bossFight = true;
+    			BufferedImage bossImg = random.nextInt() % 2 == 0 ? Boss.helicopter1Img : Boss.helicopter2Img;
+    			boss = new Boss(level * Boss.initHealth, Framework.frameWidth, Framework.frameHeight / 2 - bossImg.getHeight() / 2, bossImg);
+    			enemyHelicopterList.clear();
+    			EnemyHelicopter.spawnEnemies = false;
+    		}
+    		else if(EnemyHelicopter.spawnEnemies && gameTime - EnemyHelicopter.timeOfLastCreatedEnemy >= EnemyHelicopter.timeBetweenNewEnemies)
+    		{
+    			EnemyHelicopter eh = new EnemyHelicopter();
+    			int xCoordinate = Framework.frameWidth;
+    			int yCoordinate = random.nextInt(Framework.frameHeight - EnemyHelicopter.helicopterBodyImg.getHeight());
+    			eh.Initialize(xCoordinate, yCoordinate);
+    			
+    			// Add created enemy to the list of enemies.
+    			enemyHelicopterList.add(eh);
+                
+    			// Speed up enemy speed and aperence.
+    			EnemyHelicopter.speedUp();
+                
+    			// Sets new time for last created enemy.
+    			EnemyHelicopter.timeOfLastCreatedEnemy = gameTime;
+    		}
+        /*if(gameTime - EnemyHelicopter.timeOfLastCreatedEnemy >= EnemyHelicopter.timeBetweenNewEnemies)
         {
             EnemyHelicopter eh = new EnemyHelicopter();
             int xCoordinate = Framework.frameWidth;
@@ -545,7 +628,30 @@ public class Game {
             
             // Sets new time for last created enemy.
             EnemyHelicopter.timeOfLastCreatedEnemy = gameTime;
+        }*/
+    }
+    
+    private void addPlayerExplosion()
+    {
+    		for(int exNum =0; exNum < 3; exNum++)
+    			{
+    				new Animation(explosionAnimImg, 134, 134, 12, 45, false, player.xCoordinate + exNum*60,
+    						player.yCoordinate - random.nextInt(100), exNum * 200 +random.nextInt(100));
+    			}
+    }
+    private boolean isPlayerCrashed(Rectangle playerRectangle, Rectangle enemyRectangle)
+    {
+    		if(playerRectangle.intersects(enemyRectangle)){
+    			// Add explosion of enemy helicopter.
+    			addPlayerExplosion();
+    			for(int exNum = 0; exNum < 3; exNum++){
+    				Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, enemyRectangle.x + exNum*60,
+                	enemyRectangle.y - random.nextInt(100), exNum * 200 +random.nextInt(100));
+    				explosionsList.add(expAnim);
+            }
+            return true;
         }
+        return false;
     }
     
     /**
@@ -555,18 +661,108 @@ public class Game {
      * Checks if enemy was destroyed.
      * Checks if any enemy collision with player.
      */
-    private void updateEnemies()
+    private void updateEnemies(long gameTime)
     {
-        for(int i = 0; i < enemyHelicopterList.size(); i++)
+    		if(bossFight) {
+    			// Update boss position
+    			boss.updateVelocity(bulletsList, rocketsList);
+    			boss.update();
+    			
+    			// Create the bullets
+    			if(gameTime - boss.lastBulletSpawnTime >= Boss.timeBetweenBullets)
+    			{
+    				/*boss.lastBulletSpawnTime = gameTime;
+    				bossBulletsList.add(boss.spawnBullet((double)player.xCoordinate, (double)player.yCoordinate));*/
+    			}
+    			
+    			if(isPlayerCrashed(new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight()), new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight())))
+    			{
+    				bossFight = false;
+    			}
+    			else if(boss.health <= 0)
+    			{
+    				++level;
+    				bossFight = false;
+    				
+    				// Boss explosion
+    				Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, (int)boss.xCoordinate, (int)boss.yCoordinate - explosionAnimImg.getHeight() / 3, 0);
+    				explosionsList.add(expAnim);
+    				
+    				EnemyHelicopter.spawnEnemies = true;
+    				
+//    				bossBulletsList.clear();
+    			}
+    		}
+    		else
+    		{
+    			for(int i = 0; i < enemyHelicopterList.size(); i++)
+    			{
+    				EnemyHelicopter eh = enemyHelicopterList.get(i);
+    		            
+    				eh.Update();
+    		            
+    				// Is chrashed with player?
+    				Rectangle playerrectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+    				Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
+    				if(playerrectangle.intersects(enemyrectangle)){
+    					player.health -= 50;
+    					
+    					// Remove helicopter from the list.
+    					enemyHelicopterList.remove(i);
+    					
+    					// Add explosion of player helicopter.
+    					for(int exNum = 0; exNum < 3; exNum++)
+    					{
+    						Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, player.xCoordinate + exNum*60, player.yCoordinate - random.nextInt(100), exNum * 200 +random.nextInt(100));
+    						explosionsList.add(expAnim);
+    					}
+    					// Add explosion of enemy helicopter.
+    					for(int exNum = 0; exNum < 3; exNum++)
+    					{
+    						Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate + exNum*60, eh.yCoordinate - random.nextInt(100), exNum * 200 +random.nextInt(100));
+    						explosionsList.add(expAnim);
+    					}
+    		                
+    					// Because player crashed with enemy the game will be over so we don't need to check other enemies.
+    					break;
+    				}
+    				
+    				// Check health.
+    				if(eh.health <= 0)
+    				{
+    					// Add explosion of helicopter.
+    					Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate, eh.yCoordinate - explosionAnimImg.getHeight()/3, 0); // Substring 1/3 explosion image height (explosionAnimImg.getHeight()/3) so that explosion is drawn more at the center of the helicopter.
+    					explosionsList.add(expAnim);
+    					
+    					// Increase the destroyed enemies counter.
+    					destroyedEnemies++;
+    		                
+    					// Remove helicopter from the list.
+    					enemyHelicopterList.remove(i);
+    		                
+    					// Helicopter was destroyed so we can move to next helicopter.
+    					continue;
+    				}
+    				
+    				// If the current enemy is left the screen we remove him from the list and update the runAwayEnemies variable.
+    				if(eh.isLeftScreen())
+    				{
+    					enemyHelicopterList.remove(i);
+    					runAwayEnemies++;
+    				}
+    			}
+    		}
+    
+        /*for(int i = 0; i < enemyHelicopterList.size(); i++)
         {
             EnemyHelicopter eh = enemyHelicopterList.get(i);
             
             eh.Update();
             
             // Is chrashed with player?
-            Rectangle playerRectangel = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
-            Rectangle enemyRectangel = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
-            if(playerRectangel.intersects(enemyRectangel)){
+            Rectangle playerrectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+            Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
+            if(playerrectangle.intersects(enemyrectangle)){
                 player.health -= 50;
                 
                 // Remove helicopter from the list.
@@ -608,8 +804,7 @@ public class Game {
             {
                 enemyHelicopterList.remove(i);
                 runAwayEnemies++;
-            }
-        }
+            }*/
     }
     
     /**
@@ -643,10 +838,10 @@ public class Game {
                 EnemyHelicopter eh = enemyHelicopterList.get(j);
 
                 // Current enemy rectangle.
-                Rectangle enemyRectangel = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
+                Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
 
                 // Is current bullet over currnet enemy?
-                if(bulletRectangle.intersects(enemyRectangel))
+                if(bulletRectangle.intersects(enemyrectangle))
                 {
                     // Bullet hit the enemy so we reduce his health.
                     eh.health -= Bullet.damagePower;
@@ -658,8 +853,48 @@ public class Game {
                     break;
                 }
             }
-        }
+            // Check if boss is hit
+            if(bossFight && !boss.invincible)
+            {
+            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
+            		if(bulletRectangle.intersects(bossRectangle))
+            		{
+            				boss.health -= Bullet.damagePower;
+            				bulletsList.remove(i);
+            		}
+            }
+            /*for(int k=0; k < bossBulletsList.size(); ++k)
+            {
+            		Bullet bulletBoss = bossBulletsList.get(k);
+            		
+            		bulletBoss.Update();
+            		
+            		// Is left the screen?
+            		if(bullet.isItLeftScreen()) 
+            		{
+            			bossBulletsList.remove(i--);
+            			// Bullet have left the screen so we removed it from the list and now we can continue to the next bullet.
+            			continue;
+            		}
+                    
+            		Rectangle bulletBossRectangle = new Rectangle((int)bullet.xCoordinate, (int)bullet.yCoordinate,
+            			bulletBoss.bulletImg.getWidth(),
+            			bulletBoss.bulletImg.getHeight()),
+            			playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+                    if(player.health > 0 && bulletBossRectangle.intersects(playerRectangle)) 
+                    {
+                    		player.health -= bullet.damagePoints;
+                    		if(player.health <= 0) 
+                    		{
+                    			addPlayerExplosion();
+                    		}
+                    }
+                    bossBulletsList.remove(i--);
+            	}*/
+        	}
     }
+  
+
 
     /**
      * Update rockets. 
@@ -709,6 +944,8 @@ public class Game {
             if( checkIfRocketHitEnemy(rocket) )
                 // Rocket was also destroyed so we remove it.
                 rocketsList.remove(i);
+            
+            
         }
     }
     
@@ -800,10 +1037,10 @@ public class Game {
             EnemyHelicopter eh = enemyHelicopterList.get(j);
 
             // Current enemy rectangle.
-            Rectangle enemyRectangel = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
+            Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
 
             // Is current rocket over currnet enemy?
-            if(rocketRectangle.intersects(enemyRectangel))
+            if(rocketRectangle.intersects(enemyrectangle))
             {
                 didItHitEnemy = true;
                 
