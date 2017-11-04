@@ -945,7 +945,17 @@ public class Game {
                 // Rocket was also destroyed so we remove it.
                 rocketsList.remove(i);
             
-            
+         // Check if boss is hit
+            if(bossFight && !boss.invincible)
+            {
+            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
+            		Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
+            		if(rocketRectangle.intersects(bossRectangle))
+            		{
+            				boss.health -= rocket.damagePower;
+            				rocketsList.remove(i);
+            		}
+            }
         }
     }
     
@@ -1014,6 +1024,18 @@ public class Game {
             if( checkIfMissileHitEnemy(missile) )
             		// Missile was also destroyed so we remove it.
             		missilesList.remove(i);
+            
+         // Check if boss is hit
+            if(bossFight && !boss.invincible)
+            {
+            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
+            		Rectangle missileRectangle = new Rectangle(missile.xCoordinate, missile.yCoordinate, 2, Rocket.rocketImg.getHeight());
+            		if(missileRectangle.intersects(bossRectangle))
+            		{
+            				boss.health -= missile.damagePower;
+            				missilesList.remove(i);
+            		}
+            }
     		}
     }
     
