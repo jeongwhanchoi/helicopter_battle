@@ -125,6 +125,7 @@ public class Game {
         explosionsList = new ArrayList<Animation>();
         
         bulletsList = new ArrayList<Bullet>();
+//        bossBulletsList = new ArrayList<Bullet>();
         
         missilesList = new ArrayList<Missile>();
         rocketsList = new ArrayList<Rocket>();
@@ -342,7 +343,7 @@ public class Game {
         		{
         			stoneList.get(i).draw(g2d);
         		}*/
-        		/*for(int i=0; i < bossBulletsList.size(); i++)
+     /*   		for(int i=0; i < bossBulletsList.size(); i++)
         		{
         			bossBulletsList.get(i).Draw(g2d);
         		}*/
@@ -669,11 +670,11 @@ public class Game {
     			boss.update();
     			
     			// Create the bullets
-    			if(gameTime - boss.lastBulletSpawnTime >= Boss.timeBetweenBullets)
+    			/*if(gameTime - boss.lastBulletSpawnTime >= Boss.timeBetweenBullets)
     			{
-    				/*boss.lastBulletSpawnTime = gameTime;
-    				bossBulletsList.add(boss.spawnBullet((double)player.xCoordinate, (double)player.yCoordinate));*/
-    			}
+    				boss.lastBulletSpawnTime = gameTime;
+    				bossBulletsList.add(boss.spawnBullet((double)player.xCoordinate, (double)player.yCoordinate));
+    			}*/
     			
     			if(isPlayerCrashed(new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight()), new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight())))
     			{
