@@ -56,7 +56,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT, MENU_SELECT}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT}
     /**
      * Current state of the game
      */
@@ -320,15 +320,6 @@ public class Framework extends Canvas {
                 g2d.setColor(Color.white);
                 g2d.drawString("GAME is LOADING", frameWidth/2 - 50, frameHeight/2);
             break;
-            case MENU_SELECT:
-            		if(select == 1)
-            			drawMenuSelect(g2d, 1);
-            		else if(select == 2)
-            			drawMenuSelect(g2d, 2);
-            		else
-            			drawMenuSelect(g2d, 3);
-            		gameState = GameState.MAIN_MENU;
-            	break;
         }
     }
     
@@ -442,20 +433,7 @@ public class Framework extends Canvas {
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
             	break;
-            case MENU_SELECT:
-            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
-            			{
-            				select ++;
-            				if(select > 3)
-            					select -= 3;
-            			}
-            		if(e.getKeyCode() == KeyEvent.VK_UP)
-        			{
-        				select --;
-        				if(select < 1)
-        					select += 3;
-        			}
-            	break;
+           
         }
         
     }

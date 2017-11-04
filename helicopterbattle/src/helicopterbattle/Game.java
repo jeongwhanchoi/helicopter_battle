@@ -84,6 +84,8 @@ public class Game {
     private int numOfEnemiesForBoss;
     private Boss boss;
     
+    private int score;
+    
     public Game(final KeyEvent helicopterType)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
@@ -143,6 +145,7 @@ public class Game {
         destroyedEnemies = 0;
         numOfEnemiesForBoss = 5;
         level = 1;
+        score = 0;
     }
     
     /**
@@ -237,6 +240,7 @@ public class Game {
         runAwayEnemies = 0;
         destroyedEnemies = 0;
         level = 1;
+        score = 0;
     }
     
     
@@ -391,6 +395,7 @@ public class Game {
         g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
         
         g2d.drawString("LEVEL: " + level, Framework.frameWidth/2 + 300, 21);
+        g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
         
         if(bossFight)
         {
@@ -425,6 +430,15 @@ public class Game {
         g2d.drawString("Runaway enemies: "   + runAwayEnemies,             Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
         g2d.setFont(font);
         g2d.drawString("Statistics: ",                                     Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
+        g2d.drawString("Score: " 			+ getScore(), 					 Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 225);
+    }
+    
+    public int getScore()
+    {
+    		score = 10 * (destroyedEnemies - runAwayEnemies) + 100 * level;
+    		if(score < 0)
+    			score = 0;
+    		return score;
     }
     
     /**
