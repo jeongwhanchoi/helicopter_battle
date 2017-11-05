@@ -183,6 +183,7 @@ public class Framework extends Canvas {
             heli7Img = ImageIO.read(heli7ImgUrl); 
             URL heli8ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_00.png");
             heli8Img = ImageIO.read(heli8ImgUrl); 
+            
         } 
         catch (IOException ex) 
         {
@@ -486,12 +487,16 @@ public class Framework extends Canvas {
                 
                 if(e.getKeyCode() == KeyEvent.VK_DOWN)
         			{
+                		Sound reload = new Sound("load.mp3", false);
+                		reload.start();
         				select ++;
         				if(select > 2)
         					select -= 2;
 	        		}
                 else if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
+                		Sound reload = new Sound("load.mp3", false);
+                		reload.start();
 	        			select --;
 	        			if(select < 1)
 	        				select += 2;
@@ -507,12 +512,16 @@ public class Framework extends Canvas {
             		
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			select ++;
             			if(select > 3)
             				select -= 3;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			select --;
             			if(select < 1)
             				select += 3;
@@ -527,45 +536,78 @@ public class Framework extends Canvas {
             case SELECT:
             		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			++select;
             			if(select > 8)
             				select -= 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_LEFT)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			--select;
             			if(select < 1)
             				select += 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			select += 4;
             			if(select > 8)
             				select -= 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
+            			Sound reload = new Sound("load.mp3", false);
+                		reload.start();
             			select -= 4;
             			if(select < 1)
             				select += 8;
             		}
             		
+            		Sound reload = new Sound("reload.mp3", false);
             		if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
             			newGame(select);
-                	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
-                	if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		newGame(select);
+            		}
+            		else if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
+            		else if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		{
+            			reload.start();
+            			newGame(select);
+                	}
                 	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;

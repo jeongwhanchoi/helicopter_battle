@@ -118,7 +118,10 @@ public class Game {
      */
     private void Initialize(int helicopterSelect)
     {
-        random = new Random();
+    		Sound backgroundMusic = new Sound("intro.mp3", true);
+    		backgroundMusic.start();
+    	
+    		random = new Random();
         
         try {
             robot = new Robot();
@@ -275,6 +278,8 @@ public class Game {
         /* Player */
         // When player is destroyed and all explosions are finished showing we change game status.
         if( !isPlayerAlive() && explosionsList.isEmpty() ){
+        		Sound gameover = new Sound("gameover.mp3", false);
+        		gameover.start();
             Framework.gameState = Framework.GameState.GAMEOVER;
             return; // If player is destroyed, we don't need to do thing below.
         }
@@ -289,8 +294,13 @@ public class Game {
            missilesList.isEmpty() &&
            rocketSmokeList.isEmpty())
         {
-            Framework.gameState = Framework.GameState.GAMEOVER;
-            return;
+            
+        	Sound gameover = new Sound("gameover.mp3", false);
+        	gameover.start();
+        	
+        	Framework.gameState = Framework.GameState.GAMEOVER;
+        
+        	return;
         }
         // If player is alive we update him.
         if(isPlayerAlive()){
@@ -587,6 +597,9 @@ public class Game {
             
             Bullet b = new Bullet(player.machineGunXcoordinate, player.machineGunYcoordinate, mousePosition);
             bulletsList.add(b);
+            
+            Sound gun = new Sound("gun.mp3", false);
+            gun.start();
         }
     }
     
@@ -606,6 +619,9 @@ public class Game {
             Rocket r = new Rocket();
             r.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
             rocketsList.add(r);
+            
+            Sound rocket = new Sound("rocket.mp3", false);
+            rocket.start();
         }
     }
     
@@ -626,6 +642,9 @@ public class Game {
     			Missile m = new Missile();
     			m.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
     			missilesList.add(m);
+    			
+    			Sound missile = new Sound("missile.mp3", false);
+    			missile.start();
     		}
     }
     
@@ -739,6 +758,9 @@ public class Game {
     				Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, (int)boss.xCoordinate, (int)boss.yCoordinate - explosionAnimImg.getHeight() / 3, 0);
     				explosionsList.add(expAnim);
     				
+    				Sound bossbomb = new Sound("bomb.mp3", false);
+    				bossbomb.start();
+    				
     				EnemyHelicopter.spawnEnemies = true;
     				
 //    				bossBulletsList.clear();
@@ -760,6 +782,9 @@ public class Game {
     					
     					// Remove helicopter from the list.
     					enemyHelicopterList.remove(i);
+    					
+    					Sound helibomb = new Sound("bomb.mp3", false);
+    					helibomb.start();
     					
     					// Add explosion of player helicopter.
     					for(int exNum = 0; exNum < 3; exNum++)
