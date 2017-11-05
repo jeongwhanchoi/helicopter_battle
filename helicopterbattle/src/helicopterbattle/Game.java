@@ -75,6 +75,7 @@ public class Game {
     
     // Font that we will use to write statistic to the screen.
     private Font font;
+    private Font scoreFont;
     
     private int level;
     
@@ -146,6 +147,7 @@ public class Game {
         groundMoving = new MovingBackground();
         
         font = new Font("monospaced", Font.BOLD, 18);
+        scoreFont = new Font("arial", Font.BOLD, 60);
         
         runAwayEnemies = 0;
         destroyedEnemies = 0;
@@ -450,7 +452,7 @@ public class Game {
      * @param gameTime Elapsed game time.
      */
     public void DrawStatistic(Graphics2D g2d, long gameTime){
-        g2d.drawString("Time: " + formatTime(gameTime),                    Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
+        /*g2d.drawString("Time: " + formatTime(gameTime),                    Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
         g2d.drawString("Rockets left: "      + player.numberOfRockets,     Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
         g2d.drawString("Ammo left: "         + player.numberOfAmmo,        Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
         g2d.drawString("Missile left: "         + player.numberOfMissiles, Framework.frameWidth/2 - 60, Framework.frameHeight/3 + 150);
@@ -458,7 +460,10 @@ public class Game {
         g2d.drawString("Runaway enemies: "   + runAwayEnemies,             Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
         g2d.setFont(font);
         g2d.drawString("Statistics: ",                                     Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
-        g2d.drawString("Score: " 			+ getScore(), 					 Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 225);
+        */
+        g2d.setFont(scoreFont);
+        g2d.setColor(Color.BLACK);
+    		g2d.drawString("Score: "	+ getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/3 + 80);
 //        g2d.drawString("Best: " + lBoard.getTopScores(), Framework.frameWidth, Framework.frameHeight);
     }
     

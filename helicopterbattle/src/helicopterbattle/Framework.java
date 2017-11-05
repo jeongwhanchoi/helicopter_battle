@@ -67,7 +67,9 @@ public class Framework extends Canvas {
 	public Rectangle quitButton;
 	public Rectangle backButton;
 	
-	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button; 
+	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button;
+	
+	public Rectangle restartButton;
     
     /**
      * Elapsed game time in nanoseconds.
@@ -134,6 +136,8 @@ public class Framework extends Canvas {
         heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
         heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
         heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
+        
+        restartButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
         
         select = 1;
     }
@@ -285,11 +289,25 @@ public class Framework extends Canvas {
             break;
             case GAMEOVER:
                 drawMenuBackground(g2d);
-                g2d.setColor(Color.black);
-                g2d.drawString("Press ENTER to restart or ESC to exit.", frameWidth/2 - 113, frameHeight/4 + 30);
+                
                 game.DrawStatistic(g2d, gameTime);
-                g2d.setFont(font);
-                g2d.drawString("GAME OVER", frameWidth/2 - 90, frameHeight/4);
+                g2d.setFont(buttonFont);
+                g2d.drawString("GAME OVER", frameWidth/2 - 150, frameHeight/4);
+                
+                g2d.setFont(buttonFont);
+                g2d.setColor(Color.white);
+                g2d.drawString("RESTART", helpButton.x+75, helpButton.y+75);
+                g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
+                
+                g2d.draw(restartButton);
+                g2d.draw(quitButton);
+                
+                if(select == 1)
+                		drawRestartSelect(g2d, 1);
+                else if(select == 2)
+                		drawRestartSelect(g2d, 2);
+                else 
+                		select = 1;
             break;
             case MAIN_MENU:
                 drawMenuBackground(g2d);
@@ -320,6 +338,9 @@ public class Framework extends Canvas {
                 g2d.setFont(buttonFont);
                 g2d.drawString("BACK", backButton.x+120, backButton.y+75);
                 g2d.draw(backButton);
+                g2d.setFont(font);
+                g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+                
                 
             	break;
             case QUIT:
@@ -327,10 +348,16 @@ public class Framework extends Canvas {
             		g2d.setFont(buttonFont);
             		g2d.setColor(Color.white);
             		g2d.drawString("Press ENTER to quit", frameWidth/2 - 300, 140);
-            		g2d.drawString("Press BACKSPACE to return", frameWidth/2 - 400, 440);
             		g2d.setFont(buttonFont);
             		g2d.drawString("BACK", quitButton.x+120, quitButton.y+75);
             		g2d.draw(backButton);
+            		g2d.setFont(font);
+            		g2d.setColor(Color.white);
+            		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+            		g2d.setColor(Color.black);
+            		g2d.setFont(buttonFont);
+            		g2d.drawString("Are you sure", frameWidth/2 -200, frameHeight/2 - 50);
+            		g2d.drawString("you really want to quit?", frameWidth/2 -300, frameHeight/2 +25);
             break;
             case SELECT:
             		drawMenuBackground(g2d);
@@ -339,6 +366,8 @@ public class Framework extends Canvas {
             		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
             		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
             		g2d.draw(backButton);
+            		g2d.setFont(font);
+            		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
             		
             		g2d.draw(heli1Button);
             		g2d.draw(heli2Button);
@@ -452,8 +481,27 @@ public class Framework extends Canvas {
         switch(gameState)
         {
             case GAMEOVER:
-                if(e.getKeyCode() == KeyEvent.VK_ENTER)
-                    restartGame();
+                /*if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                    restartGame();*/
+                
+                if(e.getKeyCode() == KeyEvent.VK_DOWN)
+        			{
+        				select ++;
+        				if(select > 2)
+        					select -= 2;
+	        		}
+                else if(e.getKeyCode() == KeyEvent.VK_UP)
+	        		{
+	        			select --;
+	        			if(select < 1)
+	        				select += 2;
+	        		}
+	            	
+                if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	            		restartGame();
+                else	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	            		System.exit(0);
+	                
             break;
             case MAIN_MENU:
             		
@@ -703,5 +751,26 @@ public class Framework extends Canvas {
 			break;
 		
 		}
+    }
+    
+    private void drawRestartSelect(Graphics2D g2d, int menu)
+    {
+		g2d.setColor(Color.darkGray);
+    		switch(menu)
+    		{
+    		case 1:
+    			g2d.fillRect(restartButton.x, restartButton.y, restartButton.width, restartButton.height);
+    			g2d.setFont(buttonFont);
+    			g2d.setColor(Color.white);
+    			g2d.drawString("RESTART", restartButton.x+75, restartButton.y+75);
+    			break;
+    		case 2:
+    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
+    			g2d.setFont(buttonFont);
+    			g2d.setColor(Color.white);
+    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
+    			break;
+    		}
+    		
     }
 }
