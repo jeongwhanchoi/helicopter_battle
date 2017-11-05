@@ -56,7 +56,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, HELP, SELECT}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, PLAYING, GAMEOVER, HELP, SELECT, QUIT}
     /**
      * Current state of the game
      */
@@ -64,7 +64,7 @@ public class Framework extends Canvas {
     
     public Rectangle playButton;
 	public Rectangle helpButton;
-	public Rectangle settingButton;
+	public Rectangle quitButton;
 	public Rectangle backButton;
 	
 	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button; 
@@ -123,7 +123,7 @@ public class Framework extends Canvas {
         buttonFont = new Font("arial", Font.BOLD, 60);
         playButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100);
         helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
-        settingButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+        quitButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
         backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
         
         heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
@@ -220,9 +220,6 @@ public class Framework extends Canvas {
                 case HELP:
                 		//...
                 break;
-                case OPTIONS:
-                    //...
-                break;
                 case SELECT:
                 		//...
                 break;
@@ -302,10 +299,10 @@ public class Framework extends Canvas {
                 g2d.setColor(Color.white);
                 g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
                 g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
-                g2d.drawString("SETTING", settingButton.x+75, settingButton.y+75);
+                g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
                 g2d.draw(playButton);
                 g2d.draw(helpButton);
-                g2d.draw(settingButton);
+                g2d.draw(quitButton);
                 
                 if(select == 1)
                 		drawMenuSelect(g2d, 1);
@@ -321,25 +318,26 @@ public class Framework extends Canvas {
             		g2d.drawImage(helpImg, frameWidth - helpImg.getWidth() - 110, frameHeight/5 - 50, null);
             		
                 g2d.setFont(buttonFont);
-                g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+                g2d.drawString("BACK", backButton.x+120, backButton.y+75);
                 g2d.draw(backButton);
                 
             	break;
-            case OPTIONS:
+            case QUIT:
             		drawMenuBackground(g2d);
             		g2d.setFont(buttonFont);
             		g2d.setColor(Color.white);
-            		g2d.drawString("OPTIONS", frameWidth/2 - 70, 140);
+            		g2d.drawString("Press ENTER to quit", frameWidth/2 - 300, 140);
+            		g2d.drawString("Press BACKSPACE to return", frameWidth/2 - 400, 440);
             		g2d.setFont(buttonFont);
-            		g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+            		g2d.drawString("BACK", quitButton.x+120, quitButton.y+75);
             		g2d.draw(backButton);
             break;
             case SELECT:
             		drawMenuBackground(g2d);
             		g2d.setFont(buttonFont);
             		g2d.setColor(Color.white);
-            		g2d.drawString("SELECT", frameWidth/3 + 70, 140);
-            		g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
+            		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
+            		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
             		g2d.draw(backButton);
             		
             		g2d.draw(heli1Button);
@@ -476,7 +474,7 @@ public class Framework extends Canvas {
                 	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 			gameState = GameState.HELP;
                 	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                			gameState = GameState.OPTIONS;
+                			gameState = GameState.QUIT;
             break;
             case SELECT:
             		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -530,9 +528,11 @@ public class Framework extends Canvas {
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
             	break;
-            case OPTIONS:
+            case QUIT:
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
+            		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            			System.exit(0);
             	break;
            
         }
@@ -647,10 +647,10 @@ public class Framework extends Canvas {
     			g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
     			break;
     		case 3:
-    			g2d.fillRect(settingButton.x, settingButton.y, settingButton.width, settingButton.height);
+    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
     			g2d.setFont(buttonFont);
     			g2d.setColor(Color.white);
-    			g2d.drawString("SETTING", settingButton.x+75, settingButton.y+75);
+    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
     			break;
     		}
     		
