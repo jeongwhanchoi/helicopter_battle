@@ -218,6 +218,7 @@ public class Framework extends Canvas {
                 break;
                 case GAMEOVER:
                     //...
+                		game.checkScore();
                 break;
                 case MAIN_MENU:
                     //...
@@ -292,9 +293,9 @@ public class Framework extends Canvas {
                 drawMenuBackground(g2d);
                 
                 game.DrawStatistic(g2d, gameTime);
-                g2d.setFont(buttonFont);
+                /*g2d.setFont(buttonFont);
                 g2d.drawString("GAME OVER", frameWidth/2 - 150, frameHeight/4);
-                
+                */
                 g2d.setFont(buttonFont);
                 g2d.setColor(Color.white);
                 g2d.drawString("RESTART", helpButton.x+75, helpButton.y+75);
