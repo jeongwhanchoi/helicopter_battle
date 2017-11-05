@@ -1127,7 +1127,7 @@ public class Game {
 	    		if(playerRect.intersects(bonusRect) || bonusRect.intersects(playerRect)) 
 	    			{
 	    			bonus.apply(player);
-//	    			bonus.consumeTime = gameTime;
+//	    			bonus.consumeTime = gameTime;a
 	    			bonusList.remove(i--);
 	    			} 
 	    		else if(bonus.isLeftScreen())

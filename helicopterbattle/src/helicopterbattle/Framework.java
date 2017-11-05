@@ -318,11 +318,12 @@ public class Framework extends Canvas {
             case HELP:
             		drawMenuBackground(g2d);
             		
+            		g2d.drawImage(helpImg, frameWidth - helpImg.getWidth() - 110, frameHeight/5 - 50, null);
+            		
                 g2d.setFont(buttonFont);
                 g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
                 g2d.draw(backButton);
                 
-                g2d.drawImage(helpImg, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
             	break;
             case OPTIONS:
             		drawMenuBackground(g2d);
