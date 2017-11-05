@@ -61,3 +61,7 @@ local.properties
 .classpath
 
 # End of https://www.gitignore.io/api/eclipse
+
+### .dat File ###
+# Saving the high score
+*.dat
