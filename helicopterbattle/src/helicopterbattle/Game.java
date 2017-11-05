@@ -51,6 +51,9 @@ public class Game {
     // List of all the rockets smoke.
     private ArrayList<RocketSmoke> rocketSmokeList;
     
+    // List of all the bonuses
+    private ArrayList<Bonus> bonusList;
+    
     // Image for the sky color.
     private BufferedImage skyColorImg;
     
@@ -130,6 +133,7 @@ public class Game {
         
         bulletsList = new ArrayList<Bullet>();
 //        bossBulletsList = new ArrayList<Bullet>();
+        bonusList = new ArrayList<Bonus>();
         
         missilesList = new ArrayList<Missile>();
         rocketsList = new ArrayList<Rocket>();
@@ -148,6 +152,7 @@ public class Game {
         numOfEnemiesForBoss = 5;
         level = 1;
         score = 0;
+        bossFight = false;
         
     }
     
@@ -203,6 +208,13 @@ public class Game {
             // Helicopter machine gun bullet.
             URL bulletImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/bullet.png");
             Bullet.bulletImg = ImageIO.read(bulletImgUrl);
+            
+            URL healthBonusImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/health_shield.png");
+            HealthBonus.image = ImageIO.read(healthBonusImgUrl);
+            URL bulletBonusImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/bullet_shield.png");
+            BulletBonus.image = ImageIO.read(bulletBonusImgUrl);
+            URL rocketBonusImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket_shield.png");
+            RocketBonus.image = ImageIO.read(rocketBonusImgUrl);
         } 
         catch (IOException ex) 
         {
@@ -238,12 +250,15 @@ public class Game {
         explosionsList.clear();
         missilesList.clear();
 //        bossBulletsList.clear();
+        bonusList.clear();
         
         // Statistics
         runAwayEnemies = 0;
         destroyedEnemies = 0;
         level = 1;
         score = 0;
+        
+        bossFight = false;
     }
     
     
@@ -304,6 +319,8 @@ public class Game {
         
         /* Explosions */
         updateExplosions();
+        
+        updateBonuses(gameTime);
         
         /*if(bossFight && boss.rageMode)
         {
@@ -383,6 +400,12 @@ public class Game {
         for(int i = 0; i < explosionsList.size(); i++)
         {
             explosionsList.get(i).Draw(g2d);
+        }
+        
+        // 	Draw all bonuses
+        for(Bonus bonus : bonusList) 
+        {
+        		bonus.Draw(g2d);
         }
         
         // Draw statistics
@@ -699,6 +722,7 @@ public class Game {
     			
     			if(isPlayerCrashed(new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight()), new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight())))
     			{
+    				player.health -= 200;
     				bossFight = false;
     			}
     			else if(boss.health <= 0)
@@ -1059,6 +1083,59 @@ public class Game {
             		}
             }
     		}
+    }
+    
+    private void updateBonuses(long gameTime) {
+    	// Generate new bonuses
+    		if(random.nextInt() % 500 == 0) {
+//    			double speed = 50 + random.nextDouble() * 2.7001;
+//    			double speed = 50;
+    			switch(random.nextInt() % 3) {
+    			case 0:
+//    				bonusList.add(new HealthBonus(random.nextInt(Framework.frameWidth - HealthBonus.image.getWidth()),
+//    					-HealthBonus.image.getHeight(), speed, 50));
+    				bonusList.add(new HealthBonus(random.nextInt(Framework.frameWidth - HealthBonus.image.getWidth()),
+        					random.nextInt(Framework.frameHeight - HealthBonus.image.getHeight()), 50));
+    				break;
+    			case 1:
+    				bonusList.add(new BulletBonus(random.nextInt(Framework.frameWidth - BulletBonus.image.getWidth()),
+    						random.nextInt(Framework.frameHeight -BulletBonus.image.getHeight()), 100));
+    				break;
+    			case 2:
+    				bonusList.add(new RocketBonus(random.nextInt(Framework.frameWidth - RocketBonus.image.getWidth()),
+    						random.nextInt(Framework.frameHeight-RocketBonus.image.getHeight()), 5));
+    				break;
+    			/*case 3:
+    				bonusList.add(new ShieldBonus(random.nextInt(Framework.frameWidth - ShieldBonus.image.getWidth()),
+    					-ShieldBonus.image.getHeight(), 10, speed));
+    				break;*/
+    			}
+    		}
+    	
+	    	// Update bonuses
+	    	Rectangle playerRect = new Rectangle(player.xCoordinate, player.yCoordinate,
+	    			player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+	    	for(int i = 0; i < bonusList.size(); ++i) 
+	    		{
+	    		Bonus bonus = bonusList.get(i);
+	    		
+//	    		bonus.update();
+	    		
+	    		Rectangle bonusRect = new Rectangle((int)bonus.xCoordinate, (int)bonus.yCoordinate,
+	    				bonus.image.getWidth(), bonus.image.getHeight());
+	    		
+	    		if(playerRect.intersects(bonusRect) || bonusRect.intersects(playerRect)) 
+	    			{
+	    			bonus.apply(player);
+//	    			bonus.consumeTime = gameTime;
+	    			bonusList.remove(i--);
+	    			} 
+	    		else if(bonus.isLeftScreen())
+	    			{
+	    			bonusList.remove(i--);
+	    			}
+	    		}
+    		
     }
     
     /**
