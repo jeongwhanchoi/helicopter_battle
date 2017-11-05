@@ -36,15 +36,15 @@ public class PlayerHelicopter {
     private double stoppingYspeed;
     
     // Helicopter rockets.
-    private final int numberOfRocketsInit = 80;
+    private final int numberOfRocketsInit = 30;
     public int numberOfRockets;
     
     // Helicopter machinegun ammo.
-    private final int numberOfAmmoInit = 1400;
+    private final int numberOfAmmoInit = 300;
     public int numberOfAmmo;
     
     // Helicopter missiles.
- 	private final int numberOfMissilesInit = 80;
+ 	private final int numberOfMissilesInit = 30;
  	public int numberOfMissiles;
     
     // Images of helicopter and its propellers.
@@ -149,9 +149,9 @@ public class PlayerHelicopter {
         			helicopterName = "Hello Kitty";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_helloKitty.png";
         			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
-        			this.healthInit = 150;
+        			this.healthInit = 100;
         			this.health = healthInit;
-        			this.numberOfAmmo = 1000;
+        			this.numberOfAmmo = 300;
         			this.numberOfRockets = 0;
         			this.numberOfMissiles = 100;
         			this.offsetXFrontPropeller = 38;
@@ -169,12 +169,12 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Chinook";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_chinook.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot";
         			this.healthInit = 150;
         			this.health = healthInit;
-        			this.numberOfAmmo = 2000;
+        			this.numberOfAmmo = 500;
         			this.numberOfRockets = 5;
-        			this.numberOfMissiles = 5;
+        			this.numberOfMissiles = 10;
         			this.offsetXFrontPropeller = 70;
         			this.offsetYFrontPropeller = -23;
         			this.offsetXRearPropeller = -10;
@@ -190,11 +190,11 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Viper";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_viper.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
         			this.healthInit = 150;
         			this.health = healthInit;
         			this.numberOfAmmo = 100;
-        			this.numberOfRockets = 10;
+        			this.numberOfRockets = 20;
         			this.numberOfMissiles = 25;
         			this.offsetXFrontPropeller = 30;
         			this.offsetYFrontPropeller = -33;
@@ -211,11 +211,11 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Tiger";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_tiger.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
         			this.healthInit = 150;
         			this.health = healthInit;
-        			this.numberOfAmmo = 5000;
-        			this.numberOfRockets = 1000;
+        			this.numberOfAmmo = 400;
+        			this.numberOfRockets = 30;
         			this.numberOfMissiles = 0;
         			this.offsetXFrontPropeller = 5;
         			this.offsetYFrontPropeller = -10;
@@ -232,12 +232,12 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Little Bird";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_littleBird.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
-        			this.healthInit = 150;
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
+        			this.healthInit = 100;
         			this.health = healthInit;
-        			this.numberOfAmmo = 500;
-        			this.numberOfRockets = 14;
-        			this.numberOfMissiles = 15;
+        			this.numberOfAmmo = 200;
+        			this.numberOfRockets = 20;
+        			this.numberOfMissiles = 10;
         			this.offsetXFrontPropeller = 65;
         			this.offsetYFrontPropeller = -23;
         			this.offsetXRearPropeller = -6;
@@ -253,12 +253,12 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Black Shark";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_blackShark.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
         			this.healthInit = 150;
         			this.health = healthInit;
-        			this.numberOfAmmo = 1000;
+        			this.numberOfAmmo = 200;
         			this.numberOfRockets = 10;
-        			this.numberOfMissiles = 5;
+        			this.numberOfMissiles = 20;
         			this.offsetXFrontPropeller = 70;
         			this.offsetYFrontPropeller = -23;
         			this.offsetXRearPropeller = -6;
@@ -274,12 +274,12 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "SNOC";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_snoc.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
-        			this.healthInit = 250;
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
+        			this.healthInit = 150;
         			this.health = healthInit;
         			this.numberOfAmmo = 100;
         			this.numberOfRockets = 25;
-        			this.numberOfMissiles = 15;
+        			this.numberOfMissiles = 40;
         			this.offsetXFrontPropeller = 70;
         			this.offsetYFrontPropeller = -23;
         			this.offsetXRearPropeller = -4;
@@ -295,8 +295,8 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Default";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
-        			this.healthInit = 450;
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
+        			this.healthInit = 150;
         			this.health = healthInit;
         			this.numberOfAmmo = numberOfAmmoInit;
         			this.numberOfRockets = numberOfRocketsInit;
