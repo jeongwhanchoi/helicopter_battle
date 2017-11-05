@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -86,7 +87,8 @@ public class Game {
     
     private int score;
     
-    public Game(final KeyEvent helicopterType)
+    
+    public Game(final int helicopterSelect)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
         
@@ -94,7 +96,7 @@ public class Game {
             @Override
             public void run(){
                 // Sets variables and objects for the game.
-                Initialize(helicopterType);
+                Initialize(helicopterSelect);
                 // Load game files (images, sounds, ...)
                 LoadContent();
                 
@@ -110,7 +112,7 @@ public class Game {
      * 
      * @param helicopterType
      */
-    private void Initialize(KeyEvent helicopterType)
+    private void Initialize(int helicopterSelect)
     {
         random = new Random();
         
@@ -120,7 +122,7 @@ public class Game {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        player = new PlayerHelicopter(Framework.frameWidth / 4, Framework.frameHeight / 4, helicopterType);
+        player = new PlayerHelicopter(Framework.frameWidth / 4, Framework.frameHeight / 4, helicopterSelect);
         
         enemyHelicopterList = new ArrayList<EnemyHelicopter>();
         
@@ -146,6 +148,7 @@ public class Game {
         numOfEnemiesForBoss = 5;
         level = 1;
         score = 0;
+        
     }
     
     /**
@@ -397,6 +400,8 @@ public class Game {
         g2d.drawString("LEVEL: " + level, Framework.frameWidth/2 + 300, 21);
         g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
         
+//        g2d.drawString("HIGH SCORE: " + leaderBoard.getHighScore(), Framework.frameWidth/2 + 300, 51);
+        
         if(bossFight)
         {
         		g2d.drawString("HP: " + boss.health, (int)boss.xCoordinate, (int)boss.yCoordinate + 20);
@@ -431,15 +436,17 @@ public class Game {
         g2d.setFont(font);
         g2d.drawString("Statistics: ",                                     Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
         g2d.drawString("Score: " 			+ getScore(), 					 Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 225);
+//        g2d.drawString("Best: " + lBoard.getTopScores(), Framework.frameWidth, Framework.frameHeight);
     }
     
     public int getScore()
     {
-    		score = 10 * (destroyedEnemies - runAwayEnemies) + 100 * level;
+    		score = 10 * (destroyedEnemies - runAwayEnemies) + 100 * (level-1);
     		if(score < 0)
     			score = 0;
     		return score;
     }
+    
     
     /**
      * Draws rotated mouse cursor.

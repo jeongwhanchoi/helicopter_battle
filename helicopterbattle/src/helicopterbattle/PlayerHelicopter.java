@@ -93,12 +93,12 @@ public class PlayerHelicopter {
      * @param yCoordinate Starting y coordinate of helicopter.
      * @param helicopterType
      */
-    public PlayerHelicopter(int xCoordinate, int yCoordinate, KeyEvent helicopterType)
+    public PlayerHelicopter(int xCoordinate, int yCoordinate, int helicopterSelect)
     {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         
-        LoadContent(helicopterType);
+        LoadContent(helicopterSelect);
         Initialize();
     }
     
@@ -140,11 +140,11 @@ public class PlayerHelicopter {
     /**
      * Load files for this class.
      */
-    private void LoadContent(KeyEvent helicopterType)
+    private void LoadContent(int helicopterSelect)
     {
         try 
         {
-        		if(helicopterType.getKeyCode() == KeyEvent.VK_H)
+        		if(helicopterSelect == 1)
         		{
         			helicopterName = "Hello Kitty";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_helloKitty.png";
@@ -165,7 +165,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -5;
         			this.offsetYMachineGun = -5;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_C)
+        		else if(helicopterSelect == 2)
         		{
         			helicopterName = "Chinook";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_chinook.png";
@@ -186,7 +186,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -70;
         			this.offsetYMachineGun = -7;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_V)
+        		else if(helicopterSelect == 3)
         		{
         			helicopterName = "Viper";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_viper.png";
@@ -207,7 +207,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -50;
         			this.offsetYMachineGun = -53;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_T)
+        		else if(helicopterSelect == 4)
         		{
         			helicopterName = "Tiger";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_tiger.png";
@@ -228,7 +228,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -10;
         			this.offsetYMachineGun = -5;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_L)
+        		else if(helicopterSelect == 5)
         		{
         			helicopterName = "Little Bird";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_littleBird.png";
@@ -249,7 +249,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -50;
         			this.offsetYMachineGun = -30;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_B)
+        		else if(helicopterSelect == 6)
         		{
         			helicopterName = "Black Shark";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_blackShark.png";
@@ -270,7 +270,7 @@ public class PlayerHelicopter {
         			this.offsetXMachineGun = -50;
         			this.offsetYMachineGun = -20;
         		}
-        		else if(helicopterType.getKeyCode() == KeyEvent.VK_S)
+        		else if(helicopterSelect == 7)
         		{
         			helicopterName = "SNOC";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_snoc.png";

@@ -66,6 +66,8 @@ public class Framework extends Canvas {
 	public Rectangle helpButton;
 	public Rectangle settingButton;
 	public Rectangle backButton;
+	
+	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button; 
     
     /**
      * Elapsed game time in nanoseconds.
@@ -121,6 +123,16 @@ public class Framework extends Canvas {
         helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
         settingButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
         backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+        
+        heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
+        heli2Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75);
+        heli3Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75);
+        heli4Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75);
+        heli5Button = new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75);
+        heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
+        heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
+        heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
+        
         select = 1;
     }
     
@@ -310,6 +322,32 @@ public class Framework extends Canvas {
             		g2d.drawString("BACK", settingButton.x+120, settingButton.y+75);
             		g2d.draw(backButton);
             		
+            		g2d.draw(heli1Button);
+            		g2d.draw(heli2Button);
+            		g2d.draw(heli3Button);
+            		g2d.draw(heli4Button);
+            		g2d.draw(heli5Button);
+            		g2d.draw(heli6Button);
+            		g2d.draw(heli7Button);
+            		g2d.draw(heli8Button);
+            		
+            		if(select == 1)
+                		drawHelicopterSelect(g2d, 1);
+                else if(select == 2)
+                		drawHelicopterSelect(g2d, 2);
+                else if(select == 3)
+            			drawHelicopterSelect(g2d, 3);
+                else if(select == 4)
+            			drawHelicopterSelect(g2d, 4);
+                else if(select == 5)
+            			drawHelicopterSelect(g2d, 5);
+                else if(select == 6)
+            			drawHelicopterSelect(g2d, 6);
+                else if(select == 7)
+            			drawHelicopterSelect(g2d, 7);
+                else
+                		drawHelicopterSelect(g2d, 8);
+            		
             		g2d.setFont(font);
             		g2d.setColor(Color.white);
             		g2d.drawString("Press the button to start", frameWidth / 5  , frameHeight / 5 + 100);
@@ -327,13 +365,21 @@ public class Framework extends Canvas {
     /**
      * Starts new game.
      */
-    private void newGame(KeyEvent helicopterType)
+    /*private void newGame(KeyEvent helicopterType)
     {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
         
         game = new Game(helicopterType);
+    }*/
+    private void newGame(int helicopterSelect)
+    {
+        // We set gameTime to zero and lastTime to current time for later calculations.
+        gameTime = 0;
+        lastTime = System.nanoTime();
+        
+        game = new Game(helicopterSelect);
     }
     
     /**
@@ -420,10 +466,40 @@ public class Framework extends Canvas {
                 			gameState = GameState.OPTIONS;
             break;
             case SELECT:
+            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+            		{
+            			++select;
+            			if(select > 8)
+            				select -= 8;
+            		}
+            		if(e.getKeyCode() == KeyEvent.VK_UP)
+            		{
+            			--select;
+            			if(select < 1)
+            				select += 8;
+            		}
+            		
+            		if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            			newGame(select);
+                	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                		newGame(select);
+                	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
-            		else
-            			newGame(e);
+//            		else
+//            			newGame(e);
             break;
             case HELP:
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -531,5 +607,54 @@ public class Framework extends Canvas {
     			break;
     		}
     		
+    }
+    
+    private void drawHelicopterSelect(Graphics2D g2d, int heli)
+    {
+    	g2d.setColor(Color.darkGray);
+    	switch(heli)
+		{
+		case 1:
+			g2d.fillRect(heli1Button.x, heli1Button.y, heli1Button.width, heli1Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 2:
+			g2d.fillRect(heli2Button.x, heli2Button.y, heli2Button.width, heli2Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 3:
+			g2d.fillRect(heli3Button.x, heli3Button.y, heli3Button.width, heli3Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 4:
+			g2d.fillRect(heli4Button.x, heli4Button.y, heli4Button.width, heli4Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 5:
+			g2d.fillRect(heli5Button.x, heli5Button.y, heli5Button.width, heli5Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 6:
+			g2d.fillRect(heli6Button.x, heli6Button.y, heli6Button.width, heli6Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 7:
+			g2d.fillRect(heli7Button.x, heli7Button.y, heli7Button.width, heli7Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		case 8:
+			g2d.fillRect(heli8Button.x, heli8Button.y, heli8Button.width, heli8Button.height);
+			g2d.setFont(buttonFont);
+			g2d.setColor(Color.white);
+			break;
+		
+		}
     }
 }
