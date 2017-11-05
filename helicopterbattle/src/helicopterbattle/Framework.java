@@ -90,6 +90,8 @@ public class Framework extends Canvas {
     private BufferedImage cloudLayer1Img;
     private BufferedImage cloudLayer2Img;
     private BufferedImage helpImg;
+    private BufferedImage heli1Img, heli2Img, heli3Img,heli4Img;
+    private BufferedImage heli5Img, heli6Img, heli7Img, heli8Img;
     
 	private int select;
     
@@ -160,6 +162,23 @@ public class Framework extends Canvas {
             
             URL helpImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/help_01.png");
             helpImg = ImageIO.read(helpImgUrl); 
+            
+            URL heli1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_01.png");
+            heli1Img = ImageIO.read(heli1ImgUrl); 
+            URL heli2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_02.png");
+            heli2Img = ImageIO.read(heli2ImgUrl); 
+            URL heli3ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_03.png");
+            heli3Img = ImageIO.read(heli3ImgUrl); 
+            URL heli4ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_04.png");
+            heli4Img = ImageIO.read(heli4ImgUrl); 
+            URL heli5ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_05.png");
+            heli5Img = ImageIO.read(heli5ImgUrl); 
+            URL heli6ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_06.png");
+            heli6Img = ImageIO.read(heli6ImgUrl); 
+            URL heli7ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_07.png");
+            heli7Img = ImageIO.read(heli7ImgUrl); 
+            URL heli8ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_00.png");
+            heli8Img = ImageIO.read(heli8ImgUrl); 
         } 
         catch (IOException ex) 
         {
@@ -331,6 +350,7 @@ public class Framework extends Canvas {
             		g2d.draw(heli7Button);
             		g2d.draw(heli8Button);
             		
+            		
             		if(select == 1)
                 		drawHelicopterSelect(g2d, 1);
                 else if(select == 2)
@@ -348,11 +368,8 @@ public class Framework extends Canvas {
                 else
                 		drawHelicopterSelect(g2d, 8);
             		
-            		g2d.setFont(font);
-            		g2d.setColor(Color.white);
-            		g2d.drawString("Press the button to start", frameWidth / 5  , frameHeight / 5 + 100);
-            		g2d.drawString("[B]lack Shark, [C]hinook, [H]ello Kitty,", frameWidth / 5 , frameHeight / 5  + 140);
-            		g2d.drawString(", [L]ittle Bird, [S]NOC, [T]iger, [V]iper", frameWidth / 5 , frameHeight / 5 + 180);
+            		drawHelicopter(g2d);
+            		
             	break;
             case GAME_CONTENT_LOADING:
                 g2d.setColor(Color.white);
@@ -440,12 +457,7 @@ public class Framework extends Canvas {
                     restartGame();
             break;
             case MAIN_MENU:
-            		/*if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            			gameState = GameState.SELECT;
-            		if(e.getKeyCode() == KeyEvent.VK_H)
-            			gameState = GameState.HELP;
-            		if(e.getKeyCode() == KeyEvent.VK_S)
-            			gameState = GameState.OPTIONS;*/
+            		
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
             			select ++;
@@ -466,15 +478,27 @@ public class Framework extends Canvas {
                 			gameState = GameState.OPTIONS;
             break;
             case SELECT:
-            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+            		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
             		{
             			++select;
             			if(select > 8)
             				select -= 8;
             		}
-            		if(e.getKeyCode() == KeyEvent.VK_UP)
+            		if(e.getKeyCode() == KeyEvent.VK_LEFT)
             		{
             			--select;
+            			if(select < 1)
+            				select += 8;
+            		}
+            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+            		{
+            			select += 4;
+            			if(select > 8)
+            				select -= 8;
+            		}
+            		if(e.getKeyCode() == KeyEvent.VK_UP)
+            		{
+            			select -= 4;
             			if(select < 1)
             				select += 8;
             		}
@@ -580,6 +604,28 @@ public class Framework extends Canvas {
         g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.setColor(Color.white);
         g2d.drawString("", 7, frameHeight - 5);
+    }
+    
+    private void drawHelicopter(Graphics2D g2d)
+    {
+    		g2d.drawImage(heli1Img,frameWidth / 6, frameHeight / 3, 150, 48, null);
+    		g2d.drawImage(heli2Img,frameWidth / 6 +200, frameHeight / 3, 150, 42, null);
+    		g2d.drawImage(heli3Img,frameWidth / 6 +400, frameHeight / 3, 150, 52, null);
+    		g2d.drawImage(heli4Img,frameWidth / 6 +600, frameHeight / 3, 150, 75, null);
+    		g2d.drawImage(heli5Img,frameWidth / 6, frameHeight / 3 +150, 150, 68, null);
+    		g2d.drawImage(heli6Img,frameWidth / 6 +200, frameHeight / 3 +150, 150, 33, null);
+    		g2d.drawImage(heli7Img,frameWidth / 6 +400, frameHeight / 3 +150, 132, 75, null);
+    		g2d.drawImage(heli8Img,frameWidth / 6 +600, frameHeight / 3 +150, 150, 31, null);
+
+//    		heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
+//          heli2Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75);
+//          heli3Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75);
+//          heli4Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75);
+//          heli5Button = new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75);
+//          heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
+//          heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
+//          heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
+//          
     }
     
     private void drawMenuSelect(Graphics2D g2d, int menu)
