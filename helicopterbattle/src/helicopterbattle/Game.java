@@ -97,7 +97,7 @@ public class Game {
     private int score;
     private String highScore = "";
     
-    public Game(final int helicopterSelect)
+    public Game(int helicopterSelect)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
         
@@ -242,10 +242,10 @@ public class Game {
     /**
      * Restart game - reset some variables.
      */
-    public void RestartGame()
+    public void RestartGame(int helicopterSelect)
     {
-        player.Reset(Framework.frameWidth / 4, Framework.frameHeight / 4);
-        
+//        player.Reset(Framework.frameWidth / 4, Framework.frameHeight / 4, helicopterSelect);
+        player = new PlayerHelicopter(Framework.frameWidth / 4, Framework.frameHeight / 4, helicopterSelect);
         EnemyHelicopter.restartEnemy();
         
         Bullet.timeOfLastCreatedBullet = 0;

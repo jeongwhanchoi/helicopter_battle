@@ -56,7 +56,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, PLAYING, GAMEOVER, HELP, SELECT, QUIT}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, PLAYING, GAMEOVER, HELP, SELECT, RESELECT, QUIT}
     /**
      * Current state of the game
      */
@@ -401,6 +401,45 @@ public class Framework extends Canvas {
             		drawHelicopter(g2d);
             		
             	break;
+            case RESELECT:
+	            	drawMenuBackground(g2d);
+	        		g2d.setFont(buttonFont);
+	        		g2d.setColor(Color.white);
+	        		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
+	        		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
+	        		g2d.draw(backButton);
+	        		g2d.setFont(font);
+	        		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+	        		
+	        		g2d.draw(heli1Button);
+	        		g2d.draw(heli2Button);
+	        		g2d.draw(heli3Button);
+	        		g2d.draw(heli4Button);
+	        		g2d.draw(heli5Button);
+	        		g2d.draw(heli6Button);
+	        		g2d.draw(heli7Button);
+	        		g2d.draw(heli8Button);
+	        		
+	        		
+	        		if(select == 1)
+	            		drawHelicopterSelect(g2d, 1);
+	            else if(select == 2)
+	            		drawHelicopterSelect(g2d, 2);
+	            else if(select == 3)
+	        			drawHelicopterSelect(g2d, 3);
+	            else if(select == 4)
+	        			drawHelicopterSelect(g2d, 4);
+	            else if(select == 5)
+	        			drawHelicopterSelect(g2d, 5);
+	            else if(select == 6)
+	        			drawHelicopterSelect(g2d, 6);
+	            else if(select == 7)
+	        			drawHelicopterSelect(g2d, 7);
+	            else
+	            		drawHelicopterSelect(g2d, 8);
+	        		
+	        		drawHelicopter(g2d);
+            	break;
             case GAME_CONTENT_LOADING:
                 g2d.setColor(Color.white);
                 g2d.drawString("GAME is LOADING", frameWidth/2 - 50, frameHeight/2);
@@ -432,13 +471,13 @@ public class Framework extends Canvas {
     /**
      *  Restart game - reset game time and call RestartGame() method of game object so that reset some variables.
      */
-    private void restartGame()
+    private void restartGame(int helicopterSelect)
     {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
         
-        game.RestartGame();
+        game.RestartGame(helicopterSelect);
         
         // We change game status so that the game can start.
         gameState = GameState.PLAYING;
@@ -504,7 +543,10 @@ public class Framework extends Canvas {
 	        		}
 	            	
                 if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	            		restartGame();
+	            		{
+//                			restartGame();
+                			gameState = GameState.RESELECT;
+	            		}
                 else	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		System.exit(0);
 	                
@@ -615,6 +657,85 @@ public class Framework extends Canvas {
 //            		else
 //            			newGame(e);
             break;
+            case RESELECT:
+	        		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+	        		{
+	        			Sound reload1 = new Sound("load.mp3", false);
+	            		reload1.start();
+	        			++select;
+	        			if(select > 8)
+	        				select -= 8;
+	        		}
+	        		if(e.getKeyCode() == KeyEvent.VK_LEFT)
+	        		{
+	        			Sound reload1 = new Sound("load.mp3", false);
+	            		reload1.start();
+	        			--select;
+	        			if(select < 1)
+	        				select += 8;
+	        		}
+	        		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+	        		{
+	        			Sound reload1 = new Sound("load.mp3", false);
+	            		reload1.start();
+	        			select += 4;
+	        			if(select > 8)
+	        				select -= 8;
+	        		}
+	        		if(e.getKeyCode() == KeyEvent.VK_UP)
+	        		{
+	        			Sound reload1 = new Sound("load.mp3", false);
+	            		reload1.start();
+	        			select -= 4;
+	        			if(select < 1)
+	        				select += 8;
+	        		}
+	        		
+	        		Sound reload1 = new Sound("reload.mp3", false);
+	        		if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	        		}
+	        		else if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	            	{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	        		else if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		{
+	        			reload1.start();
+	        			restartGame(select);
+	            	}
+	            	
+	        		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+	        			gameState = GameState.GAMEOVER;
+            	break;
             case HELP:
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;

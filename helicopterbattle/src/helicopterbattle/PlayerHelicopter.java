@@ -353,9 +353,10 @@ public class PlayerHelicopter {
      * @param xCoordinate Starting x coordinate of helicopter.
      * @param yCoordinate Starting y coordinate of helicopter.
      */
-    public void Reset(int xCoordinate, int yCoordinate)
+   /* public void Reset(int xCoordinate, int yCoordinate, int helicopterSelect)
     {
-        this.health = healthInit;
+        
+    		this.health = healthInit;
         
         this.numberOfRockets = numberOfRocketsInit;
         this.numberOfAmmo = numberOfAmmoInit;
@@ -372,7 +373,7 @@ public class PlayerHelicopter {
         
         this.movingXspeed = 0;
         this.movingYspeed = 0;
-    }
+    }*/
     
     
     /**
