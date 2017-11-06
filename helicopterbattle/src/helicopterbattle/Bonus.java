@@ -3,10 +3,15 @@ package helicopterbattle;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * @author jeongwhanchoi
+ *
+ */
+
 public abstract class Bonus {
 	public long secDuration;
 	public long consumeTime;
-	public double fallingSpeed;
+//	public double fallingSpeed;
 	public BufferedImage image;
 	
 	public double xCoordinate;

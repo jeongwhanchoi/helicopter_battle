@@ -5,6 +5,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author jeongwhanchoi
+ *
+ */
+
 public class Boss {
 	
     // Health of the boss helicopter.
@@ -38,11 +43,7 @@ public class Boss {
     public double machineGunYcoordinate;
     
     long lastBulletSpawnTime = 0;
-    
-    // Images of enemy helicopter. Images are loaded and set in Game class in LoadContent() method.
-   /* public static BufferedImage helicopterBodyImg;
-    public static BufferedImage helicopterFrontPropellerAnimImg;
-    public static BufferedImage helicopterRearPropellerAnimImg;*/
+  
     
     public BufferedImage helicopterImg;
     
@@ -56,54 +57,7 @@ public class Boss {
     static final int bulletSpeed = 10;
     static final int bulletDamage = 40;
     static final int rageHealth = initHealth / 2;
-    
-/*    // Animation of the helicopter propeller.
-    private Animation helicopterFrontPropellerAnim;
-    private Animation helicopterRearPropellerAnim;
-    // Offset for the propeler. We add offset to the position of the position of helicopter.
-    private static int offsetXFrontPropeller = 4;
-    private static int offsetYFrontPropeller = -7;
-    private static int offsetXRearPropeller = 205;
-    private static int offsetYRearPropeller = 6;
-*/
-
-    /**
-     * Initialize enemy helicopter.
-     * 
-     * @param xCoordinate Starting x coordinate of helicopter.
-     * @param yCoordinate Starting y coordinate of helicopter.
-     * @param helicopterBodyImg Image of helicopter body.
-     * @param helicopterFrontPropellerAnimImg Image of front helicopter propeller.
-     * @param helicopterRearPropellerAnimImg Image of rear helicopter propeller.
-     */
-  /*  public void Initialize(int xCoordinate, int yCoordinate)
-    {
-        health = 500;
-        
-        // Sets enemy position.
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        
-        // Sets enemy's center position
-        this.xCenter = xCoordinate + helicopterBodyImg.getWidth() / 2;
-        this.yCenter = yCoordinate + helicopterBodyImg.getHeight() / 2;
-        
-        // Initialize animation object.
-        helicopterFrontPropellerAnim = new Animation(helicopterFrontPropellerAnimImg, 158, 16, 3, 20, true, xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller, 0);
-        helicopterRearPropellerAnim = new Animation(helicopterRearPropellerAnimImg, 47, 47, 10, 10, true, xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller, 0);
-       
-        // Moving speed and direction of enemy.
-        Boss.movingXspeed = -1;
-    }*/
-    
-    /**
-     * It sets speed and time between enemies to the initial properties.
-     */
-   /* public static void restartEnemy(){
-    		Boss.timeBetweenNewEnemies = timeBetweenNewEnemiesInit;
-    		Boss.timeOfLastCreatedEnemy = 0;
-    		Boss.movingXspeed = movingXspeedInit;
-    }*/
+   
     
     public Boss(int health, double xCoordinate, double yCoordinate, BufferedImage helicopterImg)
     {
@@ -133,12 +87,12 @@ public class Boss {
     		yAccel = (yPos - yCoordinate) / (accelTime * accelTime);
     }
     
-    public Bullet spawnBullet(double x, double y)
+  /*  public Bullet spawnBullet(double x, double y)
     {
     		Vector2d direction = new Vector2d(x - machineGunXcoordinate, y - machineGunYcoordinate);
     		Vector2d velocity = direction.multiply(bulletSpeed / direction.length());
     		return new Bullet(machineGunXcoordinate, machineGunYcoordinate, velocity.x, velocity.y, bulletDamage, Boss.bulletImg);
-    }
+    }*/
     
     public void updateVelocity(ArrayList<Bullet> playerBullets, ArrayList<Rocket> playerRockets)
     {
@@ -184,43 +138,7 @@ public class Boss {
     			++totalAccelTime;
     		}
     }
-    /**
-     * It increase enemy speed and decrease time between new enemies.
-     */
-    /*public static void speedUp(){
-        if(Boss.timeBetweenNewEnemies > Framework.secInNanosec)
-        		Boss.timeBetweenNewEnemies -= Framework.secInNanosec / 100;
-        
-        Boss.movingXspeed -= 0.25;
-    }*/
-    
-    
-    /**
-     * Checks if the enemy is left the screen.
-     * 
-     * @return true if the enemy is left the screen, false otherwise.
-     */
-    /*public boolean isLeftScreen()
-    {
-        if(xCoordinate < 0 - helicopterBodyImg.getWidth()) // When the entire helicopter is out of the screen.
-            return true;
-        else
-            return false;
-    }*/
-    
-        
-    /**
-     * Updates position of helicopter, animations.
-     */
-//    public void Update()
-//    {
-//        // Move enemy on x coordinate.
-//        xCoordinate += movingXspeed;
-//        
-//        // Moves helicoper propeler animations with helicopter.
-//        helicopterFrontPropellerAnim.changeCoordinates(xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller);
-//        helicopterRearPropellerAnim.changeCoordinates(xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller);
-//    }
+
     
     
     /**
@@ -230,10 +148,7 @@ public class Boss {
      */
     public void Draw(Graphics2D g2d)
     { 
-        /*helicopterFrontPropellerAnim.Draw(g2d);
-        g2d.drawImage(helicopterBodyImg, xCoordinate, yCoordinate, null);
-        helicopterRearPropellerAnim.Draw(g2d);*/
-    		g2d.drawImage(helicopterImg, (int)xCoordinate, (int)yCoordinate, null);
+      	g2d.drawImage(helicopterImg, (int)xCoordinate, (int)yCoordinate, null);
     }
     
     /**

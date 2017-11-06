@@ -1,6 +1,11 @@
 package helicopterbattle;
 import java.awt.image.BufferedImage;
 
+/**
+ * @author jeongwhanchoi
+ *
+ */
+
 public class RocketBonus extends Bonus {
 	int rockets;
 	public static BufferedImage image;

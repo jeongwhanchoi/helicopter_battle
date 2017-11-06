@@ -437,7 +437,7 @@ public class Game {
         g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 131);
         g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
         
-        g2d.drawString("LEVEL: " + level, Framework.frameWidth/2 + 300, 21);
+        g2d.drawString("STAGE: " + level, Framework.frameWidth/2 + 300, 21);
         g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
         
 //        g2d.drawString("HIGH SCORE: " + leaderBoard.getHighScore(), Framework.frameWidth/2 + 300, 51);
@@ -720,7 +720,7 @@ public class Game {
     {
     		if(player.isFiredMissile(gameTime))
     		{
-    			Rocket.timeOfLastCreatedRocket = gameTime;
+    			Missile.timeOfLastCreatedRocket = gameTime;
     			player.numberOfMissiles--;
     			
     			Missile m = new Missile();

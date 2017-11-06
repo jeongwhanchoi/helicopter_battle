@@ -217,7 +217,6 @@ public class Framework extends Canvas {
                     lastTime = System.nanoTime();
                 break;
                 case GAMEOVER:
-                    //...
                 		game.checkScore();
                 break;
                 case MAIN_MENU:
@@ -654,8 +653,6 @@ public class Framework extends Canvas {
                 	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
-//            		else
-//            			newGame(e);
             break;
             case RESELECT:
 	        		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
