@@ -317,10 +317,10 @@ public class Game {
         }
         
         /* Mouse */
-        if(player.helicopterName == "Chinook" || player.helicopterName == "Black Shark")
+        /*if(player.helicopterName == "Chinook" || player.helicopterName == "Black Shark")
         {
         		limitMousePosition(mousePosition);
-	    }
+	    }*/
         
         /* Bullets */
         updateBullets();

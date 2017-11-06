@@ -169,7 +169,7 @@ public class PlayerHelicopter {
         		{
         			helicopterName = "Chinook";
         			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_chinook.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot";
+        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
         			this.healthInit = 150;
         			this.health = healthInit;
         			this.numberOfAmmo = 500;
