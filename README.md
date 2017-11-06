@@ -12,7 +12,7 @@
 
 2. Configure Build Path
 
-![library_02](/Users/jeongwhanchoi/GitHub/helicopterbattle/img/library_02.png)
+![library_02](./img/library_02.png)
 
 3. Add External JARs
 
