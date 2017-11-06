@@ -1363,36 +1363,4 @@ public class Game {
                 explosionsList.remove(i);
         }
     }
-    
-    /**
-     * It limits the distance of the mouse from the player.
-     * 
-     * @param mousePosition Position of the mouse.
-     */
-    private void limitMousePosition(Point mousePosition)
-    {
-        // Max distance from the player on y coordinate above player helicopter.
-        int maxYcoordinateDistanceFromPlayer_top = 30;
-        // Max distance from the player on y coordinate under player helicopter.
-        int maxYcoordinateDistanceFromPlayer_bottom = 120;
-        
-        // Mouse cursor will always be the same distance from the player helicopter machine gun on the x coordinate.
-        int mouseXcoordinate = player.machineGunXcoordinate + 250;
-        
-        // Here we will limit the distance of mouse cursor on the y coordinate.
-        int mouseYcoordinate = mousePosition.y;
-        if(mousePosition.y < player.machineGunYcoordinate){ // Above the helicopter machine gun.
-            if(mousePosition.y < player.machineGunYcoordinate - maxYcoordinateDistanceFromPlayer_top)
-                mouseYcoordinate = player.machineGunYcoordinate - maxYcoordinateDistanceFromPlayer_top;
-        } else { // Under the helicopter.
-            if(mousePosition.y > player.machineGunYcoordinate + maxYcoordinateDistanceFromPlayer_bottom)
-                mouseYcoordinate = player.machineGunYcoordinate + maxYcoordinateDistanceFromPlayer_bottom;
-        }
-        
-        // We move mouse on y coordinate with helicopter. That makes shooting easier.
-        mouseYcoordinate += player.movingYspeed;
-        
-        // Move the mouse.
-        robot.mouseMove(mouseXcoordinate, mouseYcoordinate);
-    }
 }
