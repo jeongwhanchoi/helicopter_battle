@@ -830,7 +830,7 @@ public class Game {
     			
     			if(isPlayerCrashed(new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight()), new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight())))
     			{
-    				player.health -= 200;
+    				player.health -= 500;
     				bossFight = false;
     			}
     			else if(boss.health <= 0)

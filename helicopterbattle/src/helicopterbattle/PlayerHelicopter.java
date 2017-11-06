@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 public class PlayerHelicopter {
     
     // Health of the helicopter.
-	private int healthInit = 150;
+	private int healthInit;
     public int health;
     private float healthPercent;
     
