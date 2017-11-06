@@ -478,14 +478,18 @@ public class Game {
         */
         g2d.setFont(scoreFont);
         g2d.setColor(Color.white);
-    		g2d.drawString("Score: "	+ getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 80);
+		g2d.drawString("Score: "+getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 140);
+//    		g2d.drawString(""+getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 180);
     		
     		if(highScore.equals(""))
     		{
     			//init the highscore
     			highScore = this.getHighScore();
     		}
-    		g2d.drawString("High Score: " + highScore, 100, Framework.frameHeight/4);
+    		g2d.setColor(Color.darkGray);
+    		g2d.drawString("High Score ", Framework.frameWidth/2 -150, Framework.frameHeight/4 -50);
+    		g2d.drawString(""+highScore, Framework.frameWidth/2 -100, Framework.frameHeight/4 +30);
+
     }
     
     public int getScore()
