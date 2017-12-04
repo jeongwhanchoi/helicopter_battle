@@ -537,5 +537,20 @@ public class PlayerHelicopter {
     			g2d.drawImage(helicopterProfileImg75, 10, 17, null);
     		}
     }
-    
+    public void preventCrash(EnemyHelicopter enemy) {
+		if(enemy.getYCenter() * 2 - enemy.yCoordinate < Framework.frameHeight / 2) {
+     		if(enemy.getYCenter() * 2 - enemy.yCoordinate > yCoordinate) {
+     			movingYspeed += 1.0;
+     			if(movingYspeed > 5.0)
+     				movingYspeed = 5.0;
+     		}
+     	}
+     	else if(enemy.getYCenter() * 2 - enemy.yCoordinate >= Framework.frameHeight / 2){
+     		if(enemy.yCoordinate < yCoordinate + helicopterBodyImg.getHeight()) {
+     			movingYspeed -= 1.0;
+     			if(Math.abs(movingYspeed) > 5.0)
+     				movingYspeed = -5.0;
+     		}
+     	}
+	}
 }

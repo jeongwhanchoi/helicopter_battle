@@ -344,6 +344,7 @@ public class Game {
         		updateStones(gameTime);
         		updateStonesSmoke(gameTime);
         }*/
+        assistanceSystem();
     }
     
     /**
@@ -1363,4 +1364,18 @@ public class Game {
                 explosionsList.remove(i);
         }
     }
+	private void assistanceSystem()
+    {
+    			
+    		// Finds the enemy target.
+    		if (enemyHelicopterList.size() > 0) 
+    		{
+    			for (int j = 0; j < enemyHelicopterList.size(); j++) 
+    			{
+    				EnemyHelicopter eh = enemyHelicopterList.get(j);
+    				player.preventCrash(eh);
+    				break;
+    			}
+    		}
+    	}
 }
