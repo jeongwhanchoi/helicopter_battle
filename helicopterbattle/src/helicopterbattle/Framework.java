@@ -82,8 +82,8 @@ public class Framework extends Canvas {
     private Game game;
     
     
-    private Font font;
-    private Font buttonFont;
+    protected Font font;
+    protected Font buttonFont;
     
     // Images for menu.
     private BufferedImage gameTitleImg;
@@ -320,12 +320,7 @@ public class Framework extends Canvas {
                 g2d.draw(helpButton);
                 g2d.draw(quitButton);
                 
-                if(select == 1)
-                		drawMenuSelect(g2d, 1);
-                else if(select == 2)
-                		drawMenuSelect(g2d, 2);
-                else
-                		drawMenuSelect(g2d, 3);
+                drawMenuSelect(g2d, select);
                 
             break;
             case HELP:
