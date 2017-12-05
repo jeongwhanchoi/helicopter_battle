@@ -56,6 +56,9 @@ public class Game {
     // List of all the rockets smoke.
     private ArrayList<RocketSmoke> rocketSmokeList;
     
+    // List of all the rockets for boss
+    private ArrayList<Rocket> bossRocketsList;
+    
     // List of all the bonuses
     private ArrayList<Bonus> bonusList;
     
@@ -142,6 +145,8 @@ public class Game {
         
         bulletsList = new ArrayList<Bullet>();
 //        bossBulletsList = new ArrayList<Bullet>();
+        bossRocketsList = new ArrayList<Rocket>();
+        
         bonusList = new ArrayList<Bonus>();
         
         missilesList = new ArrayList<Missile>();
@@ -199,6 +204,10 @@ public class Game {
             URL helicopter2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/boss_2.png");
             Boss.helicopter2Img = ImageIO.read(helicopter2ImgUrl);
             
+            // Images of rocket for boss
+            URL bossRocket1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket_boss.png");
+            Rocket.bossRocket1Img = ImageIO.read(bossRocket1ImgUrl);
+            
             // Images of rocket and its smoke.
             URL missileImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/rocket.png");
             Missile.rocketImg = ImageIO.read(missileImgUrl);
@@ -251,6 +260,7 @@ public class Game {
         Bullet.timeOfLastCreatedBullet = 0;
         Rocket.timeOfLastCreatedRocket = 0;
         Missile.timeOfLastCreatedRocket = 0;
+        Rocket.timeOfLastCreatedBossRocket = 0;
         
         // Empty all the lists.
         enemyHelicopterList.clear();
@@ -260,6 +270,7 @@ public class Game {
         explosionsList.clear();
         missilesList.clear();
 //        bossBulletsList.clear();
+        bossRocketsList.clear();
         bonusList.clear();
         
         // Statistics
@@ -329,6 +340,7 @@ public class Game {
         updateMissile(gameTime); // It also checks for collisions (if any of the missiles hit any of the enemy helicopter).
         updateRockets(gameTime); // It also checks for collisions (if any of the rockets hit any of the enemy helicopter).
         updateRocketSmoke(gameTime);
+        updateBossRockets(gameTime);
         
         /* Enemies */
         createEnemyHelicopter(gameTime);
@@ -389,6 +401,10 @@ public class Game {
         		{
         			bossBulletsList.get(i).Draw(g2d);
         		}*/
+        		for(int i=0; i< bossRocketsList.size(); i++)
+        		{
+        			bossRocketsList.get(i).Draw(g2d);
+        		}
         }
         
         // Draws all the bullets. 
@@ -709,7 +725,23 @@ public class Game {
             rocket.start();
         }
     }
-    
+        
+    private void didBossFiredRocket(long gameTime)
+    {
+        if(boss.isFiredRocket(gameTime))
+        {
+            Rocket.timeOfLastCreatedBossRocket = gameTime;
+            
+            boss.numberOfRockets--;
+            
+            Rocket r = new Rocket();
+            r.InitializeBossRocket(boss.xCoordinate, boss.yCoordinate);
+            bossRocketsList.add(r);
+
+            Sound rocket = new Sound("rocket.mp3", false);
+            rocket.start();
+        }
+    }
     
     /**
      * Checks if the player is fired the missile and creates it if hed did.
@@ -742,6 +774,7 @@ public class Game {
     {
     		if(bossFight)
     		{
+    			didBossFiredRocket(gameTime);
     			return;
     		}
     		if(destroyedEnemies == level * numOfEnemiesForBoss)
@@ -749,8 +782,14 @@ public class Game {
     			bossFight = true;
     			BufferedImage bossImg = random.nextInt() % 2 == 0 ? Boss.helicopter1Img : Boss.helicopter2Img;
     			boss = new Boss(level * Boss.initHealth, Framework.frameWidth, Framework.frameHeight / 2 - bossImg.getHeight() / 2, bossImg);
+    			
     			enemyHelicopterList.clear();
+    			
+       			didBossFiredRocket(gameTime);
+       			
     			EnemyHelicopter.spawnEnemies = false;
+    			
+    			
     		}
     		else if(EnemyHelicopter.spawnEnemies && gameTime - EnemyHelicopter.timeOfLastCreatedEnemy >= EnemyHelicopter.timeBetweenNewEnemies)
     		{
@@ -845,6 +884,9 @@ public class Game {
     				
     				Sound bossbomb = new Sound("bomb.mp3", false);
     				bossbomb.start();
+    				
+    				bossRocketsList.clear();
+    				
     				
     				EnemyHelicopter.spawnEnemies = true;
     				
@@ -1121,6 +1163,34 @@ public class Game {
     }
     
     
+    private void updateBossRockets(long gameTime)
+    {
+        for(int i = 0; i < bossRocketsList.size(); i++)
+        {
+            Rocket rocket = bossRocketsList.get(i);
+            
+            // Moves the rocket.
+            rocket.Update();
+            
+            // Checks if it is left the screen.
+            if(rocket.isItLeftScreen())
+            {
+            	bossRocketsList.remove(i);
+                // Rocket left the screen so we removed it from the list and now we can continue to the next rocket.
+                continue;
+            }
+            
+            // Checks if current rocket hit any enemy.
+            if( checkIfBossRocketHitPlayer(rocket) )
+                // Rocket was also destroyed so we remove it.
+            	bossRocketsList.remove(i);
+            
+
+        }
+    }
+    
+    
+    
     /**
      * Update missiles.
      * It moves missiles and add smoke behind it.
@@ -1289,6 +1359,37 @@ public class Game {
         }
         
         return didItHitEnemy;
+    }
+    
+    private boolean checkIfBossRocketHitPlayer(Rocket rocket)
+    {
+        boolean didItHitPlayer = false;
+        
+        // Current rocket rectangle. // I inserted number 2 insted of rocketImg.getWidth() because I wanted that rocket 
+        // is over helicopter when collision is detected, because actual image of helicopter isn't a rectangle shape. (We could calculate/make 3 areas where helicopter can be hit and checks these areas, but this is easier.)
+        Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
+        
+        // Go trough all enemis.
+        for(int j = 0; j < bossRocketsList.size(); j++)
+        {
+
+            // Current enemy rectangle.
+            Rectangle playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+
+            // Is current rocket over currnet enemy?
+            if(rocketRectangle.intersects(playerRectangle))
+            {
+                didItHitPlayer = true;
+				
+                // Rocket hit the enemy so we reduce his health.
+                player.health -= Rocket.damagePower;
+                
+                // Rocket hit enemy so we don't need to check other enemies.
+                break;
+            }
+        }
+        
+        return didItHitPlayer;
     }
     
     

@@ -15,6 +15,8 @@ public class Rocket {
     // Time that must pass before another rocket can be fired.
     public final static long timeBetweenNewRockets = Framework.secInNanosec / 4;
     public static long timeOfLastCreatedRocket = 0;
+    public final static long timeBetweenNewBossRockets = Framework.secInNanosec * 3;
+    public static long timeOfLastCreatedBossRocket = 0;
     
     // Damage that is made to an enemy helicopter when it is hit with a rocket.
     public static int damagePower = 100;
@@ -24,13 +26,15 @@ public class Rocket {
     public int yCoordinate;
     
     // Moving speed and also direction. Rocket goes always straight, so we move it only on x coordinate.
-    private double movingXspeed;
+    protected double movingXspeed;
     
     // Life time of current piece of rocket smoke.
     public long currentSmokeLifeTime;
 
+    public BufferedImage rocketsImg;
     // Image of rocket. Image is loaded and set in Game class in LoadContent() method.
     public static BufferedImage rocketImg;
+    public static BufferedImage bossRocket1Img;
     
 
     /**
@@ -38,12 +42,22 @@ public class Rocket {
      */
     public void Initialize(int xCoordinate, int yCoordinate)
     {
+    	rocketsImg = rocketImg;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         
         this.movingXspeed = 23;
         
         this.currentSmokeLifeTime = Framework.secInNanosec / 2;
+    }
+    
+    public void InitializeBossRocket(int xCoordinate, int yCoordinate)
+    {
+    	rocketsImg = bossRocket1Img;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate + 50;
+        
+        this.movingXspeed = -20;
     }
     
     
@@ -77,6 +91,7 @@ public class Rocket {
      */
     public void Draw(Graphics2D g2d)
     {
-        g2d.drawImage(rocketImg, xCoordinate, yCoordinate, null);
+        g2d.drawImage(rocketsImg, xCoordinate, yCoordinate, null);
     }
+    
 }

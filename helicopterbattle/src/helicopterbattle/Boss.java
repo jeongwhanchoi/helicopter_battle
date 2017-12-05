@@ -1,6 +1,7 @@
 package helicopterbattle;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,8 +19,8 @@ public class Boss {
     public boolean rageMode;
     
     // Position of the boss helicopter on the screen.
-    public double xCoordinate;
-    public double yCoordinate;
+    public int xCoordinate;
+    public int yCoordinate;
     
     // Position of the boss helicopter's center on the screen.
     public int xCenter;
@@ -30,17 +31,21 @@ public class Boss {
     private double yVelocity;
     private double yAccel;
     
+    // Boss rockets.
+    private final int numberOfRocketsInit = 50;
+    public int numberOfRockets;
+    
     private int accelTime;
     private int totalAccelTime;
     private boolean isMoving;
     public boolean invincible;
     private Random random;
     
-    private double offsetXMachineGun;
-    private double offsetYMachineGun;
+    private int offsetXMachineGun;
+    private int offsetYMachineGun;
     
-    public double machineGunXcoordinate;
-    public double machineGunYcoordinate;
+    public int machineGunXcoordinate;
+    public int machineGunYcoordinate;
     
     long lastBulletSpawnTime = 0;
   
@@ -59,7 +64,7 @@ public class Boss {
     static final int rageHealth = initHealth / 2;
    
     
-    public Boss(int health, double xCoordinate, double yCoordinate, BufferedImage helicopterImg)
+    public Boss(int health, int xCoordinate, int yCoordinate, BufferedImage helicopterImg)
     {
     		this.health = health;
     		this.rageMode = false;
@@ -74,6 +79,7 @@ public class Boss {
     		this.helicopterImg = helicopterImg;
     		this.accelTime = (int)Math.ceil(0.5 * helicopterImg.getWidth() / Math.abs(xVelocity));
     		this.totalAccelTime = 0;
+    		this.numberOfRockets = numberOfRocketsInit;
     		
     		this.offsetXMachineGun = helicopterImg.getWidth() - 40;
     		this.offsetYMachineGun = helicopterImg.getWidth();
@@ -93,6 +99,18 @@ public class Boss {
     		Vector2d velocity = direction.multiply(bulletSpeed / direction.length());
     		return new Bullet(machineGunXcoordinate, machineGunYcoordinate, velocity.x, velocity.y, bulletDamage, Boss.bulletImg);
     }*/
+    
+    public boolean isFiredRocket(long gameTime)
+    {
+        //if it is the time for new rocket && if he has any rocket left.
+        if( ((gameTime - Rocket.timeOfLastCreatedBossRocket) >= Rocket.timeBetweenNewBossRockets) && 
+            this.numberOfRockets > 0 ) 
+        {
+            return true;
+        } else
+            return false;
+    }
+    
     
     public void updateVelocity(ArrayList<Bullet> playerBullets, ArrayList<Rocket> playerRockets)
     {
