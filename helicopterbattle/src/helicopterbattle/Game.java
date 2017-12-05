@@ -85,11 +85,11 @@ public class Game {
     private Font font;
     private Font scoreFont;
     
-    private int level;
+    private static int level;
     
     // Statistics (destroyed enemies, run away enemies)
-    private int runAwayEnemies;
-    private int destroyedEnemies;
+    private static int runAwayEnemies;
+    private static int destroyedEnemies;
     
     private int statXCoordinate;
 
@@ -97,8 +97,12 @@ public class Game {
     private int numOfEnemiesForBoss;
     private Boss boss;
     
-    private int score;
-    private String highScore = "";
+    private static int score;
+    private static String highScore = "";
+
+    public static String getHighScore(){
+    	return highScore;
+    }
     
     public Game(int helicopterSelect)
     {
@@ -501,7 +505,7 @@ public class Game {
     		if(highScore.equals(""))
     		{
     			//init the highscore
-    			highScore = this.getHighScore();
+    			highScore = Score.getHighScore();
     		}
     		g2d.setColor(Color.darkGray);
     		g2d.drawString("High Score ", Framework.frameWidth/2 -150, Framework.frameHeight/4 -50);
@@ -509,7 +513,7 @@ public class Game {
 
     }
     
-    public int getScore()
+    public static int getScore()
     {
     		score = 10 * (destroyedEnemies - runAwayEnemies) + 100 * (level-1);
     		if(score < 0)
@@ -517,76 +521,6 @@ public class Game {
     		return score;
     }
     
-    public String getHighScore()
-    {
-    		FileReader readFile = null;
-    		BufferedReader  reader = null;
-    		try
-    		{
-    			readFile = new FileReader("highscore.dat");
-    			reader = new BufferedReader(readFile);
-    			return reader.readLine();
-    		}
-    		catch(Exception e)
-    		{
-    			return "Nobody:0";
-    		}
-    		finally
-    		{
-    			try {
-    				if(reader != null)
-    				reader.close();
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
-    		}
-    }
-    
-    public void checkScore()
-    {
-    		if(highScore.equals(""))
-    			return;
-    		//format Choi/:/100
-    		if(getScore() > Integer.parseInt((highScore.split(":")[1])))
-    		{
-    			//user has set a new record
-    			String name = JOptionPane.showInputDialog("You set a new high score. What is your name?");
-    			highScore = name + ":" + getScore();
-    			
-    			File scoreFile = new File("highscore.dat");
-    			if(!scoreFile.exists())
-    			{
-    				try {
-						scoreFile.createNewFile();
-					} catch (IOException e) {
-						// TODO: handle exception
-						e.printStackTrace();
-					}
-    			}
-    		FileWriter writeFile = null;
-    		BufferedWriter writer = null;
-    		try
-    		{
-    			writeFile = new FileWriter(scoreFile);
-    			writer = new BufferedWriter(writeFile);
-    			writer.write(this.highScore);
-    		}
-    		catch(Exception e)
-    		{
-    			//errors
-    		}
-    		finally
-    		{
-    			try
-    			{
-    				if(writer != null)
-    					writer.close();
-    			}
-    			catch(Exception e) {}
-    		}
-    }
-   }
     /**
      * Draws rotated mouse cursor.
      * It rotates the cursor image on the basis of the player helicopter machine gun.
