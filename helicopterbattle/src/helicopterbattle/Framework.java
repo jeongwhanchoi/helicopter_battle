@@ -419,23 +419,7 @@ public class Framework extends Canvas {
 	        		g2d.draw(heli7Button);
 	        		g2d.draw(heli8Button);
 	        		
-	        		
-	        		if(select == 1)
-	            		drawHelicopterSelect(g2d, 1);
-	            else if(select == 2)
-	            		drawHelicopterSelect(g2d, 2);
-	            else if(select == 3)
-	        			drawHelicopterSelect(g2d, 3);
-	            else if(select == 4)
-	        			drawHelicopterSelect(g2d, 4);
-	            else if(select == 5)
-	        			drawHelicopterSelect(g2d, 5);
-	            else if(select == 6)
-	        			drawHelicopterSelect(g2d, 6);
-	            else if(select == 7)
-	        			drawHelicopterSelect(g2d, 7);
-	            else
-	            		drawHelicopterSelect(g2d, 8);
+	        		drawHelicopterSelect(g2d,select);
 	        		
 	        		drawHelicopter(g2d);
             	break;
