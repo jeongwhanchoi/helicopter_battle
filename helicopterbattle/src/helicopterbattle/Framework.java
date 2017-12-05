@@ -96,6 +96,7 @@ public class Framework extends Canvas {
     private BufferedImage heli5Img, heli6Img, heli7Img, heli8Img;
     
 	private int select;
+	private int selectHeli;
     
     
     public Framework ()
@@ -140,6 +141,7 @@ public class Framework extends Canvas {
         restartButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
         
         select = 1;
+        selectHeli = 1;
     }
     
     /**
@@ -303,12 +305,7 @@ public class Framework extends Canvas {
                 g2d.draw(restartButton);
                 g2d.draw(quitButton);
                 
-                if(select == 1)
-                		drawRestartSelect(g2d, 1);
-                else if(select == 2)
-                		drawRestartSelect(g2d, 2);
-                else 
-                		select = 1;
+                drawRestartSelect(g2d, select);
             break;
             case MAIN_MENU:
                 drawMenuBackground(g2d);
@@ -380,22 +377,7 @@ public class Framework extends Canvas {
             		g2d.draw(heli8Button);
             		
             		
-            		if(select == 1)
-                		drawHelicopterSelect(g2d, 1);
-                else if(select == 2)
-                		drawHelicopterSelect(g2d, 2);
-                else if(select == 3)
-            			drawHelicopterSelect(g2d, 3);
-                else if(select == 4)
-            			drawHelicopterSelect(g2d, 4);
-                else if(select == 5)
-            			drawHelicopterSelect(g2d, 5);
-                else if(select == 6)
-            			drawHelicopterSelect(g2d, 6);
-                else if(select == 7)
-            			drawHelicopterSelect(g2d, 7);
-                else
-                		drawHelicopterSelect(g2d, 8);
+            		drawHelicopterSelect(g2d, selectHeli);
             		
             		drawHelicopter(g2d);
             		
@@ -419,7 +401,7 @@ public class Framework extends Canvas {
 	        		g2d.draw(heli7Button);
 	        		g2d.draw(heli8Button);
 	        		
-	        		drawHelicopterSelect(g2d,select);
+	        		drawHelicopterSelect(g2d,selectHeli);
 	        		
 	        		drawHelicopter(g2d);
             	break;
@@ -564,75 +546,75 @@ public class Framework extends Canvas {
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			++select;
-            			if(select > 8)
-            				select -= 8;
+            			++selectHeli;
+            			if(selectHeli > 8)
+            				selectHeli -= 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_LEFT)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			--select;
-            			if(select < 1)
-            				select += 8;
+            			--selectHeli;
+            			if(selectHeli < 1)
+            				selectHeli += 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select += 4;
-            			if(select > 8)
-            				select -= 8;
+            			selectHeli += 4;
+            			if(selectHeli > 8)
+            				selectHeli -= 8;
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select -= 4;
-            			if(select < 1)
-            				select += 8;
+            			selectHeli -= 4;
+            			if(selectHeli < 1)
+            				selectHeli += 8;
             		}
             		
             		Sound reload = new Sound("reload.mp3", false);
-            		if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
             		}
-            		else if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 	{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
-            		else if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(select);
+            			newGame(selectHeli);
                 	}
                 	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -643,75 +625,75 @@ public class Framework extends Canvas {
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			++select;
-	        			if(select > 8)
-	        				select -= 8;
+	        			++selectHeli;
+	        			if(selectHeli > 8)
+	        				selectHeli -= 8;
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			--select;
-	        			if(select < 1)
-	        				select += 8;
+	        			--selectHeli;
+	        			if(selectHeli < 1)
+	        				selectHeli += 8;
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_DOWN)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			select += 4;
-	        			if(select > 8)
-	        				select -= 8;
+	        			selectHeli += 4;
+	        			if(selectHeli > 8)
+	        				selectHeli -= 8;
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			select -= 4;
-	        			if(select < 1)
-	        				select += 8;
+	        			selectHeli -= 4;
+	        			if(selectHeli < 1)
+	        				selectHeli += 8;
 	        		}
 	        		
 	        		Sound reload1 = new Sound("reload.mp3", false);
-	        		if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	        		}
-	        		else if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            	{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
-	        		else if(select == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(select);
+	        			restartGame(selectHeli);
 	            	}
 	            	
 	        		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
