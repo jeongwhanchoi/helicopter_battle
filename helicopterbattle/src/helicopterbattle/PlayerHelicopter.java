@@ -18,11 +18,7 @@ import javax.imageio.ImageIO;
 
 public class PlayerHelicopter {
     
-    // Health of the helicopter.
-	private int healthInit;
     public int health;
-    private float healthPercent;
-    
     // Position of the helicopter on the screen.
     public int xCoordinate;
     public int yCoordinate;
@@ -57,36 +53,10 @@ public class PlayerHelicopter {
     // Animation of the helicopter propeller.
     private Animation helicopterFrontPropellerAnim;
     private Animation helicopterRearPropellerAnim;
-    // Offset for the propeler. We add offset to the position of the position of helicopter.
-    private int offsetXFrontPropeller;
-    private int offsetYFrontPropeller;
-    private int offsetXRearPropeller;
-    private int offsetYRearPropeller;
-    
-    // Offset of the helicopter rocket holder.
-    private int offsetXRocketHolder;
-    private int offsetYRocketHolder;
-    // Position on the frame/window of the helicopter rocket holder.
-    public int rocketHolderXcoordinate;
-    public int rocketHolderYcoordinate;
-    
-    // Offset of the helicopter machine gun. We add offset to the position of the position of helicopter.
-    private int offsetXMachineGun;
-    private int offsetYMachineGun;
-    // Position on the frame/window of the helicopter machine gun.
-    public int machineGunXcoordinate;
-    public int machineGunYcoordinate;
-    
-    // Helicopter Type
-    public String helicopterName;
-    private String helicopterTypeStr;
-    private String helicopterPlayerStr;
-    private String helicopterPlayerHealth75Str;
-    private String helicopterPlayerHealth50Str;
-    private String helicopterPlayerHealth00Str;
-    
-    
-    /**
+    public PlayerHelicopterData data = new PlayerHelicopterData();
+
+
+	/**
      * Creates object of player.
      * 
      * @param xCoordinate Starting x coordinate of helicopter.
@@ -126,15 +96,15 @@ public class PlayerHelicopter {
         this.offsetXRearPropeller = -6;
         this.offsetYRearPropeller = -21;*/
         
-        this.offsetXRocketHolder = 138;
-        this.offsetYRocketHolder = 40;
-        this.rocketHolderXcoordinate = this.xCoordinate + this.offsetXRocketHolder;
-        this.rocketHolderYcoordinate = this.yCoordinate + this.offsetYRocketHolder;
+        this.data.setOffsetXRocketHolder(138);
+        this.data.setOffsetYRocketHolder(40);
+        this.data.setRocketHolderXcoordinate(this.xCoordinate + this.data.getOffsetXRocketHolder());
+        this.data.setRocketHolderYcoordinate(this.yCoordinate + this.data.getOffsetYRocketHolder());
         
-        this.offsetXMachineGun = helicopterBodyImg.getWidth() + this.offsetXMachineGun;
-        this.offsetYMachineGun = helicopterBodyImg.getHeight() + this.offsetYMachineGun;
-        this.machineGunXcoordinate = this.xCoordinate + this.offsetXMachineGun;
-        this.machineGunYcoordinate = this.yCoordinate + this.offsetYMachineGun;
+        this.data.setOffsetXMachineGun(helicopterBodyImg.getWidth() + this.data.getOffsetXMachineGun());
+        this.data.setOffsetYMachineGun(helicopterBodyImg.getHeight() + this.data.getOffsetYMachineGun());
+        this.data.setMachineGunXcoordinate(this.xCoordinate + this.data.getOffsetXMachineGun());
+        this.data.setMachineGunYcoordinate(this.yCoordinate + this.data.getOffsetYMachineGun());
     }
     
     /**
@@ -146,189 +116,189 @@ public class PlayerHelicopter {
         {
         		if(helicopterSelect == 1)
         		{
-        			helicopterName = "Hello Kitty";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_helloKitty.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/profile_helloKitty.png";
-        			this.healthInit = 100;
-        			this.health = healthInit;
+        			data.setHelicopterName("Hello Kitty");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_helloKitty.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/profile_helloKitty.png");
+        			this.data.setHealthInit(100);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 300;
         			this.numberOfRockets = 0;
         			this.numberOfMissiles = 100;
-        			this.offsetXFrontPropeller = 38;
-        			this.offsetYFrontPropeller = -17;
-        			this.offsetXRearPropeller = 3;
-        			this.offsetYRearPropeller = -21;
+        			this.data.setOffsetXFrontPropeller(38);
+        			this.data.setOffsetYFrontPropeller(-17);
+        			this.data.setOffsetXRearPropeller(3);
+        			this.data.setOffsetYRearPropeller(-21);
         			this.acceleratingXspeed = 0.4;
         			this.acceleratingYspeed = 0.4;
         			this.stoppingXspeed = 0.4;
         			this.stoppingYspeed = 0.4;
-        			this.offsetXMachineGun = -5;
-        			this.offsetYMachineGun = -5;
+        			this.data.setOffsetXMachineGun(-5);
+        			this.data.setOffsetYMachineGun(-5);
         		}
         		else if(helicopterSelect == 2)
         		{
-        			helicopterName = "Chinook";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_chinook.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("Chinook");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_chinook.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 500;
         			this.numberOfRockets = 5;
         			this.numberOfMissiles = 10;
-        			this.offsetXFrontPropeller = 70;
-        			this.offsetYFrontPropeller = -23;
-        			this.offsetXRearPropeller = -10;
-        			this.offsetYRearPropeller = -21;
+        			this.data.setOffsetXFrontPropeller(70);
+        			this.data.setOffsetYFrontPropeller(-23);
+        			this.data.setOffsetXRearPropeller(-10);
+        			this.data.setOffsetYRearPropeller(-21);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -70;
-        			this.offsetYMachineGun = -7;
+        			this.data.setOffsetXMachineGun(-70);
+        			this.data.setOffsetYMachineGun(-7);
         		}
         		else if(helicopterSelect == 3)
         		{
-        			helicopterName = "Viper";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_viper.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("Viper");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_viper.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 100;
         			this.numberOfRockets = 20;
         			this.numberOfMissiles = 25;
-        			this.offsetXFrontPropeller = 30;
-        			this.offsetYFrontPropeller = -33;
-        			this.offsetXRearPropeller = -5;
-        			this.offsetYRearPropeller = -10;
+        			this.data.setOffsetXFrontPropeller(30);
+        			this.data.setOffsetYFrontPropeller(-33);
+        			this.data.setOffsetXRearPropeller(-5);
+        			this.data.setOffsetYRearPropeller(-10);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -50;
-        			this.offsetYMachineGun = -53;
+        			this.data.setOffsetXMachineGun(-50);
+        			this.data.setOffsetYMachineGun(-53);
         		}
         		else if(helicopterSelect == 4)
         		{
-        			helicopterName = "Tiger";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_tiger.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("Tiger");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_tiger.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 400;
         			this.numberOfRockets = 30;
         			this.numberOfMissiles = 0;
-        			this.offsetXFrontPropeller = 5;
-        			this.offsetYFrontPropeller = -10;
-        			this.offsetXRearPropeller = -3;
-        			this.offsetYRearPropeller = 40;
+        			this.data.setOffsetXFrontPropeller(5);
+        			this.data.setOffsetYFrontPropeller(-10);
+        			this.data.setOffsetXRearPropeller(-3);
+        			this.data.setOffsetYRearPropeller(40);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.3;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -10;
-        			this.offsetYMachineGun = -5;
+        			this.data.setOffsetXMachineGun(-10);
+        			this.data.setOffsetYMachineGun(-5);
         		}
         		else if(helicopterSelect == 5)
         		{
-        			helicopterName = "Little Bird";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_littleBird.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 100;
-        			this.health = healthInit;
+        			data.setHelicopterName("Little Bird");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_littleBird.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(100);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 200;
         			this.numberOfRockets = 20;
         			this.numberOfMissiles = 10;
-        			this.offsetXFrontPropeller = 65;
-        			this.offsetYFrontPropeller = -23;
-        			this.offsetXRearPropeller = -6;
-        			this.offsetYRearPropeller = -11;
+        			this.data.setOffsetXFrontPropeller(65);
+        			this.data.setOffsetYFrontPropeller(-23);
+        			this.data.setOffsetXRearPropeller(-6);
+        			this.data.setOffsetYRearPropeller(-11);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -50;
-        			this.offsetYMachineGun = -30;
+        			this.data.setOffsetXMachineGun(-50);
+        			this.data.setOffsetYMachineGun(-30);
         		}
         		else if(helicopterSelect == 6)
         		{
-        			helicopterName = "Black Shark";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_blackShark.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("Black Shark");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_blackShark.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 200;
         			this.numberOfRockets = 10;
         			this.numberOfMissiles = 20;
-        			this.offsetXFrontPropeller = 70;
-        			this.offsetYFrontPropeller = -23;
-        			this.offsetXRearPropeller = -6;
-        			this.offsetYRearPropeller = -21;
+        			this.data.setOffsetXFrontPropeller(70);
+        			this.data.setOffsetYFrontPropeller(-23);
+        			this.data.setOffsetXRearPropeller(-6);
+        			this.data.setOffsetYRearPropeller(-21);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -50;
-        			this.offsetYMachineGun = -20;
+        			this.data.setOffsetXMachineGun(-50);
+        			this.data.setOffsetYMachineGun(-20);
         		}
         		else if(helicopterSelect == 7)
         		{
-        			helicopterName = "SNOC";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body_snoc.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("SNOC");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body_snoc.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = 100;
         			this.numberOfRockets = 25;
         			this.numberOfMissiles = 40;
-        			this.offsetXFrontPropeller = 70;
-        			this.offsetYFrontPropeller = -23;
-        			this.offsetXRearPropeller = -4;
-        			this.offsetYRearPropeller = 34;
+        			this.data.setOffsetXFrontPropeller(70);
+        			this.data.setOffsetYFrontPropeller(-23);
+        			this.data.setOffsetXRearPropeller(-4);
+        			this.data.setOffsetYRearPropeller(34);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -30;
-        			this.offsetYMachineGun = -20;
+        			this.data.setOffsetXMachineGun(-30);
+        			this.data.setOffsetYMachineGun(-20);
         		}
         		else
         		{
-        			helicopterName = "Default";
-        			helicopterTypeStr = "/helicopterbattle/resources/images/1_helicopter_body.png";
-        			helicopterPlayerStr = "/helicopterbattle/resources/images/fighter_pilot.png";
-        			this.healthInit = 150;
-        			this.health = healthInit;
+        			data.setHelicopterName("Default");
+        			data.setHelicopterTypeStr("/helicopterbattle/resources/images/1_helicopter_body.png");
+        			data.setHelicopterPlayerStr("/helicopterbattle/resources/images/fighter_pilot.png");
+        			this.data.setHealthInit(150);
+        			this.health = data.getHealthInit();
         			this.numberOfAmmo = numberOfAmmoInit;
         			this.numberOfRockets = numberOfRocketsInit;
         			this.numberOfMissiles = numberOfMissilesInit;
-        			this.offsetXFrontPropeller = 70;
-        			this.offsetYFrontPropeller = -23;
-        			this.offsetXRearPropeller = -6;
-        			this.offsetYRearPropeller = -21;
+        			this.data.setOffsetXFrontPropeller(70);
+        			this.data.setOffsetYFrontPropeller(-23);
+        			this.data.setOffsetXRearPropeller(-6);
+        			this.data.setOffsetYRearPropeller(-21);
         			this.acceleratingXspeed = 0.2;
         			this.acceleratingYspeed = 0.2;
         			this.stoppingXspeed = 0.1;
         			this.stoppingYspeed = 0.1;
-        			this.offsetXMachineGun = -40;
-        			this.offsetYMachineGun = -10;
+        			this.data.setOffsetXMachineGun(-40);
+        			this.data.setOffsetYMachineGun(-10);
         		}
         		
-        		URL helicopterProfileImgUrl = this.getClass().getResource(helicopterPlayerStr);
+        		URL helicopterProfileImgUrl = this.getClass().getResource(data.getHelicopterPlayerStr());
         		helicopterProfileImg = ImageIO.read(helicopterProfileImgUrl);
         		
-        		helicopterPlayerHealth75Str = "/helicopterbattle/resources/images/profile_health75.png";
-        		URL helicopterProfileImgUrl75 = this.getClass().getResource(helicopterPlayerHealth75Str);
+        		data.setHelicopterPlayerHealth75Str("/helicopterbattle/resources/images/profile_health75.png");
+        		URL helicopterProfileImgUrl75 = this.getClass().getResource(data.getHelicopterPlayerHealth75Str());
         		helicopterProfileImg75 = ImageIO.read(helicopterProfileImgUrl75);
         		
-        		helicopterPlayerHealth50Str = "/helicopterbattle/resources/images/profile_health50.png";
-        		URL helicopterProfileImgUrl50 = this.getClass().getResource(helicopterPlayerHealth50Str);
+        		data.setHelicopterPlayerHealth50Str("/helicopterbattle/resources/images/profile_health50.png");
+        		URL helicopterProfileImgUrl50 = this.getClass().getResource(data.getHelicopterPlayerHealth50Str());
         		helicopterProfileImg50 = ImageIO.read(helicopterProfileImgUrl50);
         		
-        		helicopterPlayerHealth00Str = "/helicopterbattle/resources/images/profile_health00.png";
-        		URL helicopterProfileImgUrl00 = this.getClass().getResource(helicopterPlayerHealth00Str);
+        		data.setHelicopterPlayerHealth00Str("/helicopterbattle/resources/images/profile_health00.png");
+        		URL helicopterProfileImgUrl00 = this.getClass().getResource(data.getHelicopterPlayerHealth00Str());
         		helicopterProfileImg00 = ImageIO.read(helicopterProfileImgUrl00);
         		
-            URL helicopterBodyImgUrl = this.getClass().getResource(helicopterTypeStr);
+            URL helicopterBodyImgUrl = this.getClass().getResource(data.getHelicopterTypeStr());
             helicopterBodyImg = ImageIO.read(helicopterBodyImgUrl);
             
             URL helicopterFrontPropellerAnimImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_front_propeller_anim.png");
@@ -342,8 +312,8 @@ public class PlayerHelicopter {
         }
         
         // Now that we have images of propeller animation we initialize animation object.
-        helicopterFrontPropellerAnim = new Animation(helicopterFrontPropellerAnimImg, 204, 34, 3, 20, true, xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller, 0);
-        helicopterRearPropellerAnim = new Animation(helicopterRearPropellerAnimImg, 54, 54, 4, 20, true, xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller, 0);
+        helicopterFrontPropellerAnim = new Animation(helicopterFrontPropellerAnimImg, 204, 34, 3, 20, true, xCoordinate + data.getOffsetXFrontPropeller(), yCoordinate + data.getOffsetYFrontPropeller(), 0);
+        helicopterRearPropellerAnim = new Animation(helicopterRearPropellerAnimImg, 54, 54, 4, 20, true, xCoordinate + data.getOffsetXRearPropeller(), yCoordinate + data.getOffsetYRearPropeller(), 0);
     }
     
     
@@ -494,16 +464,16 @@ public class PlayerHelicopter {
         // Move helicopter and its propellers.
         xCoordinate += movingXspeed;
         yCoordinate += movingYspeed;
-        helicopterFrontPropellerAnim.changeCoordinates(xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller);
-        helicopterRearPropellerAnim.changeCoordinates(xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller);
+        helicopterFrontPropellerAnim.changeCoordinates(xCoordinate + data.getOffsetXFrontPropeller(), yCoordinate + data.getOffsetYFrontPropeller());
+        helicopterRearPropellerAnim.changeCoordinates(xCoordinate + data.getOffsetXRearPropeller(), yCoordinate + data.getOffsetYRearPropeller());
         
         // Change position of the rocket holder.
-        this.rocketHolderXcoordinate = this.xCoordinate + this.offsetXRocketHolder;
-        this.rocketHolderYcoordinate = this.yCoordinate + this.offsetYRocketHolder;
+        this.data.setRocketHolderXcoordinate(this.xCoordinate + this.data.getOffsetXRocketHolder());
+        this.data.setRocketHolderYcoordinate(this.yCoordinate + this.data.getOffsetYRocketHolder());
         
         // Move the machine gun with helicopter.
-        this.machineGunXcoordinate = this.xCoordinate + this.offsetXMachineGun;
-        this.machineGunYcoordinate = this.yCoordinate + this.offsetYMachineGun;
+        this.data.setMachineGunXcoordinate(this.xCoordinate + this.data.getOffsetXMachineGun());
+        this.data.setMachineGunYcoordinate(this.yCoordinate + this.data.getOffsetYMachineGun());
     }
     
     
@@ -521,18 +491,18 @@ public class PlayerHelicopter {
     
     public void DrawAvatar(Graphics2D g2d)
     {
-    		healthPercent = (health * 100.0f) / healthInit;
+    		data.setHealthPercent((health * 100.0f) / data.getHealthInit());
     		g2d.drawImage(helicopterProfileImg, 10, 17, null);
     		
-    		if(healthPercent <= 0)
+    		if(data.getHealthPercent() <= 0)
     		{
     			g2d.drawImage(helicopterProfileImg00, 10, 17, null);
     		}
-    		else if(healthPercent <= 50)
+    		else if(data.getHealthPercent() <= 50)
     		{
     			g2d.drawImage(helicopterProfileImg50, 10, 17, null);
     		}
-    		else if(healthPercent <= 75)
+    		else if(data.getHealthPercent() <= 75)
     		{
     			g2d.drawImage(helicopterProfileImg75, 10, 17, null);
     		}

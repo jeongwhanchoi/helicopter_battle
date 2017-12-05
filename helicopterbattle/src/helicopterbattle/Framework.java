@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -62,15 +61,6 @@ public class Framework extends Canvas {
      */
     public static GameState gameState;
     
-    public Rectangle playButton;
-	public Rectangle helpButton;
-	public Rectangle quitButton;
-	public Rectangle backButton;
-	
-	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button;
-	
-	public Rectangle restartButton;
-    
     /**
      * Elapsed game time in nanoseconds.
      */
@@ -82,24 +72,10 @@ public class Framework extends Canvas {
     private Game game;
     
     
-    protected Font font;
-    protected Font buttonFont;
-    
-    // Images for menu.
-    private BufferedImage gameTitleImg;
-    private BufferedImage menuBorderImg;
-    private BufferedImage skyColorImg;
-    private BufferedImage cloudLayer1Img;
-    private BufferedImage cloudLayer2Img;
-    private BufferedImage helpImg;
-    private BufferedImage heli1Img, heli2Img, heli3Img,heli4Img;
-    private BufferedImage heli5Img, heli6Img, heli7Img, heli8Img;
-    
-	private int select;
-	private int selectHeli;
-    
-    
-    public Framework ()
+    public FrameworkMenuData menuData = new FrameworkMenuData();
+
+
+	public Framework ()
     {
         super();
         
@@ -122,26 +98,26 @@ public class Framework extends Canvas {
      */
     private void Initialize()
     {
-        font = new Font("monospaced", Font.BOLD, 28);
-        buttonFont = new Font("arial", Font.BOLD, 60);
-        playButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100);
-        helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
-        quitButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
-        backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+        menuData.setFont(new Font("monospaced", Font.BOLD, 28));
+        menuData.setButtonFont(new Font("arial", Font.BOLD, 60));
+        menuData.setPlayButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100));
+        menuData.setHelpButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100));
+        menuData.setQuitButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100));
+        menuData.setBackButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100));
         
-        heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
-        heli2Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75);
-        heli3Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75);
-        heli4Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75);
-        heli5Button = new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75);
-        heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
-        heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
-        heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
+        menuData.setHeli1Button(new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75));
+        menuData.setHeli2Button(new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75));
+        menuData.setHeli3Button(new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75));
+        menuData.setHeli4Button(new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75));
+        menuData.setHeli5Button(new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75));
+        menuData.setHeli6Button(new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75));
+        menuData.setHeli7Button(new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75));
+        menuData.setHeli8Button(new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75));
         
-        restartButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
+        menuData.setRestartButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100));
         
-        select = 1;
-        selectHeli = 1;
+        menuData.setSelect(1);
+        menuData.setSelectHeli(1);
     }
     
     /**
@@ -153,38 +129,38 @@ public class Framework extends Canvas {
         try 
         {
             URL menuBorderImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/menu_border.png");
-            menuBorderImg = ImageIO.read(menuBorderImgUrl);
+            menuData.setMenuBorderImg(ImageIO.read(menuBorderImgUrl));
             
             URL skyColorImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/sky_color.jpg");
-            skyColorImg = ImageIO.read(skyColorImgUrl);
+            menuData.setSkyColorImg(ImageIO.read(skyColorImgUrl));
             
             URL gameTitleImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/helicopter_battle_title.png");
-            gameTitleImg = ImageIO.read(gameTitleImgUrl);
+            menuData.setGameTitleImg(ImageIO.read(gameTitleImgUrl));
             
             URL cloudLayer1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_1.png");
-            cloudLayer1Img = ImageIO.read(cloudLayer1ImgUrl);
+            menuData.setCloudLayer1Img(ImageIO.read(cloudLayer1ImgUrl));
             URL cloudLayer2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_2.png");
-            cloudLayer2Img = ImageIO.read(cloudLayer2ImgUrl);
+            menuData.setCloudLayer2Img(ImageIO.read(cloudLayer2ImgUrl));
             
             URL helpImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/help_01.png");
-            helpImg = ImageIO.read(helpImgUrl); 
+            menuData.setHelpImg(ImageIO.read(helpImgUrl)); 
             
             URL heli1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_01.png");
-            heli1Img = ImageIO.read(heli1ImgUrl); 
+            menuData.setHeli1Img(ImageIO.read(heli1ImgUrl)); 
             URL heli2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_02.png");
-            heli2Img = ImageIO.read(heli2ImgUrl); 
+            menuData.setHeli2Img(ImageIO.read(heli2ImgUrl)); 
             URL heli3ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_03.png");
-            heli3Img = ImageIO.read(heli3ImgUrl); 
+            menuData.setHeli3Img(ImageIO.read(heli3ImgUrl)); 
             URL heli4ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_04.png");
-            heli4Img = ImageIO.read(heli4ImgUrl); 
+            menuData.setHeli4Img(ImageIO.read(heli4ImgUrl)); 
             URL heli5ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_05.png");
-            heli5Img = ImageIO.read(heli5ImgUrl); 
+            menuData.setHeli5Img(ImageIO.read(heli5ImgUrl)); 
             URL heli6ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_06.png");
-            heli6Img = ImageIO.read(heli6ImgUrl); 
+            menuData.setHeli6Img(ImageIO.read(heli6ImgUrl)); 
             URL heli7ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_07.png");
-            heli7Img = ImageIO.read(heli7ImgUrl); 
+            menuData.setHeli7Img(ImageIO.read(heli7ImgUrl)); 
             URL heli8ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_00.png");
-            heli8Img = ImageIO.read(heli8ImgUrl); 
+            menuData.setHeli8Img(ImageIO.read(heli8ImgUrl)); 
             
         } 
         catch (IOException ex) 
@@ -297,106 +273,106 @@ public class Framework extends Canvas {
                 /*g2d.setFont(buttonFont);
                 g2d.drawString("GAME OVER", frameWidth/2 - 150, frameHeight/4);
                 */
-                g2d.setFont(buttonFont);
+                g2d.setFont(menuData.getButtonFont());
                 g2d.setColor(Color.white);
-                g2d.drawString("RESTART", helpButton.x+75, helpButton.y+75);
-                g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
+                g2d.drawString("RESTART", menuData.getHelpButton().x+75, menuData.getHelpButton().y+75);
+                g2d.drawString("QUIT", menuData.getQuitButton().x+125, menuData.getQuitButton().y+75);
                 
-                g2d.draw(restartButton);
-                g2d.draw(quitButton);
+                g2d.draw(menuData.getRestartButton());
+                g2d.draw(menuData.getQuitButton());
                 
-                drawRestartSelect(g2d, select);
+                drawRestartSelect(g2d, menuData.getSelect());
             break;
             case MAIN_MENU:
                 drawMenuBackground(g2d);
-                g2d.drawImage(gameTitleImg, frameWidth/2 - gameTitleImg.getWidth()/2, frameHeight/5 - 50, null);
+                g2d.drawImage(menuData.getGameTitleImg(), frameWidth/2 - menuData.getGameTitleImg().getWidth()/2, frameHeight/5 - 50, null);
                 
-                g2d.setFont(buttonFont);
+                g2d.setFont(menuData.getButtonFont());
                 g2d.setColor(Color.white);
-                g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
-                g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
-                g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
-                g2d.draw(playButton);
-                g2d.draw(helpButton);
-                g2d.draw(quitButton);
+                g2d.drawString("PLAY", menuData.getPlayButton().x+125, menuData.getPlayButton().y+75);
+                g2d.drawString("HELP", menuData.getHelpButton().x+125, menuData.getHelpButton().y+75);
+                g2d.drawString("QUIT", menuData.getQuitButton().x+125, menuData.getQuitButton().y+75);
+                g2d.draw(menuData.getPlayButton());
+                g2d.draw(menuData.getHelpButton());
+                g2d.draw(menuData.getQuitButton());
                 
-                drawMenuSelect(g2d, select);
+                drawMenuSelect(g2d, menuData.getSelect());
                 
             break;
             case HELP:
             		drawMenuBackground(g2d);
             		
-            		g2d.drawImage(helpImg, frameWidth - helpImg.getWidth() - 110, frameHeight/5 - 50, null);
+            		g2d.drawImage(menuData.getHelpImg(), frameWidth - menuData.getHelpImg().getWidth() - 110, frameHeight/5 - 50, null);
             		
-                g2d.setFont(buttonFont);
-                g2d.drawString("BACK", backButton.x+120, backButton.y+75);
-                g2d.draw(backButton);
-                g2d.setFont(font);
-                g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+                g2d.setFont(menuData.getButtonFont());
+                g2d.drawString("BACK", menuData.getBackButton().x+120, menuData.getBackButton().y+75);
+                g2d.draw(menuData.getBackButton());
+                g2d.setFont(menuData.getFont());
+                g2d.drawString("Press BACKSPACE to return", menuData.getBackButton().x, menuData.getBackButton().y+150);
                 
                 
             	break;
             case QUIT:
             		drawMenuBackground(g2d);
-            		g2d.setFont(buttonFont);
+            		g2d.setFont(menuData.getButtonFont());
             		g2d.setColor(Color.white);
             		g2d.drawString("Press ENTER to quit", frameWidth/2 - 300, 140);
-            		g2d.setFont(buttonFont);
-            		g2d.drawString("BACK", quitButton.x+120, quitButton.y+75);
-            		g2d.draw(backButton);
-            		g2d.setFont(font);
+            		g2d.setFont(menuData.getButtonFont());
+            		g2d.drawString("BACK", menuData.getQuitButton().x+120, menuData.getQuitButton().y+75);
+            		g2d.draw(menuData.getBackButton());
+            		g2d.setFont(menuData.getFont());
             		g2d.setColor(Color.white);
-            		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+            		g2d.drawString("Press BACKSPACE to return", menuData.getBackButton().x, menuData.getBackButton().y+150);
             		g2d.setColor(Color.black);
-            		g2d.setFont(buttonFont);
+            		g2d.setFont(menuData.getButtonFont());
             		g2d.drawString("Are you sure", frameWidth/2 -200, frameHeight/2 - 50);
             		g2d.drawString("you really want to quit?", frameWidth/2 -300, frameHeight/2 +25);
             break;
             case SELECT:
             		drawMenuBackground(g2d);
-            		g2d.setFont(buttonFont);
+            		g2d.setFont(menuData.getButtonFont());
             		g2d.setColor(Color.white);
             		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
-            		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
-            		g2d.draw(backButton);
-            		g2d.setFont(font);
-            		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+            		g2d.drawString("BACK", menuData.getBackButton().x+120, menuData.getBackButton().y+75);
+            		g2d.draw(menuData.getBackButton());
+            		g2d.setFont(menuData.getFont());
+            		g2d.drawString("Press BACKSPACE to return", menuData.getBackButton().x, menuData.getBackButton().y+150);
             		
-            		g2d.draw(heli1Button);
-            		g2d.draw(heli2Button);
-            		g2d.draw(heli3Button);
-            		g2d.draw(heli4Button);
-            		g2d.draw(heli5Button);
-            		g2d.draw(heli6Button);
-            		g2d.draw(heli7Button);
-            		g2d.draw(heli8Button);
+            		g2d.draw(menuData.getHeli1Button());
+            		g2d.draw(menuData.getHeli2Button());
+            		g2d.draw(menuData.getHeli3Button());
+            		g2d.draw(menuData.getHeli4Button());
+            		g2d.draw(menuData.getHeli5Button());
+            		g2d.draw(menuData.getHeli6Button());
+            		g2d.draw(menuData.getHeli7Button());
+            		g2d.draw(menuData.getHeli8Button());
             		
             		
-            		drawHelicopterSelect(g2d, selectHeli);
+            		drawHelicopterSelect(g2d, menuData.getSelectHeli());
             		
             		drawHelicopter(g2d);
             		
             	break;
             case RESELECT:
 	            	drawMenuBackground(g2d);
-	        		g2d.setFont(buttonFont);
+	        		g2d.setFont(menuData.getButtonFont());
 	        		g2d.setColor(Color.white);
 	        		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
-	        		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
-	        		g2d.draw(backButton);
-	        		g2d.setFont(font);
-	        		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
+	        		g2d.drawString("BACK", menuData.getBackButton().x+120, menuData.getBackButton().y+75);
+	        		g2d.draw(menuData.getBackButton());
+	        		g2d.setFont(menuData.getFont());
+	        		g2d.drawString("Press BACKSPACE to return", menuData.getBackButton().x, menuData.getBackButton().y+150);
 	        		
-	        		g2d.draw(heli1Button);
-	        		g2d.draw(heli2Button);
-	        		g2d.draw(heli3Button);
-	        		g2d.draw(heli4Button);
-	        		g2d.draw(heli5Button);
-	        		g2d.draw(heli6Button);
-	        		g2d.draw(heli7Button);
-	        		g2d.draw(heli8Button);
+	        		g2d.draw(menuData.getHeli1Button());
+	        		g2d.draw(menuData.getHeli2Button());
+	        		g2d.draw(menuData.getHeli3Button());
+	        		g2d.draw(menuData.getHeli4Button());
+	        		g2d.draw(menuData.getHeli5Button());
+	        		g2d.draw(menuData.getHeli6Button());
+	        		g2d.draw(menuData.getHeli7Button());
+	        		g2d.draw(menuData.getHeli8Button());
 	        		
-	        		drawHelicopterSelect(g2d,selectHeli);
+	        		drawHelicopterSelect(g2d,menuData.getSelectHeli());
 	        		
 	        		drawHelicopter(g2d);
             	break;
@@ -489,25 +465,25 @@ public class Framework extends Canvas {
         			{
                 		Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-        				select ++;
-        				if(select > 2)
-        					select -= 2;
+        				menuData.setSelect(menuData.getSelect() + 1);
+        				if(menuData.getSelect() > 2)
+        					menuData.setSelect(menuData.getSelect() - 2);
 	        		}
                 else if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
                 		Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-	        			select --;
-	        			if(select < 1)
-	        				select += 2;
+	        			menuData.setSelect(menuData.getSelect() - 1);
+	        			if(menuData.getSelect() < 1)
+	        				menuData.setSelect(menuData.getSelect() + 2);
 	        		}
 	            	
-                if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                if(menuData.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		{
 //                			restartGame();
                 			gameState = GameState.RESELECT;
 	            		}
-                else	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                else	if(menuData.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		System.exit(0);
 	                
             break;
@@ -517,23 +493,23 @@ public class Framework extends Canvas {
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select ++;
-            			if(select > 3)
-            				select -= 3;
+            			menuData.setSelect(menuData.getSelect() + 1);
+            			if(menuData.getSelect() > 3)
+            				menuData.setSelect(menuData.getSelect() - 3);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select --;
-            			if(select < 1)
-            				select += 3;
+            			menuData.setSelect(menuData.getSelect() - 1);
+            			if(menuData.getSelect() < 1)
+            				menuData.setSelect(menuData.getSelect() + 3);
             		}
-                	if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(menuData.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 		gameState = GameState.SELECT;
-                	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(menuData.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 			gameState = GameState.HELP;
-                	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(menuData.getSelect() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 			gameState = GameState.QUIT;
             break;
             case SELECT:
@@ -541,75 +517,75 @@ public class Framework extends Canvas {
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			++selectHeli;
-            			if(selectHeli > 8)
-            				selectHeli -= 8;
+            			menuData.setSelectHeli(menuData.getSelectHeli() + 1);
+            			if(menuData.getSelectHeli() > 8)
+            				menuData.setSelectHeli(menuData.getSelectHeli() - 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_LEFT)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			--selectHeli;
-            			if(selectHeli < 1)
-            				selectHeli += 8;
+            			menuData.setSelectHeli(menuData.getSelectHeli() - 1);
+            			if(menuData.getSelectHeli() < 1)
+            				menuData.setSelectHeli(menuData.getSelectHeli() + 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			selectHeli += 4;
-            			if(selectHeli > 8)
-            				selectHeli -= 8;
+            			menuData.setSelectHeli(menuData.getSelectHeli() + 4);
+            			if(menuData.getSelectHeli() > 8)
+            				menuData.setSelectHeli(menuData.getSelectHeli() - 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			selectHeli -= 4;
-            			if(selectHeli < 1)
-            				selectHeli += 8;
+            			menuData.setSelectHeli(menuData.getSelectHeli() - 4);
+            			if(menuData.getSelectHeli() < 1)
+            				menuData.setSelectHeli(menuData.getSelectHeli() + 8);
             		}
             		
             		Sound reload = new Sound("reload.mp3", false);
-            		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		if(menuData.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
             		}
-            		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 	{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
-            		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(menuData.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(menuData.getSelectHeli());
                 	}
                 	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -620,75 +596,75 @@ public class Framework extends Canvas {
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			++selectHeli;
-	        			if(selectHeli > 8)
-	        				selectHeli -= 8;
+	        			menuData.setSelectHeli(menuData.getSelectHeli() + 1);
+	        			if(menuData.getSelectHeli() > 8)
+	        				menuData.setSelectHeli(menuData.getSelectHeli() - 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			--selectHeli;
-	        			if(selectHeli < 1)
-	        				selectHeli += 8;
+	        			menuData.setSelectHeli(menuData.getSelectHeli() - 1);
+	        			if(menuData.getSelectHeli() < 1)
+	        				menuData.setSelectHeli(menuData.getSelectHeli() + 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_DOWN)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			selectHeli += 4;
-	        			if(selectHeli > 8)
-	        				selectHeli -= 8;
+	        			menuData.setSelectHeli(menuData.getSelectHeli() + 4);
+	        			if(menuData.getSelectHeli() > 8)
+	        				menuData.setSelectHeli(menuData.getSelectHeli() - 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			selectHeli -= 4;
-	        			if(selectHeli < 1)
-	        				selectHeli += 8;
+	        			menuData.setSelectHeli(menuData.getSelectHeli() - 4);
+	        			if(menuData.getSelectHeli() < 1)
+	        				menuData.setSelectHeli(menuData.getSelectHeli() + 8);
 	        		}
 	        		
 	        		Sound reload1 = new Sound("reload.mp3", false);
-	        		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		if(menuData.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	        		}
-	        		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            	{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(menuData.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(menuData.getSelectHeli());
 	            	}
 	            	
 	        		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -720,83 +696,26 @@ public class Framework extends Canvas {
         
     }
     
-    /*public void mousePressed(MouseEvent e)
-    {
-    		int mx = e.getX();
-    		int my = e.getY();
-    		
-    		if(gameState == GameState.MAIN_MENU) {
-    			//Play button
-        		if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100))
-        		{
-        			System.exit(0);
-        		}
-        		
-        		//Help button
-        		if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2, 400, 100)) {
-        			gameState = GameState.HELP;
-        			
-        		//Setting button
-        			//...
-        		}
-    		}
-    		    		
-    		//Back button for HELP
-    		if(gameState == GameState.HELP)
-    		{
-    			if(mouseOver(mx, my, frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100))
-    			{
-    				gameState = GameState.MAIN_MENU;
-    			}
-    		}
-    		
-    }
-    public void mouseReleased(MouseEvent e)
-    {
-    	
-    }
-    private boolean mouseOver(int mx, int my, int x, int y, int width, int height)
-    {
-    		if(mx > x && mx < x + width)
-    		{
-    			if(my > y && my < y + height)
-    			{
-    				return true;
-    			}
-    			else return false;
-    		}
-    		else return false;
-    }*/
     
     private void drawMenuBackground(Graphics2D g2d){
-        g2d.drawImage(skyColorImg,    0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(cloudLayer1Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(cloudLayer2Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
+        g2d.drawImage(menuData.getSkyColorImg(),    0, 0, Framework.frameWidth, Framework.frameHeight, null);
+        g2d.drawImage(menuData.getCloudLayer1Img(), 0, 0, Framework.frameWidth, Framework.frameHeight, null);
+        g2d.drawImage(menuData.getCloudLayer2Img(), 0, 0, Framework.frameWidth, Framework.frameHeight, null);
+        g2d.drawImage(menuData.getMenuBorderImg(),  0, 0, Framework.frameWidth, Framework.frameHeight, null);
         g2d.setColor(Color.white);
         g2d.drawString("", 7, frameHeight - 5);
     }
     
     private void drawHelicopter(Graphics2D g2d)
     {
-    		g2d.drawImage(heli1Img,frameWidth / 6, frameHeight / 3, 150, 48, null);
-    		g2d.drawImage(heli2Img,frameWidth / 6 +200, frameHeight / 3, 150, 42, null);
-    		g2d.drawImage(heli3Img,frameWidth / 6 +400, frameHeight / 3, 150, 52, null);
-    		g2d.drawImage(heli4Img,frameWidth / 6 +600, frameHeight / 3, 150, 75, null);
-    		g2d.drawImage(heli5Img,frameWidth / 6, frameHeight / 3 +150, 150, 68, null);
-    		g2d.drawImage(heli6Img,frameWidth / 6 +200, frameHeight / 3 +150, 150, 33, null);
-    		g2d.drawImage(heli7Img,frameWidth / 6 +400, frameHeight / 3 +150, 132, 75, null);
-    		g2d.drawImage(heli8Img,frameWidth / 6 +600, frameHeight / 3 +150, 150, 31, null);
-
-//    		heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
-//          heli2Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75);
-//          heli3Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75);
-//          heli4Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75);
-//          heli5Button = new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75);
-//          heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
-//          heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
-//          heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
-//          
+    		g2d.drawImage(menuData.getHeli1Img(),frameWidth / 6, frameHeight / 3, 150, 48, null);
+    		g2d.drawImage(menuData.getHeli2Img(),frameWidth / 6 +200, frameHeight / 3, 150, 42, null);
+    		g2d.drawImage(menuData.getHeli3Img(),frameWidth / 6 +400, frameHeight / 3, 150, 52, null);
+    		g2d.drawImage(menuData.getHeli4Img(),frameWidth / 6 +600, frameHeight / 3, 150, 75, null);
+    		g2d.drawImage(menuData.getHeli5Img(),frameWidth / 6, frameHeight / 3 +150, 150, 68, null);
+    		g2d.drawImage(menuData.getHeli6Img(),frameWidth / 6 +200, frameHeight / 3 +150, 150, 33, null);
+    		g2d.drawImage(menuData.getHeli7Img(),frameWidth / 6 +400, frameHeight / 3 +150, 132, 75, null);
+    		g2d.drawImage(menuData.getHeli8Img(),frameWidth / 6 +600, frameHeight / 3 +150, 150, 31, null);
     }
     
     private void drawMenuSelect(Graphics2D g2d, int menu)
@@ -805,22 +724,22 @@ public class Framework extends Canvas {
     		switch(menu)
     		{
     		case 1:
-    			g2d.fillRect(playButton.x, playButton.y, playButton.width, playButton.height);
-    			g2d.setFont(buttonFont);
+    			g2d.fillRect(menuData.getPlayButton().x, menuData.getPlayButton().y, menuData.getPlayButton().width, menuData.getPlayButton().height);
+    			g2d.setFont(menuData.getButtonFont());
     			g2d.setColor(Color.white);
-    			g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
+    			g2d.drawString("PLAY", menuData.getPlayButton().x+125, menuData.getPlayButton().y+75);
     			break;
     		case 2:
-    			g2d.fillRect(helpButton.x, helpButton.y, helpButton.width, helpButton.height);
-    			g2d.setFont(buttonFont);
+    			g2d.fillRect(menuData.getHelpButton().x, menuData.getHelpButton().y, menuData.getHelpButton().width, menuData.getHelpButton().height);
+    			g2d.setFont(menuData.getButtonFont());
     			g2d.setColor(Color.white);
-    			g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
+    			g2d.drawString("HELP", menuData.getHelpButton().x+125, menuData.getHelpButton().y+75);
     			break;
     		case 3:
-    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
-    			g2d.setFont(buttonFont);
+    			g2d.fillRect(menuData.getQuitButton().x, menuData.getQuitButton().y, menuData.getQuitButton().width, menuData.getQuitButton().height);
+    			g2d.setFont(menuData.getButtonFont());
     			g2d.setColor(Color.white);
-    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
+    			g2d.drawString("QUIT", menuData.getQuitButton().x+125, menuData.getQuitButton().y+75);
     			break;
     		}
     		
@@ -832,43 +751,43 @@ public class Framework extends Canvas {
     	switch(heli)
 		{
 		case 1:
-			g2d.fillRect(heli1Button.x, heli1Button.y, heli1Button.width, heli1Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli1Button().x, menuData.getHeli1Button().y, menuData.getHeli1Button().width, menuData.getHeli1Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 2:
-			g2d.fillRect(heli2Button.x, heli2Button.y, heli2Button.width, heli2Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli2Button().x, menuData.getHeli2Button().y, menuData.getHeli2Button().width, menuData.getHeli2Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 3:
-			g2d.fillRect(heli3Button.x, heli3Button.y, heli3Button.width, heli3Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli3Button().x, menuData.getHeli3Button().y, menuData.getHeli3Button().width, menuData.getHeli3Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 4:
-			g2d.fillRect(heli4Button.x, heli4Button.y, heli4Button.width, heli4Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli4Button().x, menuData.getHeli4Button().y, menuData.getHeli4Button().width, menuData.getHeli4Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 5:
-			g2d.fillRect(heli5Button.x, heli5Button.y, heli5Button.width, heli5Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli5Button().x, menuData.getHeli5Button().y, menuData.getHeli5Button().width, menuData.getHeli5Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 6:
-			g2d.fillRect(heli6Button.x, heli6Button.y, heli6Button.width, heli6Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli6Button().x, menuData.getHeli6Button().y, menuData.getHeli6Button().width, menuData.getHeli6Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 7:
-			g2d.fillRect(heli7Button.x, heli7Button.y, heli7Button.width, heli7Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli7Button().x, menuData.getHeli7Button().y, menuData.getHeli7Button().width, menuData.getHeli7Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		case 8:
-			g2d.fillRect(heli8Button.x, heli8Button.y, heli8Button.width, heli8Button.height);
-			g2d.setFont(buttonFont);
+			g2d.fillRect(menuData.getHeli8Button().x, menuData.getHeli8Button().y, menuData.getHeli8Button().width, menuData.getHeli8Button().height);
+			g2d.setFont(menuData.getButtonFont());
 			g2d.setColor(Color.white);
 			break;
 		
@@ -881,16 +800,16 @@ public class Framework extends Canvas {
     		switch(menu)
     		{
     		case 1:
-    			g2d.fillRect(restartButton.x, restartButton.y, restartButton.width, restartButton.height);
-    			g2d.setFont(buttonFont);
+    			g2d.fillRect(menuData.getRestartButton().x, menuData.getRestartButton().y, menuData.getRestartButton().width, menuData.getRestartButton().height);
+    			g2d.setFont(menuData.getButtonFont());
     			g2d.setColor(Color.white);
-    			g2d.drawString("RESTART", restartButton.x+75, restartButton.y+75);
+    			g2d.drawString("RESTART", menuData.getRestartButton().x+75, menuData.getRestartButton().y+75);
     			break;
     		case 2:
-    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
-    			g2d.setFont(buttonFont);
+    			g2d.fillRect(menuData.getQuitButton().x, menuData.getQuitButton().y, menuData.getQuitButton().width, menuData.getQuitButton().height);
+    			g2d.setFont(menuData.getButtonFont());
     			g2d.setColor(Color.white);
-    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
+    			g2d.drawString("QUIT", menuData.getQuitButton().x+125, menuData.getQuitButton().y+75);
     			break;
     		}
     		
