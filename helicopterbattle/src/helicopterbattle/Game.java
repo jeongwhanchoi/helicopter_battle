@@ -394,115 +394,15 @@ public class Game {
      * @param mousePosition current mouse position.
      */
     public void Draw(Graphics2D g2d, Point mousePosition, long gameTime)
-    {
-        // Image for background sky color.
-        g2d.drawImage(skyColorImg, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        
-        // Moving images.
-        mountainsMoving.Draw(g2d);
-        groundMoving.Draw(g2d);
-        cloudLayer2Moving.Draw(g2d);
-        
-        if(isPlayerAlive())
-        {
-            player.Draw(g2d);
-        		statXCoordinate = 10 + player.helicopterProfileImg.getWidth() + 10;
-        }
-		
-        // Draws helicopter's profile
-        player.DrawAvatar(g2d);
-        		        		
-        // Draws all the enemies.
-        for(int i = 0; i < enemyHelicopterList.size(); i++)
-        {
-            enemyHelicopterList.get(i).Draw(g2d);
-        }
-        
-        if(bossFight)
-        {
-        		boss.Draw(g2d);
-        		/*for(int i = 0; i < stonesList.size(); i++)
-        		{
-        			stoneList.get(i).draw(g2d);
-        		}*/
-     /*   		for(int i=0; i < bossBulletsList.size(); i++)
-        		{
-        			bossBulletsList.get(i).Draw(g2d);
-        		}*/
-        		for(int i=0; i< bossRocketsList.size(); i++)
-        		{
-        			bossRocketsList.get(i).Draw(g2d);
-        		}
-        }
-        
-        // Draws all the bullets. 
-        for(int i = 0; i < bulletsList.size(); i++)
-        {
-            bulletsList.get(i).Draw(g2d);
-        }
-        
-        // Draws all the missiles.
-        for(int i = 0; i < missilesList.size(); i++)
-        {
-        		missilesList.get(i).Draw(g2d);
-        }
-        
-        // Draws all the rockets. 
-        for(int i = 0; i < rocketsList.size(); i++)
-        {
-            rocketsList.get(i).Draw(g2d);
-        }
-        // Draws smoke of all the rockets.
-        for(int i = 0; i < rocketSmokeList.size(); i++)
-        {
-            rocketSmokeList.get(i).Draw(g2d);
-        }
-        
-        // Draw all explosions.
-        for(int i = 0; i < explosionsList.size(); i++)
-        {
-            explosionsList.get(i).Draw(g2d);
-        }
-        
-        // 	Draw all bonuses
-        for(Bonus bonus : bonusList) 
-        {
-        		bonus.Draw(g2d);
-        }
-        
-        // Draw statistics
-        g2d.setFont(font);
-        g2d.setColor(Color.darkGray);
+    {      
+        drawGame(g2d);
         
         g2d.drawString(formatTime(gameTime), Framework.frameWidth/2 - 45, 21);
-        g2d.drawString("HEALTH: "    + player.health, statXCoordinate, 41);
-        g2d.drawString("DESTROYED: " + destroyedEnemies, statXCoordinate, 61);
-        g2d.drawString("RUNAWAY: "   + runAwayEnemies,   statXCoordinate, 81);
-        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 111);
-        g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 131);
-        g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
-        
-        g2d.drawString("STAGE: " + level, Framework.frameWidth/2 + 300, 21);
-        g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
-        
-//        g2d.drawString("HIGH SCORE: " + leaderBoard.getHighScore(), Framework.frameWidth/2 + 300, 51);
-        
-        if(bossFight)
-        {
-        		g2d.drawString("HP: " + boss.health, (int)boss.xCoordinate, (int)boss.yCoordinate + 20);
-        }
-        /*g2d.drawString("HP: " + player.health, player.xCoordinate, player.yCoordinate - 5);
-        for(EnemyHelicopter eh : enemyHelicopterList)
-        {
-        		g2d.drawString("HP: " + eh.health, eh.xCoordinate, eh.yCoordinate - 5);
-        }*/
-        
-        // Moving images. We draw this cloud in front of the helicopter.
-        cloudLayer1Moving.Draw(g2d);
         
         // Mouse cursor
         if(isPlayerAlive())
             drawRotatedMouseCursor(g2d, mousePosition);
+        
     }
     
     /**
@@ -512,19 +412,9 @@ public class Game {
      * @param gameTime Elapsed game time.
      */
     public void DrawStatistic(Graphics2D g2d, long gameTime){
-        /*g2d.drawString("Time: " + formatTime(gameTime),                    Framework.frameWidth/2 - 50, Framework.frameHeight/3 + 80);
-        g2d.drawString("Rockets left: "      + player.numberOfRockets,     Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 105);
-        g2d.drawString("Ammo left: "         + player.numberOfAmmo,        Framework.frameWidth/2 - 55, Framework.frameHeight/3 + 125);
-        g2d.drawString("Missile left: "         + player.numberOfMissiles, Framework.frameWidth/2 - 60, Framework.frameHeight/3 + 150);
-        g2d.drawString("Destroyed enemies: " + destroyedEnemies,           Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 175);
-        g2d.drawString("Runaway enemies: "   + runAwayEnemies,             Framework.frameWidth/2 - 70, Framework.frameHeight/3 + 200);
-        g2d.setFont(font);
-        g2d.drawString("Statistics: ",                                     Framework.frameWidth/2 - 75, Framework.frameHeight/3 + 60);
-        */
         g2d.setFont(scoreFont);
         g2d.setColor(Color.white);
 		g2d.drawString("Score: "+getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 140);
-//    		g2d.drawString(""+getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 180);
     		
     		if(highScore.equals(""))
     		{
@@ -635,13 +525,6 @@ public class Game {
         else
         		return true;
     }
-    
-    /*private static Vector2d mousePositionToVector(int xOrigin, int yOrigin, Point mousePosition)
-    {
-    		Vector2d direction = new Vector2d(mousePosition.x - xOrigin, mousePosition.y - yOrigin);
-    		return direction.multiply(1.0 / direction.length());
-    }*/
-    
 
     
     /**
@@ -686,21 +569,6 @@ public class Game {
     			// Sets new time for last created enemy.
     			EnemyHelicopter.timeOfLastCreatedEnemy = gameTime;
     		}
-        /*if(gameTime - EnemyHelicopter.timeOfLastCreatedEnemy >= EnemyHelicopter.timeBetweenNewEnemies)
-        {
-            EnemyHelicopter eh = new EnemyHelicopter();
-            int xCoordinate = Framework.frameWidth;
-            int yCoordinate = random.nextInt(Framework.frameHeight - EnemyHelicopter.helicopterBodyImg.getHeight());
-            eh.Initialize(xCoordinate, yCoordinate);
-            // Add created enemy to the list of enemies.
-            enemyHelicopterList.add(eh);
-            
-            // Speed up enemy speed and aperence.
-            EnemyHelicopter.speedUp();
-            
-            // Sets new time for last created enemy.
-            EnemyHelicopter.timeOfLastCreatedEnemy = gameTime;
-        }*/
     }
     
     private void addPlayerExplosion()
@@ -740,12 +608,6 @@ public class Game {
     			boss.updateVelocity(bulletsList, rocketsList);
     			boss.update();
     			
-    			// Create the bullets
-    			/*if(gameTime - boss.lastBulletSpawnTime >= Boss.timeBetweenBullets)
-    			{
-    				boss.lastBulletSpawnTime = gameTime;
-    				bossBulletsList.add(boss.spawnBullet((double)player.xCoordinate, (double)player.yCoordinate));
-    			}*/
     			
     			if(isPlayerCrashed(new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight()), new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight())))
     			{
@@ -766,10 +628,7 @@ public class Game {
     				
     				bossRocketsList.clear();
     				
-    				
     				EnemyHelicopter.spawnEnemies = true;
-    				
-//    				bossBulletsList.clear();
     			}
     		}
     		else
@@ -834,59 +693,6 @@ public class Game {
     				}
     			}
     		}
-    
-        /*for(int i = 0; i < enemyHelicopterList.size(); i++)
-        {
-            EnemyHelicopter eh = enemyHelicopterList.get(i);
-            
-            eh.Update();
-            
-            // Is chrashed with player?
-            Rectangle playerrectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
-            Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
-            if(playerrectangle.intersects(enemyrectangle)){
-                player.health -= 50;
-                
-                // Remove helicopter from the list.
-                enemyHelicopterList.remove(i);
-                
-                // Add explosion of player helicopter.
-                for(int exNum = 0; exNum < 3; exNum++){
-                    Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, player.xCoordinate + exNum*60, player.yCoordinate - random.nextInt(100), exNum * 200 +random.nextInt(100));
-                    explosionsList.add(expAnim);
-                }
-                // Add explosion of enemy helicopter.
-                for(int exNum = 0; exNum < 3; exNum++){
-                    Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate + exNum*60, eh.yCoordinate - random.nextInt(100), exNum * 200 +random.nextInt(100));
-                    explosionsList.add(expAnim);
-                }
-                
-                // Because player crashed with enemy the game will be over so we don't need to check other enemies.
-                break;
-            }
-            
-            // Check health.
-            if(eh.health <= 0){
-                // Add explosion of helicopter.
-                Animation expAnim = new Animation(explosionAnimImg, 134, 134, 12, 45, false, eh.xCoordinate, eh.yCoordinate - explosionAnimImg.getHeight()/3, 0); // Substring 1/3 explosion image height (explosionAnimImg.getHeight()/3) so that explosion is drawn more at the center of the helicopter.
-                explosionsList.add(expAnim);
-
-                // Increase the destroyed enemies counter.
-                destroyedEnemies++;
-                
-                // Remove helicopter from the list.
-                enemyHelicopterList.remove(i);
-                
-                // Helicopter was destroyed so we can move to next helicopter.
-                continue;
-            }
-            
-            // If the current enemy is left the screen we remove him from the list and update the runAwayEnemies variable.
-            if(eh.isLeftScreen())
-            {
-                enemyHelicopterList.remove(i);
-                runAwayEnemies++;
-            }*/
     }
     
 
@@ -911,10 +717,6 @@ public class Game {
     				bonusList.add(new RocketBonus(random.nextInt(Framework.frameWidth - RocketBonus.image.getWidth()),
     						random.nextInt(Framework.frameHeight-RocketBonus.image.getHeight()), 5));
     				break;
-    			/*case 3:
-    				bonusList.add(new ShieldBonus(random.nextInt(Framework.frameWidth - ShieldBonus.image.getWidth()),
-    					-ShieldBonus.image.getHeight(), 10, speed));
-    				break;*/
     			}
     		}
     	
@@ -970,4 +772,94 @@ public class Game {
     			}
     		}
     	}
+	public void drawGame(Graphics2D g2d) {
+g2d.drawImage(skyColorImg, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
+        
+        // Moving images.
+        mountainsMoving.Draw(g2d);
+        groundMoving.Draw(g2d);
+        cloudLayer2Moving.Draw(g2d);
+        
+        if(isPlayerAlive())
+        {
+            player.Draw(g2d);
+        		statXCoordinate = 10 + player.helicopterProfileImg.getWidth() + 10;
+        }
+		
+        // Draws helicopter's profile
+        player.DrawAvatar(g2d);
+        		        		
+        // Draws all the enemies.
+        for(int i = 0; i < enemyHelicopterList.size(); i++)
+        {
+            enemyHelicopterList.get(i).Draw(g2d);
+        }
+        
+        if(bossFight)
+        {
+        		boss.Draw(g2d);
+        		
+        		for(int i=0; i< bossRocketsList.size(); i++)
+        		{
+        			bossRocketsList.get(i).Draw(g2d);
+        		}
+        }
+        
+        // Draws all the bullets. 
+        for(int i = 0; i < bulletsList.size(); i++)
+        {
+            bulletsList.get(i).Draw(g2d);
+        }
+        
+        // Draws all the missiles.
+        for(int i = 0; i < missilesList.size(); i++)
+        {
+        		missilesList.get(i).Draw(g2d);
+        }
+        
+        // Draws all the rockets. 
+        for(int i = 0; i < rocketsList.size(); i++)
+        {
+            rocketsList.get(i).Draw(g2d);
+        }
+        // Draws smoke of all the rockets.
+        for(int i = 0; i < rocketSmokeList.size(); i++)
+        {
+            rocketSmokeList.get(i).Draw(g2d);
+        }
+        
+        // Draw all explosions.
+        for(int i = 0; i < explosionsList.size(); i++)
+        {
+            explosionsList.get(i).Draw(g2d);
+        }
+        
+        // 	Draw all bonuses
+        for(Bonus bonus : bonusList) 
+        {
+        		bonus.Draw(g2d);
+        }
+        
+        // Draw statistics
+        g2d.setFont(font);
+        g2d.setColor(Color.darkGray);
+        
+        g2d.drawString("HEALTH: "    + player.health, statXCoordinate, 41);
+        g2d.drawString("DESTROYED: " + destroyedEnemies, statXCoordinate, 61);
+        g2d.drawString("RUNAWAY: "   + runAwayEnemies,   statXCoordinate, 81);
+        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 111);
+        g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 131);
+        g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
+        
+        g2d.drawString("STAGE: " + level, Framework.frameWidth/2 + 300, 21);
+        g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
+        
+        
+        if(bossFight)
+        {
+        		g2d.drawString("HP: " + boss.health, (int)boss.xCoordinate, (int)boss.yCoordinate + 20);
+        }
+        
+        cloudLayer1Moving.Draw(g2d);
+	}
 }
