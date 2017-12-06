@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -62,15 +61,6 @@ public class Framework extends Canvas {
      */
     public static GameState gameState;
     
-    public Rectangle playButton;
-	public Rectangle helpButton;
-	public Rectangle quitButton;
-	public Rectangle backButton;
-	
-	public Rectangle heli1Button, heli2Button, heli3Button, heli4Button, heli5Button, heli6Button, heli7Button, heli8Button;
-	
-	public Rectangle restartButton;
-    
     /**
      * Elapsed game time in nanoseconds.
      */
@@ -78,28 +68,10 @@ public class Framework extends Canvas {
     // It is used for calculating elapsed time.
     private long lastTime;
     
-    // The actual game
-    private Game game;
-    
-    
-    protected Font font;
-    protected Font buttonFont;
-    
-    // Images for menu.
-    private BufferedImage gameTitleImg;
-    private BufferedImage menuBorderImg;
-    private BufferedImage skyColorImg;
-    private BufferedImage cloudLayer1Img;
-    private BufferedImage cloudLayer2Img;
-    private BufferedImage helpImg;
-    private BufferedImage heli1Img, heli2Img, heli3Img,heli4Img;
-    private BufferedImage heli5Img, heli6Img, heli7Img, heli8Img;
-    
-	private int select;
-	private int selectHeli;
-    
-    
-    public Framework ()
+    public FrameworkData data = new FrameworkData();
+
+
+	public Framework ()
     {
         super();
         
@@ -122,26 +94,26 @@ public class Framework extends Canvas {
      */
     private void Initialize()
     {
-        font = new Font("monospaced", Font.BOLD, 28);
-        buttonFont = new Font("arial", Font.BOLD, 60);
-        playButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100);
-        helpButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
-        quitButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
-        backButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100);
+        data.setFont(new Font("monospaced", Font.BOLD, 28));
+        data.setButtonFont(new Font("arial", Font.BOLD, 60));
+        data.setPlayButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 - 120, 400, 100));
+        data.setHelpButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100));
+        data.setQuitButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100));
+        data.setBackButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2 + 120, 400, 100));
         
-        heli1Button = new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75);
-        heli2Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75);
-        heli3Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75);
-        heli4Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75);
-        heli5Button = new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75);
-        heli6Button = new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75);
-        heli7Button = new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75);
-        heli8Button = new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75);
+        data.setHeli1Button(new Rectangle(frameWidth / 6, frameHeight / 3, 150, 75));
+        data.setHeli2Button(new Rectangle(frameWidth / 6 +200, frameHeight / 3, 150, 75));
+        data.setHeli3Button(new Rectangle(frameWidth / 6 +400, frameHeight / 3, 150, 75));
+        data.setHeli4Button(new Rectangle(frameWidth / 6 +600, frameHeight / 3, 150, 75));
+        data.setHeli5Button(new Rectangle(frameWidth / 6, frameHeight / 3 +150, 150, 75));
+        data.setHeli6Button(new Rectangle(frameWidth / 6 +200, frameHeight / 3 +150, 150, 75));
+        data.setHeli7Button(new Rectangle(frameWidth / 6 +400, frameHeight / 3 +150, 150, 75));
+        data.setHeli8Button(new Rectangle(frameWidth / 6 +600, frameHeight / 3 +150, 150, 75));
         
-        restartButton = new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100);
+        data.setRestartButton(new Rectangle(frameWidth / 2 - 200, frameHeight / 2, 400, 100));
         
-        select = 1;
-        selectHeli = 1;
+        data.setSelect(1);
+        data.setSelectHeli(1);
     }
     
     /**
@@ -153,38 +125,38 @@ public class Framework extends Canvas {
         try 
         {
             URL menuBorderImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/menu_border.png");
-            menuBorderImg = ImageIO.read(menuBorderImgUrl);
+            data.setMenuBorderImg(ImageIO.read(menuBorderImgUrl));
             
             URL skyColorImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/sky_color.jpg");
-            skyColorImg = ImageIO.read(skyColorImgUrl);
+            data.setSkyColorImg(ImageIO.read(skyColorImgUrl));
             
             URL gameTitleImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/helicopter_battle_title.png");
-            gameTitleImg = ImageIO.read(gameTitleImgUrl);
+            data.setGameTitleImg(ImageIO.read(gameTitleImgUrl));
             
             URL cloudLayer1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_1.png");
-            cloudLayer1Img = ImageIO.read(cloudLayer1ImgUrl);
+            data.setCloudLayer1Img(ImageIO.read(cloudLayer1ImgUrl));
             URL cloudLayer2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/cloud_layer_2.png");
-            cloudLayer2Img = ImageIO.read(cloudLayer2ImgUrl);
+            data.setCloudLayer2Img(ImageIO.read(cloudLayer2ImgUrl));
             
             URL helpImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/help_01.png");
-            helpImg = ImageIO.read(helpImgUrl); 
+            data.setHelpImg(ImageIO.read(helpImgUrl)); 
             
             URL heli1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_01.png");
-            heli1Img = ImageIO.read(heli1ImgUrl); 
+            data.setHeli1Img(ImageIO.read(heli1ImgUrl)); 
             URL heli2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_02.png");
-            heli2Img = ImageIO.read(heli2ImgUrl); 
+            data.setHeli2Img(ImageIO.read(heli2ImgUrl)); 
             URL heli3ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_03.png");
-            heli3Img = ImageIO.read(heli3ImgUrl); 
+            data.setHeli3Img(ImageIO.read(heli3ImgUrl)); 
             URL heli4ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_04.png");
-            heli4Img = ImageIO.read(heli4ImgUrl); 
+            data.setHeli4Img(ImageIO.read(heli4ImgUrl)); 
             URL heli5ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_05.png");
-            heli5Img = ImageIO.read(heli5ImgUrl); 
+            data.setHeli5Img(ImageIO.read(heli5ImgUrl)); 
             URL heli6ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_06.png");
-            heli6Img = ImageIO.read(heli6ImgUrl); 
+            data.setHeli6Img(ImageIO.read(heli6ImgUrl)); 
             URL heli7ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_07.png");
-            heli7Img = ImageIO.read(heli7ImgUrl); 
+            data.setHeli7Img(ImageIO.read(heli7ImgUrl)); 
             URL heli8ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_00.png");
-            heli8Img = ImageIO.read(heli8ImgUrl); 
+            data.setHeli8Img(ImageIO.read(heli8ImgUrl)); 
             
         } 
         catch (IOException ex) 
@@ -214,7 +186,7 @@ public class Framework extends Canvas {
                 case PLAYING:
                     gameTime += System.nanoTime() - lastTime;
                     
-                    game.UpdateGame(gameTime, mousePosition());
+                    data.getGame().UpdateGame(gameTime, mousePosition());
                     
                     lastTime = System.nanoTime();
                 break;
@@ -288,34 +260,35 @@ public class Framework extends Canvas {
         switch (gameState)
         {
             case PLAYING:
-                game.Draw(g2d, mousePosition(), gameTime);
+                data.getGame().Draw(g2d, mousePosition(), gameTime);
             break;
             case GAMEOVER:
-                drawGameOver(g2d);
-                
-                drawRestartSelect(g2d, select);
+            		
+            		data.drawGameOver(g2d);
+            		data.getGame().DrawStatistic(g2d, gameTime);
+            		data.drawRestartSelect(g2d, data.getSelect());
             break;
             case MAIN_MENU:
-            		drawMenu(g2d);
-            		drawMenuSelect(g2d, select);
+            		data.drawMenu(g2d);
+            		data.drawMenuSelect(g2d, data.getSelect());
                 
             break;
             case HELP:
-            		drawHelp(g2d);
+            		data.drawHelp(g2d);
                 
             	break;
             case QUIT:
-            		drawQuit(g2d);
+            		data.drawQuit(g2d);
             break;
             case SELECT:
-            		drawSelect(g2d);
-            		drawHelicopterSelect(g2d, selectHeli);
-            		drawHelicopter(g2d);
+            		data.drawSelect(g2d);
+            		data.drawHelicopterSelect(g2d, data.getSelectHeli());
+            		data.drawHelicopter(g2d);
             	break;
             case RESELECT:
-	            	drawSelect(g2d);
-	        		drawHelicopterSelect(g2d,selectHeli);
-	        		drawHelicopter(g2d);
+            		data.drawSelect(g2d);
+            		data.drawHelicopterSelect(g2d,data.getSelectHeli());
+            		data.drawHelicopter(g2d);
             	break;
             case GAME_CONTENT_LOADING:
                 g2d.setColor(Color.white);
@@ -334,7 +307,7 @@ public class Framework extends Canvas {
         gameTime = 0;
         lastTime = System.nanoTime();
         
-        game = new Game(helicopterSelect);
+        data.setGame(new Game(helicopterSelect));
     }
     
     /**
@@ -346,7 +319,7 @@ public class Framework extends Canvas {
         gameTime = 0;
         lastTime = System.nanoTime();
         
-        game.RestartGame(helicopterSelect);
+        data.getGame().RestartGame(helicopterSelect);
         
         // We change game status so that the game can start.
         gameState = GameState.PLAYING;
@@ -398,25 +371,25 @@ public class Framework extends Canvas {
         			{
                 		Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-        				select ++;
-        				if(select > 2)
-        					select -= 2;
+        				data.setSelect(data.getSelect() + 1);
+        				if(data.getSelect() > 2)
+        					data.setSelect(data.getSelect() - 2);
 	        		}
                 else if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
                 		Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-	        			select --;
-	        			if(select < 1)
-	        				select += 2;
+	        			data.setSelect(data.getSelect() - 1);
+	        			if(data.getSelect() < 1)
+	        				data.setSelect(data.getSelect() + 2);
 	        		}
 	            	
-                if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		{
 //                			restartGame();
                 			gameState = GameState.RESELECT;
 	            		}
-                else	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                else	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		System.exit(0);
 	                
             break;
@@ -426,23 +399,23 @@ public class Framework extends Canvas {
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select ++;
-            			if(select > 3)
-            				select -= 3;
+            			data.setSelect(data.getSelect() + 1);
+            			if(data.getSelect() > 3)
+            				data.setSelect(data.getSelect() - 3);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			select --;
-            			if(select < 1)
-            				select += 3;
+            			data.setSelect(data.getSelect() - 1);
+            			if(data.getSelect() < 1)
+            				data.setSelect(data.getSelect() + 3);
             		}
-                	if(select == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 		gameState = GameState.SELECT;
-                	if(select == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 			gameState = GameState.HELP;
-                	if(select == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+                	if(data.getSelect() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 			gameState = GameState.QUIT;
             break;
             case SELECT:
@@ -450,75 +423,75 @@ public class Framework extends Canvas {
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			++selectHeli;
-            			if(selectHeli > 8)
-            				selectHeli -= 8;
+            			data.setSelectHeli(data.getSelectHeli() + 1);
+            			if(data.getSelectHeli() > 8)
+            				data.setSelectHeli(data.getSelectHeli() - 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_LEFT)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			--selectHeli;
-            			if(selectHeli < 1)
-            				selectHeli += 8;
+            			data.setSelectHeli(data.getSelectHeli() - 1);
+            			if(data.getSelectHeli() < 1)
+            				data.setSelectHeli(data.getSelectHeli() + 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_DOWN)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			selectHeli += 4;
-            			if(selectHeli > 8)
-            				selectHeli -= 8;
+            			data.setSelectHeli(data.getSelectHeli() + 4);
+            			if(data.getSelectHeli() > 8)
+            				data.setSelectHeli(data.getSelectHeli() - 8);
             		}
             		if(e.getKeyCode() == KeyEvent.VK_UP)
             		{
             			Sound reload = new Sound("load.mp3", false);
                 		reload.start();
-            			selectHeli -= 4;
-            			if(selectHeli < 1)
-            				selectHeli += 8;
+            			data.setSelectHeli(data.getSelectHeli() - 4);
+            			if(data.getSelectHeli() < 1)
+            				data.setSelectHeli(data.getSelectHeli() + 8);
             		}
             		
             		Sound reload = new Sound("reload.mp3", false);
-            		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		if(data.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
             		}
-            		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
                 	{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
-            		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+            		else if(data.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
             		{
             			reload.start();
-            			newGame(selectHeli);
+            			newGame(data.getSelectHeli());
                 	}
                 	
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -529,75 +502,75 @@ public class Framework extends Canvas {
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			++selectHeli;
-	        			if(selectHeli > 8)
-	        				selectHeli -= 8;
+	        			data.setSelectHeli(data.getSelectHeli() + 1);
+	        			if(data.getSelectHeli() > 8)
+	        				data.setSelectHeli(data.getSelectHeli() - 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			--selectHeli;
-	        			if(selectHeli < 1)
-	        				selectHeli += 8;
+	        			data.setSelectHeli(data.getSelectHeli() - 1);
+	        			if(data.getSelectHeli() < 1)
+	        				data.setSelectHeli(data.getSelectHeli() + 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_DOWN)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			selectHeli += 4;
-	        			if(selectHeli > 8)
-	        				selectHeli -= 8;
+	        			data.setSelectHeli(data.getSelectHeli() + 4);
+	        			if(data.getSelectHeli() > 8)
+	        				data.setSelectHeli(data.getSelectHeli() - 8);
 	        		}
 	        		if(e.getKeyCode() == KeyEvent.VK_UP)
 	        		{
 	        			Sound reload1 = new Sound("load.mp3", false);
 	            		reload1.start();
-	        			selectHeli -= 4;
-	        			if(selectHeli < 1)
-	        				selectHeli += 8;
+	        			data.setSelectHeli(data.getSelectHeli() - 4);
+	        			if(data.getSelectHeli() < 1)
+	        				data.setSelectHeli(data.getSelectHeli() + 8);
 	        		}
 	        		
 	        		Sound reload1 = new Sound("reload.mp3", false);
-	        		if(selectHeli == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		if(data.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	        		}
-	        		else if(selectHeli == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            	{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
-	        		else if(selectHeli == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	        		else if(data.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	        		{
 	        			reload1.start();
-	        			restartGame(selectHeli);
+	        			restartGame(data.getSelectHeli());
 	            	}
 	            	
 	        		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
@@ -627,199 +600,5 @@ public class Framework extends Canvas {
     public void mouseClicked(MouseEvent e)
     {
         
-    }
-    
-    
-    private void drawMenuBackground(Graphics2D g2d){
-        g2d.drawImage(skyColorImg,    0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(cloudLayer1Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(cloudLayer2Img, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.drawImage(menuBorderImg,  0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        g2d.setColor(Color.white);
-        g2d.drawString("", 7, frameHeight - 5);
-    }
-    
-    private void drawHelicopter(Graphics2D g2d)
-    {
-    		g2d.drawImage(heli1Img,frameWidth / 6, frameHeight / 3, 150, 48, null);
-    		g2d.drawImage(heli2Img,frameWidth / 6 +200, frameHeight / 3, 150, 42, null);
-    		g2d.drawImage(heli3Img,frameWidth / 6 +400, frameHeight / 3, 150, 52, null);
-    		g2d.drawImage(heli4Img,frameWidth / 6 +600, frameHeight / 3, 150, 75, null);
-    		g2d.drawImage(heli5Img,frameWidth / 6, frameHeight / 3 +150, 150, 68, null);
-    		g2d.drawImage(heli6Img,frameWidth / 6 +200, frameHeight / 3 +150, 150, 33, null);
-    		g2d.drawImage(heli7Img,frameWidth / 6 +400, frameHeight / 3 +150, 132, 75, null);
-    		g2d.drawImage(heli8Img,frameWidth / 6 +600, frameHeight / 3 +150, 150, 31, null);
-    }
-    
-    private void drawMenuSelect(Graphics2D g2d, int menu)
-    {
-		g2d.setColor(Color.darkGray);
-    		switch(menu)
-    		{
-    		case 1:
-    			g2d.fillRect(playButton.x, playButton.y, playButton.width, playButton.height);
-    			g2d.setFont(buttonFont);
-    			g2d.setColor(Color.white);
-    			g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
-    			break;
-    		case 2:
-    			g2d.fillRect(helpButton.x, helpButton.y, helpButton.width, helpButton.height);
-    			g2d.setFont(buttonFont);
-    			g2d.setColor(Color.white);
-    			g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
-    			break;
-    		case 3:
-    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
-    			g2d.setFont(buttonFont);
-    			g2d.setColor(Color.white);
-    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
-    			break;
-    		}
-    		
-    }
-    
-    private void drawHelicopterSelect(Graphics2D g2d, int heli)
-    {
-    	g2d.setColor(Color.darkGray);
-    	switch(heli)
-		{
-		case 1:
-			g2d.fillRect(heli1Button.x, heli1Button.y, heli1Button.width, heli1Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 2:
-			g2d.fillRect(heli2Button.x, heli2Button.y, heli2Button.width, heli2Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 3:
-			g2d.fillRect(heli3Button.x, heli3Button.y, heli3Button.width, heli3Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 4:
-			g2d.fillRect(heli4Button.x, heli4Button.y, heli4Button.width, heli4Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 5:
-			g2d.fillRect(heli5Button.x, heli5Button.y, heli5Button.width, heli5Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 6:
-			g2d.fillRect(heli6Button.x, heli6Button.y, heli6Button.width, heli6Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 7:
-			g2d.fillRect(heli7Button.x, heli7Button.y, heli7Button.width, heli7Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		case 8:
-			g2d.fillRect(heli8Button.x, heli8Button.y, heli8Button.width, heli8Button.height);
-			g2d.setFont(buttonFont);
-			g2d.setColor(Color.white);
-			break;
-		
-		}
-    }
-    
-    private void drawRestartSelect(Graphics2D g2d, int menu)
-    {
-		g2d.setColor(Color.darkGray);
-    		switch(menu)
-    		{
-    		case 1:
-    			g2d.fillRect(restartButton.x, restartButton.y, restartButton.width, restartButton.height);
-    			g2d.setFont(buttonFont);
-    			g2d.setColor(Color.white);
-    			g2d.drawString("RESTART", restartButton.x+75, restartButton.y+75);
-    			break;
-    		case 2:
-    			g2d.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
-    			g2d.setFont(buttonFont);
-    			g2d.setColor(Color.white);
-    			g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
-    			break;
-    		}
-    		
-    }
-    private void drawMenu(Graphics2D g2d) {
-    		drawMenuBackground(g2d);
-        g2d.drawImage(gameTitleImg, frameWidth/2 - gameTitleImg.getWidth()/2, frameHeight/5 - 50, null);
-        
-        g2d.setFont(buttonFont);
-        g2d.setColor(Color.white);
-        g2d.drawString("PLAY", playButton.x+125, playButton.y+75);
-        g2d.drawString("HELP", helpButton.x+125, helpButton.y+75);
-        g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
-        g2d.draw(playButton);
-        g2d.draw(helpButton);
-        g2d.draw(quitButton);
-    }
-    private void drawGameOver(Graphics2D g2d) {
-    		drawMenuBackground(g2d);
-        
-        game.DrawStatistic(g2d, gameTime);
-        /*g2d.setFont(buttonFont);
-        g2d.drawString("GAME OVER", frameWidth/2 - 150, frameHeight/4);
-        */
-        g2d.setFont(buttonFont);
-        g2d.setColor(Color.white);
-        g2d.drawString("RESTART", helpButton.x+75, helpButton.y+75);
-        g2d.drawString("QUIT", quitButton.x+125, quitButton.y+75);
-        
-        g2d.draw(restartButton);
-        g2d.draw(quitButton);
-    }
-    private void drawHelp(Graphics2D g2d) {
-	    	drawMenuBackground(g2d);
-			
-		g2d.drawImage(helpImg, frameWidth - helpImg.getWidth() - 110, frameHeight/5 - 50, null);
-			
-	    g2d.setFont(buttonFont);
-	    g2d.drawString("BACK", backButton.x+120, backButton.y+75);
-	    g2d.draw(backButton);
-	    g2d.setFont(font);
-	    g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
-	    
-    }
-    private void drawQuit(Graphics2D g2d) {
-    		drawMenuBackground(g2d);
-		g2d.setFont(buttonFont);
-		g2d.setColor(Color.white);
-		g2d.drawString("Press ENTER to quit", frameWidth/2 - 300, 140);
-		g2d.setFont(buttonFont);
-		g2d.drawString("BACK", quitButton.x+120, quitButton.y+75);
-		g2d.draw(backButton);
-		g2d.setFont(font);
-		g2d.setColor(Color.white);
-		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
-		g2d.setColor(Color.black);
-		g2d.setFont(buttonFont);
-		g2d.drawString("Are you sure", frameWidth/2 -200, frameHeight/2 - 50);
-		g2d.drawString("you really want to quit?", frameWidth/2 -300, frameHeight/2 +25);
-    }
-    private void drawSelect(Graphics2D g2d) {
-    	drawMenuBackground(g2d);
-		g2d.setFont(buttonFont);
-		g2d.setColor(Color.white);
-		g2d.drawString("SELECT YOUR HELICOPTER", frameWidth/2 - 400, 140);
-		g2d.drawString("BACK", backButton.x+120, backButton.y+75);
-		g2d.draw(backButton);
-		g2d.setFont(font);
-		g2d.drawString("Press BACKSPACE to return", backButton.x, backButton.y+150);
-		
-		g2d.draw(heli1Button);
-		g2d.draw(heli2Button);
-		g2d.draw(heli3Button);
-		g2d.draw(heli4Button);
-		g2d.draw(heli5Button);
-		g2d.draw(heli6Button);
-		g2d.draw(heli7Button);
-		g2d.draw(heli8Button);
     }
 }
