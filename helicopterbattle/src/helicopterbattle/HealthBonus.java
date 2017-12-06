@@ -18,9 +18,9 @@ public class HealthBonus extends Bonus {
 	
 	public void apply(PlayerHelicopter player)
 	{
-		if(player.health > 0)
+		if(player.data.getHealth() > 0)
 		{
-			player.health += 50;
+			player.data.setHealth(player.data.getHealth() + 50);
 		}
 	}
 }

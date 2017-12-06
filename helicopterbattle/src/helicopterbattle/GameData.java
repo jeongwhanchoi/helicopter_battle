@@ -245,7 +245,7 @@ public class GameData {
         if(Game.isPlayerAlive())
         {
             player.Draw(g2d);
-        		statXCoordinate = 10 + player.helicopterProfileImg.getWidth() + 10;
+        		statXCoordinate = 10 + player.data.getHelicopterProfileImg().getWidth() + 10;
         }
 		
         // Draws helicopter's profile
@@ -306,12 +306,12 @@ public class GameData {
         g2d.setFont(font);
         g2d.setColor(Color.darkGray);
         
-        g2d.drawString("HEALTH: "    + player.health, statXCoordinate, 41);
+        g2d.drawString("HEALTH: "    + player.data.getHealth(), statXCoordinate, 41);
         g2d.drawString("DESTROYED: " + Game.destroyedEnemies, statXCoordinate, 61);
         g2d.drawString("RUNAWAY: "   + Game.runAwayEnemies,   statXCoordinate, 81);
-        g2d.drawString("ROCKETS: "   + player.numberOfRockets, statXCoordinate, 111);
-        g2d.drawString("AMMO: "      + player.numberOfAmmo, statXCoordinate, 131);
-        g2d.drawString("MISSILE: "   + player.numberOfMissiles, statXCoordinate, 151);
+        g2d.drawString("ROCKETS: "   + player.data.getNumberOfRockets(), statXCoordinate, 111);
+        g2d.drawString("AMMO: "      + player.data.getNumberOfAmmo(), statXCoordinate, 131);
+        g2d.drawString("MISSILE: "   + player.data.getNumberOfMissiles(), statXCoordinate, 151);
         
         g2d.drawString("STAGE: " + Game.level, Framework.frameWidth/2 + 300, 21);
         g2d.drawString("SCORE: " + Game.getScore(), Framework.frameWidth/2 + 300, 41);

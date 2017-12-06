@@ -52,9 +52,9 @@ public class EnemyHelicopter {
      * 
      * @param xCoordinate Starting x coordinate of helicopter.
      * @param yCoordinate Starting y coordinate of helicopter.
-     * @param helicopterBodyImg Image of helicopter body.
-     * @param helicopterFrontPropellerAnimImg Image of front helicopter propeller.
-     * @param helicopterRearPropellerAnimImg Image of rear helicopter propeller.
+     * @param data.getHelicopterBodyImg() Image of helicopter body.
+     * @param data.getHelicopterFrontPropellerAnimImg() Image of front helicopter propeller.
+     * @param data.getHelicopterRearPropellerAnimImg() Image of rear helicopter propeller.
      */
     public void Initialize(int xCoordinate, int yCoordinate)
     {

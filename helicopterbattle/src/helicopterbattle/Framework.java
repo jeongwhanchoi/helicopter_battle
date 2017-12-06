@@ -386,7 +386,6 @@ public class Framework extends Canvas {
 	            	
                 if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
 	            		{
-//                			restartGame();
                 			gameState = GameState.RESELECT;
 	            		}
                 else	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)

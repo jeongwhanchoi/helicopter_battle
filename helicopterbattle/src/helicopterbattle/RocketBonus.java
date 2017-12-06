@@ -17,6 +17,6 @@ public class RocketBonus extends Bonus {
 
 	@Override
 	public void apply(PlayerHelicopter player) {
-		player.numberOfRockets += rockets;
+		player.data.setNumberOfRockets(player.data.getNumberOfRockets() + rockets);
 	}
 }

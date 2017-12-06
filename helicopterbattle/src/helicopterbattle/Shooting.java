@@ -16,9 +16,9 @@ public class Shooting {
         if(player.isShooting(gameTime))
         {
             Bullet.timeOfLastCreatedBullet = gameTime;
-            player.numberOfAmmo--;
+            player.data.setNumberOfAmmo(player.data.getNumberOfAmmo() - 1);
             
-            Bullet b = new Bullet(player.machineGunXcoordinate, player.machineGunYcoordinate, mousePosition);
+            Bullet b = new Bullet(player.data.getMachineGunXcoordinate(), player.data.getMachineGunYcoordinate(), mousePosition);
             Game.getBulletsList().add(b);
             
             Sound gun = new Sound("gun.mp3", false);
@@ -37,10 +37,10 @@ public class Shooting {
         if(player.isFiredRocket(gameTime))
         {
             Rocket.timeOfLastCreatedRocket = gameTime;
-            player.numberOfRockets--;
+            player.data.setNumberOfRockets(player.data.getNumberOfRockets() - 1);
             
             Rocket r = new Rocket();
-            r.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
+            r.Initialize(player.data.getRocketHolderXcoordinate(), player.data.getRocketHolderYcoordinate());
             Game.getRocketsList().add(r);
             
             Sound rocket = new Sound("rocket.mp3", false);
@@ -76,10 +76,10 @@ public class Shooting {
     		if(player.isFiredMissile(gameTime))
     		{
     			Missile.timeOfLastCreatedRocket = gameTime;
-    			player.numberOfMissiles--;
+    			player.data.setNumberOfMissiles(player.data.getNumberOfMissiles() - 1);
     			
     			Missile m = new Missile();
-    			m.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
+    			m.Initialize(player.data.getRocketHolderXcoordinate(), player.data.getRocketHolderYcoordinate());
     			Game.getMissilesList().add(m);
     			
     			Sound missile = new Sound("missile.mp3", false);
@@ -138,7 +138,7 @@ public class Shooting {
         {
 
             // Current enemy rectangle.
-            Rectangle playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
+            Rectangle playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.data.getHelicopterBodyImg().getWidth(), player.data.getHelicopterBodyImg().getHeight());
 
             // Is current rocket over currnet enemy?
             if(rocketRectangle.intersects(playerRectangle))
@@ -146,7 +146,7 @@ public class Shooting {
                 didItHitPlayer = true;
 				
                 // Rocket hit the enemy so we reduce his health.
-                player.health -= Rocket.damagePower;
+                player.data.setHealth(player.data.getHealth() - Rocket.damagePower);
                 
                 // Rocket hit enemy so we don't need to check other enemies.
                 break;

@@ -282,9 +282,9 @@ public class Game {
         }
         // When a player is out of rockets and machine gun bullets, and all lists 
         // of bullets, rockets and explosions are empyt(end showing) we finish the game.
-        if(data.getPlayer().numberOfAmmo <= 0 && 
-           data.getPlayer().numberOfRockets <= 0 &&
-           data.getPlayer().numberOfMissiles <= 0 &&
+        if(data.getPlayer().data.getNumberOfAmmo() <= 0 && 
+           data.getPlayer().data.getNumberOfRockets() <= 0 &&
+           data.getPlayer().data.getNumberOfMissiles() <= 0 &&
            bulletsList.isEmpty() && 
            rocketsList.isEmpty() && 
            data.getExplosionsList().isEmpty() &&
@@ -337,8 +337,8 @@ public class Game {
         		updateStones(gameTime);
         		updateStonesSmoke(gameTime);
         }*/
-        if(data.getPlayer().helicopterName == "Chinook" || data.getPlayer().helicopterName == "Black Shark" 
-           || data.getPlayer().helicopterName =="SNOC" || data.getPlayer().helicopterName == "Viper")
+        if(data.getPlayer().data.getHelicopterName() == "Chinook" || data.getPlayer().data.getHelicopterName() == "Black Shark" 
+           || data.getPlayer().data.getHelicopterName() =="SNOC" || data.getPlayer().data.getHelicopterName() == "Viper")
             data.assistanceSystem();
     }
     
@@ -402,8 +402,8 @@ public class Game {
         double RIGHT_ANGLE_RADIANS = Math.PI / 2;
         
         // Positon of the player helicopter machine gun.
-        int pivotX = data.getPlayer().machineGunXcoordinate;
-        int pivotY = data.getPlayer().machineGunYcoordinate;
+        int pivotX = data.getPlayer().data.getMachineGunXcoordinate();
+        int pivotY = data.getPlayer().data.getMachineGunYcoordinate();
         
         int a = pivotX - mousePosition.x;
         int b = pivotY - mousePosition.y;
@@ -475,7 +475,7 @@ public class Game {
      */
     public static boolean isPlayerAlive()
     {
-        if(data.getPlayer().health <= 0)
+        if(data.getPlayer().data.getHealth() <= 0)
             return false;
         else
         		return true;
@@ -564,9 +564,9 @@ public class Game {
     			data.getBoss().update();
     			
     			
-    			if(isPlayerCrashed(new Rectangle(data.getPlayer().xCoordinate, data.getPlayer().yCoordinate, data.getPlayer().helicopterBodyImg.getWidth(), data.getPlayer().helicopterBodyImg.getHeight()), new Rectangle((int)data.getBoss().xCoordinate, (int)data.getBoss().yCoordinate, data.getBoss().helicopterImg.getWidth(), data.getBoss().helicopterImg.getHeight())))
+    			if(isPlayerCrashed(new Rectangle(data.getPlayer().xCoordinate, data.getPlayer().yCoordinate, data.getPlayer().data.getHelicopterBodyImg().getWidth(), data.getPlayer().data.getHelicopterBodyImg().getHeight()), new Rectangle((int)data.getBoss().xCoordinate, (int)data.getBoss().yCoordinate, data.getBoss().helicopterImg.getWidth(), data.getBoss().helicopterImg.getHeight())))
     			{
-    				data.getPlayer().health -= 500;
+    				data.getPlayer().data.setHealth(data.getPlayer().data.getHealth() - 500);
     				data.setBossFight(false);
     			}
     			else if(data.getBoss().health <= 0)
@@ -595,10 +595,10 @@ public class Game {
     				eh.Update();
     		            
     				// Is chrashed with player?
-    				Rectangle playerrectangle = new Rectangle(data.getPlayer().xCoordinate, data.getPlayer().yCoordinate, data.getPlayer().helicopterBodyImg.getWidth(), data.getPlayer().helicopterBodyImg.getHeight());
+    				Rectangle playerrectangle = new Rectangle(data.getPlayer().xCoordinate, data.getPlayer().yCoordinate, data.getPlayer().data.getHelicopterBodyImg().getWidth(), data.getPlayer().data.getHelicopterBodyImg().getHeight());
     				Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
     				if(playerrectangle.intersects(enemyrectangle)){
-    					data.getPlayer().health -= 50;
+    					data.getPlayer().data.setHealth(data.getPlayer().data.getHealth() - 50);
     					
     					// Remove helicopter from the list.
     					enemyHelicopterList.remove(i);
@@ -677,7 +677,7 @@ public class Game {
     	
 	    	// Update bonuses
 	    	Rectangle playerRect = new Rectangle(data.getPlayer().xCoordinate, data.getPlayer().yCoordinate,
-	    			data.getPlayer().helicopterBodyImg.getWidth(), data.getPlayer().helicopterBodyImg.getHeight());
+	    			data.getPlayer().data.getHelicopterBodyImg().getWidth(), data.getPlayer().data.getHelicopterBodyImg().getHeight());
 	    	for(int i = 0; i < data.getBonusList().size(); ++i) 
 	    		{
 	    		Bonus bonus = data.getBonusList().get(i);

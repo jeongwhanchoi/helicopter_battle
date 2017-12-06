@@ -19,6 +19,6 @@ public class BulletBonus extends Bonus {
 
 	@Override
 	public void apply(PlayerHelicopter player) {
-		player.numberOfAmmo += bullets;
+		player.data.setNumberOfAmmo(player.data.getNumberOfAmmo() + bullets);
 	}
 }
