@@ -3,6 +3,11 @@ package helicopterbattle;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,6 +15,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  * Actual game.
@@ -66,11 +72,12 @@ public class Game {
     
     static GameData data = new GameData(new Shooting());
 	private static int score;
-    private static String highScore = "";
+//    private static String highScore = "";
+    private String highScore = "";
 
-    public static String getHighScore(){
-    	return highScore;
-    }
+//    public static String getHighScore(){
+//    	return highScore;
+//    }
     
     public Game(int helicopterSelect)
     {
@@ -367,7 +374,8 @@ public class Game {
     		if(highScore.equals(""))
     		{
     			//init the highscore
-    			highScore = Score.getHighScore();
+//    			highScore = Score.getHighScore();
+    			highScore = this.getHighScore();
     		}
     		g2d.setColor(Color.darkGray);
     		g2d.drawString("High Score ", Framework.frameWidth/2 -150, Framework.frameHeight/4 -50);
@@ -382,6 +390,76 @@ public class Game {
     			score = 0;
     		return score;
     }
+    public String getHighScore()
+    {
+    		FileReader readFile = null;
+    		BufferedReader  reader = null;
+    		try
+    		{
+    			readFile = new FileReader("highscore.dat");
+    			reader = new BufferedReader(readFile);
+    			return reader.readLine();
+    		}
+    		catch(Exception e)
+    		{
+    			return "Nobody:0";
+    		}
+    		finally
+    		{
+    			try {
+    				if(reader != null)
+    				reader.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+    		}
+    }
+    
+    public void checkScore()
+    {
+    		if(highScore.equals(""))
+    			return;
+    		//format Choi/:/100
+    		if(Game.getScore() > Integer.parseInt((highScore.split(":")[1])))
+    		{
+    			//user has set a new record
+    			String name = JOptionPane.showInputDialog("You set a new high score. What is your name?");
+    			highScore = name + ":" + getScore();
+    			
+    			File scoreFile = new File("highscore.dat");
+    			if(!scoreFile.exists())
+    			{
+    				try {
+						scoreFile.createNewFile();
+					} catch (IOException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+    			}
+    		FileWriter writeFile = null;
+    		BufferedWriter writer = null;
+    		try
+    		{
+    			writeFile = new FileWriter(scoreFile);
+    			writer = new BufferedWriter(writeFile);
+    			writer.write(this.highScore);
+    		}
+    		catch(Exception e)
+    		{
+    			//errors
+    		}
+    		finally
+    		{
+    			try
+    			{
+    				if(writer != null)
+    					writer.close();
+    			}
+    			catch(Exception e) {}
+    		}
+    }
+   }
     
     /**
      * Draws rotated mouse cursor.
