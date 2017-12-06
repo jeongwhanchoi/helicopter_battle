@@ -25,6 +25,8 @@ import javax.swing.JOptionPane;
  */
 
 public class Game {
+	
+	Shooting sh = new Shooting(); 
     // Use this to generate a random number.
     private Random random;
     
@@ -35,29 +37,47 @@ public class Game {
     private PlayerHelicopter player;
     
     // Enemy helicopters.
-    private ArrayList<EnemyHelicopter> enemyHelicopterList = new ArrayList<EnemyHelicopter>();
+    private static ArrayList<EnemyHelicopter> enemyHelicopterList = new ArrayList<EnemyHelicopter>();
+    public static ArrayList<EnemyHelicopter> getEnemyHelicopterList(){
+    	return enemyHelicopterList;
+    } 
     
     // Explosions
     private ArrayList<Animation> explosionsList;
     private BufferedImage explosionAnimImg;
     
     // List of all the machine gun bullets.
-    private ArrayList<Bullet> bulletsList;
+    private static ArrayList<Bullet> bulletsList;
+    public static ArrayList<Bullet> getBulletsList(){
+    	return bulletsList;
+    } 
     
     // List of all the machine gun bullets of the boss.
 //    private ArrayList<Bullet> bossBulletsList;
     
     // List of all the missiles
-    private ArrayList<Missile> missilesList;
+    private static ArrayList<Missile> missilesList;
+    public static ArrayList<Missile> getMissilesList(){
+    	return missilesList;
+    } 
     
     // List of all the rockets.
-    private ArrayList<Rocket> rocketsList;
+    private static ArrayList<Rocket> rocketsList;
+    public static ArrayList<Rocket> getRocketsList(){
+    	return rocketsList;
+    } 
     
     // List of all the rockets smoke.
-    private ArrayList<RocketSmoke> rocketSmokeList;
+    private static ArrayList<RocketSmoke> rocketSmokeList;
+    public static ArrayList<RocketSmoke> getRocketSmokeList(){
+    	return rocketSmokeList;
+    } 
     
     // List of all the rockets for boss
-    private ArrayList<Rocket> bossRocketsList;
+    private static ArrayList<Rocket> bossRocketsList;
+    public static ArrayList<Rocket> getBossRocketsList(){
+    	return bossRocketsList;
+    } 
     
     // List of all the bonuses
     private ArrayList<Bonus> bonusList;
@@ -107,19 +127,21 @@ public class Game {
     public Game(int helicopterSelect)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
+
+        // Sets variables and objects for the game.
+        Initialize(helicopterSelect);
+        // Load game files (images, sounds, ...)
+        LoadContent();
         
-        Thread threadForInitGame = new Thread() {
-            @Override
-            public void run(){
-                // Sets variables and objects for the game.
-                Initialize(helicopterSelect);
-                // Load game files (images, sounds, ...)
-                LoadContent();
-                
-                Framework.gameState = Framework.GameState.PLAYING;
-            }
-        };
-        threadForInitGame.start();
+        Framework.gameState = Framework.GameState.PLAYING;
+        
+//        Thread threadForInitGame = new Thread() {
+//            @Override
+//            public void run(){
+//
+//            }
+//        };
+//        threadForInitGame.start();
     }
     
     
@@ -324,9 +346,9 @@ public class Game {
         }
         // If player is alive we update him.
         if(isPlayerAlive()){
-            isPlayerShooting(gameTime, mousePosition);
-            didPlayerFiredRocket(gameTime);
-            didPlayerFiredMissile(gameTime);
+            sh.isPlayerShooting(gameTime, mousePosition, player);
+            sh.didPlayerFiredRocket(gameTime, player);
+            sh.didPlayerFiredMissile(gameTime, player);
             player.isMoving();
             player.Update();
         }
@@ -338,13 +360,13 @@ public class Game {
 	    }*/
         
         /* Bullets */
-        updateBullets();
+        sh.updateBullets(boss, bossFight);
         
         /* Rockets */
-        updateMissile(gameTime); // It also checks for collisions (if any of the missiles hit any of the enemy helicopter).
-        updateRockets(gameTime); // It also checks for collisions (if any of the rockets hit any of the enemy helicopter).
-        updateRocketSmoke(gameTime);
-        updateBossRockets(gameTime);
+        sh.updateMissile(gameTime, boss, bossFight, random); // It also checks for collisions (if any of the missiles hit any of the enemy helicopter).
+        sh.updateRockets(gameTime, boss, bossFight, random); // It also checks for collisions (if any of the rockets hit any of the enemy helicopter).
+        sh.updateRocketSmoke(gameTime);
+        sh.updateBossRockets(gameTime, player);
         
         /* Enemies */
         createEnemyHelicopter(gameTime);
@@ -361,8 +383,8 @@ public class Game {
         		updateStonesSmoke(gameTime);
         }*/
         if(player.helicopterName == "Chinook" || player.helicopterName == "Black Shark" 
-        		|| player.helicopterName =="SNOC" || player.helicopterName == "Viper")
-        		assistanceSystem();
+           || player.helicopterName =="SNOC" || player.helicopterName == "Viper")
+            assistanceSystem();
     }
     
     /**
@@ -620,86 +642,7 @@ public class Game {
     		return direction.multiply(1.0 / direction.length());
     }*/
     
-    /**
-     * Checks if the player is shooting with the machine gun and creates bullets if he shooting.
-     * 
-     * @param gameTime Game time.
-     */
-    private void isPlayerShooting(long gameTime, Point mousePosition)
-    {
-        if(player.isShooting(gameTime))
-        {
-            Bullet.timeOfLastCreatedBullet = gameTime;
-            player.numberOfAmmo--;
-            
-            Bullet b = new Bullet(player.machineGunXcoordinate, player.machineGunYcoordinate, mousePosition);
-            bulletsList.add(b);
-            
-            Sound gun = new Sound("gun.mp3", false);
-            gun.start();
-        }
-    }
-    
-    /**
-     * Checks if the player is fired the rocket and creates it if he did.
-     * It also checks if player can fire the rocket.
-     * 
-     * @param gameTime Game time.
-     */
-    private void didPlayerFiredRocket(long gameTime)
-    {
-        if(player.isFiredRocket(gameTime))
-        {
-            Rocket.timeOfLastCreatedRocket = gameTime;
-            player.numberOfRockets--;
-            
-            Rocket r = new Rocket();
-            r.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
-            rocketsList.add(r);
-            
-            Sound rocket = new Sound("rocket.mp3", false);
-            rocket.start();
-        }
-    }
-        
-    private void didBossFiredRocket(long gameTime)
-    {
-        if(boss.isFiredRocket(gameTime))
-        {
-            Rocket.timeOfLastCreatedBossRocket = gameTime;
-            
-            boss.numberOfRockets--;
-            
-            Rocket r = new Rocket();
-            r.InitializeBossRocket(boss.xCoordinate, boss.yCoordinate);
-            bossRocketsList.add(r);
 
-            Sound rocket = new Sound("rocket.mp3", false);
-            rocket.start();
-        }
-    }
-    
-    /**
-     * Checks if the player is fired the missile and creates it if hed did.
-     * It also checks if player can fire the rocket.
-     * 
-     * @param gameTime
-     */
-    private void didPlayerFiredMissile(long gameTime)
-    {
-    		if(player.isFiredMissile(gameTime))
-    		{
-    			Missile.timeOfLastCreatedRocket = gameTime;
-    			player.numberOfMissiles--;
-    			
-    			Missile m = new Missile();
-    			m.Initialize(player.rocketHolderXcoordinate, player.rocketHolderYcoordinate);
-    			missilesList.add(m);
-    			
-    			Sound missile = new Sound("missile.mp3", false);
-    			missile.start();
-    		}
-    }
     
     /**
      * Creates a new enemy if it's time.
@@ -710,7 +653,7 @@ public class Game {
     {
     		if(bossFight)
     		{
-    			didBossFiredRocket(gameTime);
+    			sh.didBossFiredRocket(gameTime, boss);
     			return;
     		}
     		if(destroyedEnemies == level * numOfEnemiesForBoss)
@@ -721,7 +664,7 @@ public class Game {
     			
     			enemyHelicopterList.clear();
     			
-       			didBossFiredRocket(gameTime);
+       			sh.didBossFiredRocket(gameTime, boss);
        			
     			EnemyHelicopter.spawnEnemies = false;
     			
@@ -946,265 +889,7 @@ public class Game {
             }*/
     }
     
-    /**
-     * Update bullets. 
-     * It moves bullets.
-     * Checks if the bullet is left the screen.
-     * Checks if any bullets is hit any enemy.
-     */
-    private void updateBullets()
-    {
-        for(int i = 0; i < bulletsList.size(); i++)
-        {
-            Bullet bullet = bulletsList.get(i);
-            
-            // Move the bullet.
-            bullet.Update();
-            
-            // Is left the screen?
-            if(bullet.isItLeftScreen()){
-                bulletsList.remove(i);
-                // Bullet have left the screen so we removed it from the list and now we can continue to the next bullet.
-                continue;
-            }
-            
-            // Did hit any enemy?
-            // Rectangle of the bullet image.
-            Rectangle bulletRectangle = new Rectangle((int)bullet.xCoordinate, (int)bullet.yCoordinate, Bullet.bulletImg.getWidth(), Bullet.bulletImg.getHeight());
-            // Go trough all enemis.
-            for(int j = 0; j < enemyHelicopterList.size(); j++)
-            {
-                EnemyHelicopter eh = enemyHelicopterList.get(j);
 
-                // Current enemy rectangle.
-                Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
-
-                // Is current bullet over currnet enemy?
-                if(bulletRectangle.intersects(enemyrectangle))
-                {
-                    // Bullet hit the enemy so we reduce his health.
-                    eh.health -= Bullet.damagePower;
-                    
-                    // Bullet was also destroyed so we remove it.
-                    bulletsList.remove(i);
-                    
-                    // That bullet hit enemy so we don't need to check other enemies.
-                    break;
-                }
-            }
-            // Check if boss is hit
-            if(bossFight && !boss.invincible)
-            {
-            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
-            		if(bulletRectangle.intersects(bossRectangle))
-            		{
-            				boss.health -= Bullet.damagePower;
-            				bulletsList.remove(i);
-            		}
-            }
-            /*for(int k=0; k < bossBulletsList.size(); ++k)
-            {
-            		Bullet bulletBoss = bossBulletsList.get(k);
-            		
-            		bulletBoss.Update();
-            		
-            		// Is left the screen?
-            		if(bullet.isItLeftScreen()) 
-            		{
-            			bossBulletsList.remove(i--);
-            			// Bullet have left the screen so we removed it from the list and now we can continue to the next bullet.
-            			continue;
-            		}
-                    
-            		Rectangle bulletBossRectangle = new Rectangle((int)bullet.xCoordinate, (int)bullet.yCoordinate,
-            			bulletBoss.bulletImg.getWidth(),
-            			bulletBoss.bulletImg.getHeight()),
-            			playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
-                    if(player.health > 0 && bulletBossRectangle.intersects(playerRectangle)) 
-                    {
-                    		player.health -= bullet.damagePoints;
-                    		if(player.health <= 0) 
-                    		{
-                    			addPlayerExplosion();
-                    		}
-                    }
-                    bossBulletsList.remove(i--);
-            	}*/
-        	}
-    }
-  
-
-
-    /**
-     * Update rockets. 
-     * It moves rocket and add smoke behind it.
-     * Checks if the rocket is left the screen.
-     * Checks if any rocket is hit any enemy.
-     * 
-     * @param gameTime Game time.
-     */
-    private void updateRockets(long gameTime)
-    {
-        for(int i = 0; i < rocketsList.size(); i++)
-        {
-            Rocket rocket = rocketsList.get(i);
-            
-            // Moves the rocket.
-            rocket.Update();
-            
-            // Checks if it is left the screen.
-            if(rocket.isItLeftScreen())
-            {
-                rocketsList.remove(i);
-                // Rocket left the screen so we removed it from the list and now we can continue to the next rocket.
-                continue;
-            }
-            
-            // Creates a rocket smoke.
-            RocketSmoke rs = new RocketSmoke();
-            int xCoordinate = rocket.xCoordinate - RocketSmoke.smokeImg.getWidth(); // Subtract the size of the rocket smoke image (rocketSmokeImg.getWidth()) so that smoke isn't drawn under/behind the image of rocket.
-            int yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
-            rs.Initialize(xCoordinate, yCoordinte, gameTime, rocket.currentSmokeLifeTime);
-            rocketSmokeList.add(rs);
-            
-            // Because the rocket is fast we get empty space between smokes so we need to add more smoke. 
-            // The higher is the speed of rockets, the bigger are empty spaces.
-            int smokePositionX = 5 + random.nextInt(8); // We will draw this smoke a little bit ahead of the one we draw before.
-            rs = new RocketSmoke();
-            xCoordinate = rocket.xCoordinate - RocketSmoke.smokeImg.getWidth() + smokePositionX; // Here we need to add so that the smoke will not be on the same x coordinate as previous smoke. First we need to add 5 because we add random number from 0 to 8 and if the random number is 0 it would be on the same coordinate as smoke before.
-            yCoordinte = rocket.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We rendomly add a number between 0 and 6 so that the smoke line isn't straight line.
-            rs.Initialize(xCoordinate, yCoordinte, gameTime, rocket.currentSmokeLifeTime);
-            rocketSmokeList.add(rs);
-            
-            // Increase the life time for the next piece of rocket smoke.
-            rocket.currentSmokeLifeTime *= 1.02;
-            
-            // Checks if current rocket hit any enemy.
-            if( checkIfRocketHitEnemy(rocket) )
-                // Rocket was also destroyed so we remove it.
-                rocketsList.remove(i);
-            
-         // Check if boss is hit
-            if(bossFight && !boss.invincible)
-            {
-            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
-            		Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
-            		if(rocketRectangle.intersects(bossRectangle))
-            		{
-            				boss.health -= rocket.damagePower;
-            				rocketsList.remove(i);
-            		}
-            }
-        }
-    }
-    
-    
-    private void updateBossRockets(long gameTime)
-    {
-        for(int i = 0; i < bossRocketsList.size(); i++)
-        {
-            Rocket rocket = bossRocketsList.get(i);
-            
-            // Moves the rocket.
-            rocket.Update();
-            
-            // Checks if it is left the screen.
-            if(rocket.isItLeftScreen())
-            {
-            	bossRocketsList.remove(i);
-                // Rocket left the screen so we removed it from the list and now we can continue to the next rocket.
-                continue;
-            }
-            
-            // Checks if current rocket hit any enemy.
-            if( checkIfBossRocketHitPlayer(rocket) )
-                // Rocket was also destroyed so we remove it.
-            	bossRocketsList.remove(i);
-            
-
-        }
-    }
-    
-    
-    
-    /**
-     * Update missiles.
-     * It moves missiles and add smoke behind it.
-     * Checks if the missile is left the screen.
-     * Checks if any missile is hit any enemy.
-     * 
-     * @param gameTime
-     */
-    private void updateMissile(long gameTime)
-    {
-    		for(int i = 0; i < missilesList.size(); i++)
-    		{
-    			Missile missile = missilesList.get(i);
-    			
-    			// Moves the missile.
-    			missile.Update();
-    			
-    			// Finds the enemy target.
-    			if (enemyHelicopterList.size() > 0) 
-    			{
-    				for (int j = 0; j < enemyHelicopterList.size(); j++) 
-    				{
-    					EnemyHelicopter eh = enemyHelicopterList.get(j);
-    					// If rocket's nose is in front of the enemy helicopter's tail, then...
-    					if (missile.xCoordinate + missile.rocketImg.getWidth() < eh.xCoordinate + eh.helicopterBodyImg.getWidth()) 
-    					{
-    						// ...find the enemy helicopter
-    						missile.findTarget(eh);
-    						break;
-    					}
-    				}
-    			}
-    			
-    			// Checks if it is left the screen.
-    			if(missile.isItLeftScreen())
-    			{
-    				missilesList.remove(i);
-    				// Missile left the screen so we removed it from the list and now we can continue to the next missile.
-    				continue;
-    			}
-    			
-    			// Creates a missile smoke.
-    			RocketSmoke rs = new RocketSmoke();
-    		    int xCoordinate = missile.xCoordinate - RocketSmoke.smokeImg.getWidth(); // Subtract the size of the rocket smoke image (rocketSmokeImg.getWidth()) so that smoke isn't drawn under/behind the image of rocket.
-            int yCoordinte = missile.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We randomly add a number between 0 and 6 so that the smoke line isn't straight line.
-            rs.Initialize(xCoordinate, yCoordinte, gameTime, missile.currentSmokeLifeTime);
-            rocketSmokeList.add(rs);
-    			
-            // Because the missile is fast we get empty space between smokes so we need to add more smoke. 
-            // The higher is the speed of missiles, the bigger are empty spaces.
-            int smokePositionX = 5 + random.nextInt(8); // We will draw this smoke a little bit ahead of the one we draw before.
-            rs = new RocketSmoke();
-            xCoordinate = missile.xCoordinate - RocketSmoke.smokeImg.getWidth() + smokePositionX; // Here we need to add so that the smoke will not be on the same x coordinate as previous smoke. First we need to add 5 because we add random number from 0 to 8 and if the random number is 0 it would be on the same coordinate as smoke before.
-            yCoordinte = missile.yCoordinate - 5 + random.nextInt(6); // Subtract 5 so that smoke will be at the middle of the rocket on y coordinate. We randomly add a number between 0 and 6 so that the smoke line isn't straight line.
-            rs.Initialize(xCoordinate, yCoordinte, gameTime, missile.currentSmokeLifeTime);
-            rocketSmokeList.add(rs);
-            
-            // Increase the life time for the next piece of rocket smoke.
-            missile.currentSmokeLifeTime *= 1.02;
-            
-            // Checks if current missile hit any enemy.
-            if( checkIfMissileHitEnemy(missile) )
-            		// Missile was also destroyed so we remove it.
-            		missilesList.remove(i);
-            
-         // Check if boss is hit
-            if(bossFight && !boss.invincible)
-            {
-            		Rectangle bossRectangle = new Rectangle((int)boss.xCoordinate, (int)boss.yCoordinate, boss.helicopterImg.getWidth(), boss.helicopterImg.getHeight());
-            		Rectangle missileRectangle = new Rectangle(missile.xCoordinate, missile.yCoordinate, 2, Rocket.rocketImg.getHeight());
-            		if(missileRectangle.intersects(bossRectangle))
-            		{
-            				boss.health -= missile.damagePower;
-            				missilesList.remove(i);
-            		}
-            }
-    		}
-    }
     
     private void updateBonuses(long gameTime) {
     	// Generate new bonuses
@@ -1255,139 +940,9 @@ public class Game {
 	    			{
 	    			bonusList.remove(i--);
 	    			}
-	    		}
-    		
+	    		}	
     }
-    
-    /**
-     * Checks if the given rocket is hit any of enemy helicopters.
-     * 
-     * @param rocket Rocket to check.
-     * @return True if it hit any of enemy helicopters, false otherwise.
-     */
-    private boolean checkIfRocketHitEnemy(Rocket rocket)
-    {
-        boolean didItHitEnemy = false;
-        
-        // Current rocket rectangle. // I inserted number 2 insted of rocketImg.getWidth() because I wanted that rocket 
-        // is over helicopter when collision is detected, because actual image of helicopter isn't a rectangle shape. (We could calculate/make 3 areas where helicopter can be hit and checks these areas, but this is easier.)
-        Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
-        
-        // Go trough all enemis.
-        for(int j = 0; j < enemyHelicopterList.size(); j++)
-        {
-            EnemyHelicopter eh = enemyHelicopterList.get(j);
 
-            // Current enemy rectangle.
-            Rectangle enemyrectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
-
-            // Is current rocket over currnet enemy?
-            if(rocketRectangle.intersects(enemyrectangle))
-            {
-                didItHitEnemy = true;
-                
-                // Rocket hit the enemy so we reduce his health.
-                eh.health -= Rocket.damagePower;
-                
-                // Rocket hit enemy so we don't need to check other enemies.
-                break;
-            }
-        }
-        
-        return didItHitEnemy;
-    }
-    
-    private boolean checkIfBossRocketHitPlayer(Rocket rocket)
-    {
-        boolean didItHitPlayer = false;
-        
-        // Current rocket rectangle. // I inserted number 2 insted of rocketImg.getWidth() because I wanted that rocket 
-        // is over helicopter when collision is detected, because actual image of helicopter isn't a rectangle shape. (We could calculate/make 3 areas where helicopter can be hit and checks these areas, but this is easier.)
-        Rectangle rocketRectangle = new Rectangle(rocket.xCoordinate, rocket.yCoordinate, 2, Rocket.rocketImg.getHeight());
-        
-        // Go trough all enemis.
-        for(int j = 0; j < bossRocketsList.size(); j++)
-        {
-
-            // Current enemy rectangle.
-            Rectangle playerRectangle = new Rectangle(player.xCoordinate, player.yCoordinate, player.helicopterBodyImg.getWidth(), player.helicopterBodyImg.getHeight());
-
-            // Is current rocket over currnet enemy?
-            if(rocketRectangle.intersects(playerRectangle))
-            {
-                didItHitPlayer = true;
-				
-                // Rocket hit the enemy so we reduce his health.
-                player.health -= Rocket.damagePower;
-                
-                // Rocket hit enemy so we don't need to check other enemies.
-                break;
-            }
-        }
-        
-        return didItHitPlayer;
-    }
-    
-    
-    /**
-     * Checks if the given missile is hit any of enemy helicopters.
-     * 
-     * @param missile
-     * @return True if it hit any of enemy helicopeters, false otherwise.
-     */
-    private boolean checkIfMissileHitEnemy(Missile missile)
-    {
-    		boolean didItHitEnemy = false;
-    		
-    		// Current missile rectangle. // I inserted number 2 instead of rocketImg.getWidth() because I wanted that missile
-    		// is over helicopter when collision is detected, because actual image of helicopter isn't a rectangle shape.
-    		Rectangle missileRectangle = new Rectangle(missile.xCoordinate, missile.yCoordinate, 2, Rocket.rocketImg.getHeight());
-    		
-    		// Go through all enemies.
-    		for(int j = 0; j < enemyHelicopterList.size(); j++ )
-    		{
-    			EnemyHelicopter eh = enemyHelicopterList.get(j);
-    			
-    			// Current enemy rectangle
-    			Rectangle enemyRectangle = new Rectangle(eh.xCoordinate, eh.yCoordinate, EnemyHelicopter.helicopterBodyImg.getWidth(), EnemyHelicopter.helicopterBodyImg.getHeight());
-    			
-    			// Is current rocket over current enemy?
-    			if(missileRectangle.intersects(enemyRectangle))
-    			{
-    				didItHitEnemy = true;
-    				
-    				// Missile hit the enemy so we reduce his health.
-    				eh.health -= Missile.damagePower;
-    				
-    				// Missile hit enemy so we don't need to check other enemies.
-    				break;
-    			}
-    		}
-    		
-    		return didItHitEnemy;
-    }
-    
-    /**
-     * Updates smoke of all the rockets.
-     * If the life time of the smoke is over then we delete it from list.
-     * It also changes a transparency of a smoke image, so that smoke slowly disappear.
-     * 
-     * @param gameTime Game time.
-     */
-    private void updateRocketSmoke(long gameTime)
-    {
-        for(int i = 0; i < rocketSmokeList.size(); i++)
-        {
-            RocketSmoke rs = rocketSmokeList.get(i);
-            
-            // Is it time to remove the smoke.
-            if(rs.didSmokeDisapper(gameTime))
-                rocketSmokeList.remove(i);
-            
-            // Set new transparency of rocket smoke image.
-            rs.updateTransparency(gameTime);
-        }
-    }
     
     /**
      * Updates all the animations of an explosion and remove the animation when is over.
