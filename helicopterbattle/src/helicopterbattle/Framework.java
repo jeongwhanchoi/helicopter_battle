@@ -69,6 +69,7 @@ public class Framework extends Canvas {
     private long lastTime;
     
     public FrameworkData data = new FrameworkData();
+    public FrameworkHeliData heliData = new FrameworkHeliData();
 
 
 	public Framework ()
@@ -142,21 +143,21 @@ public class Framework extends Canvas {
             data.setHelpImg(ImageIO.read(helpImgUrl)); 
             
             URL heli1ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_01.png");
-            data.setHeli1Img(ImageIO.read(heli1ImgUrl)); 
+            heliData.setHeli1Img(ImageIO.read(heli1ImgUrl)); 
             URL heli2ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_02.png");
-            data.setHeli2Img(ImageIO.read(heli2ImgUrl)); 
+            heliData.setHeli2Img(ImageIO.read(heli2ImgUrl)); 
             URL heli3ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_03.png");
-            data.setHeli3Img(ImageIO.read(heli3ImgUrl)); 
+            heliData.setHeli3Img(ImageIO.read(heli3ImgUrl)); 
             URL heli4ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_04.png");
-            data.setHeli4Img(ImageIO.read(heli4ImgUrl)); 
+            heliData.setHeli4Img(ImageIO.read(heli4ImgUrl)); 
             URL heli5ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_05.png");
-            data.setHeli5Img(ImageIO.read(heli5ImgUrl)); 
+            heliData.setHeli5Img(ImageIO.read(heli5ImgUrl)); 
             URL heli6ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_06.png");
-            data.setHeli6Img(ImageIO.read(heli6ImgUrl)); 
+            heliData.setHeli6Img(ImageIO.read(heli6ImgUrl)); 
             URL heli7ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_07.png");
-            data.setHeli7Img(ImageIO.read(heli7ImgUrl)); 
+            heliData.setHeli7Img(ImageIO.read(heli7ImgUrl)); 
             URL heli8ImgUrl = this.getClass().getResource("/helicopterbattle/resources/images/1_helicopter_body_00.png");
-            data.setHeli8Img(ImageIO.read(heli8ImgUrl)); 
+            heliData.setHeli8Img(ImageIO.read(heli8ImgUrl)); 
             
         } 
         catch (IOException ex) 
@@ -283,12 +284,12 @@ public class Framework extends Canvas {
             case SELECT:
             		data.drawSelect(g2d);
             		data.drawHelicopterSelect(g2d, data.getSelectHeli());
-            		data.drawHelicopter(g2d);
+            		heliData.drawHelicopter(g2d);
             	break;
             case RESELECT:
             		data.drawSelect(g2d);
             		data.drawHelicopterSelect(g2d,data.getSelectHeli());
-            		data.drawHelicopter(g2d);
+            		heliData.drawHelicopter(g2d);
             	break;
             case GAME_CONTENT_LOADING:
                 g2d.setColor(Color.white);
