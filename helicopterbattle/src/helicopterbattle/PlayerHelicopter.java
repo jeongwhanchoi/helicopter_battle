@@ -108,24 +108,9 @@ public class PlayerHelicopter {
      */
     private void Initialize()
     {
-        /*this.health = healthInit;
-        
-        this.numberOfRockets = numberOfRocketsInit;
-        this.numberOfAmmo = numberOfAmmoInit;
-        this.numberOfMissiles = numberOfMissilesInit;
-        */
         this.movingXspeed = 0;
         this.movingYspeed = 0;
-        /*this.acceleratingXspeed = 0.2;
-        this.acceleratingYspeed = 0.2;
-        this.stoppingXspeed = 0.1;
-        this.stoppingYspeed = 0.1;
-
-        this.offsetXFrontPropeller = 70;
-        this.offsetYFrontPropeller = -23;        
-        this.offsetXRearPropeller = -6;
-        this.offsetYRearPropeller = -21;*/
-        
+             
         this.offsetXRocketHolder = 138;
         this.offsetYRocketHolder = 40;
         this.rocketHolderXcoordinate = this.xCoordinate + this.offsetXRocketHolder;
@@ -345,35 +330,6 @@ public class PlayerHelicopter {
         helicopterFrontPropellerAnim = new Animation(helicopterFrontPropellerAnimImg, 204, 34, 3, 20, true, xCoordinate + offsetXFrontPropeller, yCoordinate + offsetYFrontPropeller, 0);
         helicopterRearPropellerAnim = new Animation(helicopterRearPropellerAnimImg, 54, 54, 4, 20, true, xCoordinate + offsetXRearPropeller, yCoordinate + offsetYRearPropeller, 0);
     }
-    
-    
-    /**
-     * Resets the player.
-     * 
-     * @param xCoordinate Starting x coordinate of helicopter.
-     * @param yCoordinate Starting y coordinate of helicopter.
-     */
-   /* public void Reset(int xCoordinate, int yCoordinate, int helicopterSelect)
-    {
-        
-    		this.health = healthInit;
-        
-        this.numberOfRockets = numberOfRocketsInit;
-        this.numberOfAmmo = numberOfAmmoInit;
-        this.numberOfMissiles = numberOfMissilesInit;
-        
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        
-        this.machineGunXcoordinate = this.xCoordinate + this.offsetXMachineGun;
-        this.machineGunYcoordinate = this.yCoordinate + this.offsetYMachineGun;
-        
-        this.rocketHolderXcoordinate = this.xCoordinate + this.offsetXRocketHolder;
-        this.rocketHolderYcoordinate = this.yCoordinate + this.offsetYRocketHolder;
-        
-        this.movingXspeed = 0;
-        this.movingYspeed = 0;
-    }*/
     
     
     /**
