@@ -339,7 +339,7 @@ public class Game {
         }*/
         if(data.getPlayer().helicopterName == "Chinook" || data.getPlayer().helicopterName == "Black Shark" 
            || data.getPlayer().helicopterName =="SNOC" || data.getPlayer().helicopterName == "Viper")
-            assistanceSystem();
+            data.assistanceSystem();
     }
     
     /**
@@ -350,7 +350,7 @@ public class Game {
      */
     public void Draw(Graphics2D g2d, Point mousePosition, long gameTime)
     {      
-        drawGame(g2d);
+        data.drawGame(g2d);
         
         g2d.drawString(formatTime(gameTime), Framework.frameWidth/2 - 45, 21);
         
@@ -713,108 +713,4 @@ public class Game {
                 data.getExplosionsList().remove(i);
         }
     }
-	private void assistanceSystem()
-    {
-    			
-    		// Finds the enemy target.
-    		if (enemyHelicopterList.size() > 0) 
-    		{
-    			for (int j = 0; j < enemyHelicopterList.size(); j++) 
-    			{
-    				EnemyHelicopter eh = enemyHelicopterList.get(j);
-    				data.getPlayer().preventCrash(eh);
-    				break;
-    			}
-    		}
-    	}
-	public void drawGame(Graphics2D g2d) {
-g2d.drawImage(data.getSkyColorImg(), 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-        
-        // Moving images.
-        data.getMountainsMoving().Draw(g2d);
-        data.getGroundMoving().Draw(g2d);
-        data.getCloudLayer2Moving().Draw(g2d);
-        
-        if(isPlayerAlive())
-        {
-            data.getPlayer().Draw(g2d);
-        		data.setStatXCoordinate(10 + data.getPlayer().helicopterProfileImg.getWidth() + 10);
-        }
-		
-        // Draws helicopter's profile
-        data.getPlayer().DrawAvatar(g2d);
-        		        		
-        // Draws all the enemies.
-        for(int i = 0; i < enemyHelicopterList.size(); i++)
-        {
-            enemyHelicopterList.get(i).Draw(g2d);
-        }
-        
-        if(data.isBossFight())
-        {
-        		data.getBoss().Draw(g2d);
-        		
-        		for(int i=0; i< bossRocketsList.size(); i++)
-        		{
-        			bossRocketsList.get(i).Draw(g2d);
-        		}
-        }
-        
-        // Draws all the bullets. 
-        for(int i = 0; i < bulletsList.size(); i++)
-        {
-            bulletsList.get(i).Draw(g2d);
-        }
-        
-        // Draws all the missiles.
-        for(int i = 0; i < missilesList.size(); i++)
-        {
-        		missilesList.get(i).Draw(g2d);
-        }
-        
-        // Draws all the rockets. 
-        for(int i = 0; i < rocketsList.size(); i++)
-        {
-            rocketsList.get(i).Draw(g2d);
-        }
-        // Draws smoke of all the rockets.
-        for(int i = 0; i < rocketSmokeList.size(); i++)
-        {
-            rocketSmokeList.get(i).Draw(g2d);
-        }
-        
-        // Draw all explosions.
-        for(int i = 0; i < data.getExplosionsList().size(); i++)
-        {
-            data.getExplosionsList().get(i).Draw(g2d);
-        }
-        
-        // 	Draw all bonuses
-        for(Bonus bonus : data.getBonusList()) 
-        {
-        		bonus.Draw(g2d);
-        }
-        
-        // Draw statistics
-        g2d.setFont(data.getFont());
-        g2d.setColor(Color.darkGray);
-        
-        g2d.drawString("HEALTH: "    + data.getPlayer().health, data.getStatXCoordinate(), 41);
-        g2d.drawString("DESTROYED: " + destroyedEnemies, data.getStatXCoordinate(), 61);
-        g2d.drawString("RUNAWAY: "   + runAwayEnemies,   data.getStatXCoordinate(), 81);
-        g2d.drawString("ROCKETS: "   + data.getPlayer().numberOfRockets, data.getStatXCoordinate(), 111);
-        g2d.drawString("AMMO: "      + data.getPlayer().numberOfAmmo, data.getStatXCoordinate(), 131);
-        g2d.drawString("MISSILE: "   + data.getPlayer().numberOfMissiles, data.getStatXCoordinate(), 151);
-        
-        g2d.drawString("STAGE: " + level, Framework.frameWidth/2 + 300, 21);
-        g2d.drawString("SCORE: " + getScore(), Framework.frameWidth/2 + 300, 41);
-        
-        
-        if(data.isBossFight())
-        {
-        		g2d.drawString("HP: " + data.getBoss().health, (int)data.getBoss().xCoordinate, (int)data.getBoss().yCoordinate + 20);
-        }
-        
-        data.getCloudLayer1Moving().Draw(g2d);
-	}
 }

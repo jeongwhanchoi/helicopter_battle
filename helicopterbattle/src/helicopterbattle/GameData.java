@@ -220,7 +220,7 @@ public class GameData {
 	public void setBoss(Boss boss) {
 		this.boss = boss;
 	}
-	private void assistanceSystem()
+	public void assistanceSystem()
     {
     			
     		// Finds the enemy target.
