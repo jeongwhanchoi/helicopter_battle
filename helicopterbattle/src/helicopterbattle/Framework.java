@@ -194,7 +194,6 @@ public class Framework extends Canvas {
                 break;
                 case GAMEOVER:
                 		Score.checkScore();
-//                		data.getGame().checkScore();
                 break;
                 case MAIN_MENU:
                     //...
