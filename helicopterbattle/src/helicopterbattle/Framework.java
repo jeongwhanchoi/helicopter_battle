@@ -451,48 +451,8 @@ public class Framework extends Canvas {
             				data.setSelectHeli(data.getSelectHeli() + 8);
             		}
             		
-            		Sound reload = new Sound("reload.mp3", false);
-            		if(data.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-            		}
-            		else if(data.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                	{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-            		else if(data.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
-            		{
-            			reload.start();
-            			newGame(data.getSelectHeli());
-                	}
-                	
+            		enter(e);          
+            		
             		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
             			gameState = GameState.MAIN_MENU;
             break;
@@ -530,47 +490,7 @@ public class Framework extends Canvas {
 	        				data.setSelectHeli(data.getSelectHeli() + 8);
 	        		}
 	        		
-	        		Sound reload1 = new Sound("reload.mp3", false);
-	        		if(data.getSelectHeli() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	        		}
-	        		else if(data.getSelectHeli() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	            	{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 4 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 5 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 6 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 7 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
-	        		else if(data.getSelectHeli() == 8 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	        		{
-	        			reload1.start();
-	        			restartGame(data.getSelectHeli());
-	            	}
+	        		reEnter(e);
 	            	
 	        		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
 	        			gameState = GameState.GAMEOVER;
@@ -600,4 +520,20 @@ public class Framework extends Canvas {
     {
         
     }
+    
+    public void enter(KeyEvent e) {
+	    	Sound reload1 = new Sound("reload.mp3", false);
+	    	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+	    		reload1.start();
+	    		newGame(data.getSelectHeli());
+	    	}
+    }
+    public void reEnter(KeyEvent e) {
+	    	Sound reload1 = new Sound("reload.mp3", false);
+	    	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+	    		reload1.start();
+	    		restartGame(data.getSelectHeli());
+	    	}
+    }
+
 }
