@@ -364,92 +364,17 @@ public class Framework extends Canvas {
         switch(gameState)
         {
             case GAMEOVER:
-                /*if(e.getKeyCode() == KeyEvent.VK_ENTER)
-                    restartGame();*/
-                
-                if(e.getKeyCode() == KeyEvent.VK_DOWN)
-        			{
-                		Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-        				data.setSelect(data.getSelect() + 1);
-        				if(data.getSelect() > 2)
-        					data.setSelect(data.getSelect() - 2);
-	        		}
-                else if(e.getKeyCode() == KeyEvent.VK_UP)
-	        		{
-                		Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-	        			data.setSelect(data.getSelect() - 1);
-	        			if(data.getSelect() < 1)
-	        				data.setSelect(data.getSelect() + 2);
-	        		}
-	            	
-                if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	            		{
-                			gameState = GameState.RESELECT;
-	            		}
-                else	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
-	            		System.exit(0);
+
+            		gameOverKey(e);
 	                
             break;
             case MAIN_MENU:
             		
-            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelect(data.getSelect() + 1);
-            			if(data.getSelect() > 3)
-            				data.setSelect(data.getSelect() - 3);
-            		}
-            		if(e.getKeyCode() == KeyEvent.VK_UP)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelect(data.getSelect() - 1);
-            			if(data.getSelect() < 1)
-            				data.setSelect(data.getSelect() + 3);
-            		}
-                	if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                		gameState = GameState.SELECT;
-                	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                			gameState = GameState.HELP;
-                	if(data.getSelect() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
-                			gameState = GameState.QUIT;
+            		mainMenuKey(e);
+            		
             break;
             case SELECT:
-            		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelectHeli(data.getSelectHeli() + 1);
-            			if(data.getSelectHeli() > 8)
-            				data.setSelectHeli(data.getSelectHeli() - 8);
-            		}
-            		if(e.getKeyCode() == KeyEvent.VK_LEFT)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelectHeli(data.getSelectHeli() - 1);
-            			if(data.getSelectHeli() < 1)
-            				data.setSelectHeli(data.getSelectHeli() + 8);
-            		}
-            		if(e.getKeyCode() == KeyEvent.VK_DOWN)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelectHeli(data.getSelectHeli() + 4);
-            			if(data.getSelectHeli() > 8)
-            				data.setSelectHeli(data.getSelectHeli() - 8);
-            		}
-            		if(e.getKeyCode() == KeyEvent.VK_UP)
-            		{
-            			Sound reload = new Sound("load.mp3", false);
-                		reload.start();
-            			data.setSelectHeli(data.getSelectHeli() - 4);
-            			if(data.getSelectHeli() < 1)
-            				data.setSelectHeli(data.getSelectHeli() + 8);
-            		}
+            		selectKey(e);
             		
             		enter(e);          
             		
@@ -457,38 +382,7 @@ public class Framework extends Canvas {
             			gameState = GameState.MAIN_MENU;
             break;
             case RESELECT:
-	        		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-	        		{
-	        			Sound reload1 = new Sound("load.mp3", false);
-	            		reload1.start();
-	        			data.setSelectHeli(data.getSelectHeli() + 1);
-	        			if(data.getSelectHeli() > 8)
-	        				data.setSelectHeli(data.getSelectHeli() - 8);
-	        		}
-	        		if(e.getKeyCode() == KeyEvent.VK_LEFT)
-	        		{
-	        			Sound reload1 = new Sound("load.mp3", false);
-	            		reload1.start();
-	        			data.setSelectHeli(data.getSelectHeli() - 1);
-	        			if(data.getSelectHeli() < 1)
-	        				data.setSelectHeli(data.getSelectHeli() + 8);
-	        		}
-	        		if(e.getKeyCode() == KeyEvent.VK_DOWN)
-	        		{
-	        			Sound reload1 = new Sound("load.mp3", false);
-	            		reload1.start();
-	        			data.setSelectHeli(data.getSelectHeli() + 4);
-	        			if(data.getSelectHeli() > 8)
-	        				data.setSelectHeli(data.getSelectHeli() - 8);
-	        		}
-	        		if(e.getKeyCode() == KeyEvent.VK_UP)
-	        		{
-	        			Sound reload1 = new Sound("load.mp3", false);
-	            		reload1.start();
-	        			data.setSelectHeli(data.getSelectHeli() - 4);
-	        			if(data.getSelectHeli() < 1)
-	        				data.setSelectHeli(data.getSelectHeli() + 8);
-	        		}
+	        		selectKey(e);
 	        		
 	        		reEnter(e);
 	            	
@@ -534,6 +428,89 @@ public class Framework extends Canvas {
 	    		reload1.start();
 	    		restartGame(data.getSelectHeli());
 	    	}
+    }
+    public void gameOverKey(KeyEvent e) {
+	    	if(e.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+	    		Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelect(data.getSelect() + 1);
+				if(data.getSelect() > 2)
+					data.setSelect(data.getSelect() - 2);
+			}
+	    else if(e.getKeyCode() == KeyEvent.VK_UP)
+			{
+	    		Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelect(data.getSelect() - 1);
+				if(data.getSelect() < 1)
+					data.setSelect(data.getSelect() + 2);
+			}
+	    	
+	    if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	    		{
+	    			gameState = GameState.RESELECT;
+	    		}
+	    else	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	    		System.exit(0);
+    }
+    public void mainMenuKey(KeyEvent e) {
+	    	if(e.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelect(data.getSelect() + 1);
+				if(data.getSelect() > 3)
+					data.setSelect(data.getSelect() - 3);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_UP)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelect(data.getSelect() - 1);
+				if(data.getSelect() < 1)
+					data.setSelect(data.getSelect() + 3);
+			}
+	    	if(data.getSelect() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	    		gameState = GameState.SELECT;
+	    	if(data.getSelect() == 2 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	    			gameState = GameState.HELP;
+	    	if(data.getSelect() == 3 && e.getKeyCode() == KeyEvent.VK_ENTER)
+	    			gameState = GameState.QUIT;
+    }
+    public void selectKey(KeyEvent e) {
+	    	if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelectHeli(data.getSelectHeli() + 1);
+				if(data.getSelectHeli() > 8)
+					data.setSelectHeli(data.getSelectHeli() - 8);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_LEFT)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelectHeli(data.getSelectHeli() - 1);
+				if(data.getSelectHeli() < 1)
+					data.setSelectHeli(data.getSelectHeli() + 8);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelectHeli(data.getSelectHeli() + 4);
+				if(data.getSelectHeli() > 8)
+					data.setSelectHeli(data.getSelectHeli() - 8);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_UP)
+			{
+				Sound reload = new Sound("load.mp3", false);
+	    		reload.start();
+				data.setSelectHeli(data.getSelectHeli() - 4);
+				if(data.getSelectHeli() < 1)
+					data.setSelectHeli(data.getSelectHeli() + 8);
+			}
     }
 
 }
