@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
  * @author www.gametutorial.net
  */
 
+@SuppressWarnings("serial")
 public class Framework extends Canvas {
     
     /**

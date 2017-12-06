@@ -3,11 +3,6 @@ package helicopterbattle;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  * Helicopter which is managed by player.
@@ -16,7 +11,6 @@ import javax.imageio.ImageIO;
  */
 
 public class PlayerHelicopter {
-    
     private float healthPercent;
     
     // Position of the helicopter on the screen.

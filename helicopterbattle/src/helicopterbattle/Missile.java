@@ -23,7 +23,7 @@ public class Missile {
 	    private double movingXSpeed;
 
 		// Speed and direction of the missile
-		private double priorYSpeed, currentYSpeed, maxYSpeed;
+		private double currentYSpeed, maxYSpeed;
 
 		// Life time of current piece of rocket smoke.
 		public long currentSmokeLifeTime;
@@ -41,7 +41,6 @@ public class Missile {
 			this.yCoordinate = yCoordinate;
 
 			this.movingXSpeed = 15;
-			this.priorYSpeed = 0;
 			this.currentYSpeed = 0;
 			this.maxYSpeed = 5;
 
