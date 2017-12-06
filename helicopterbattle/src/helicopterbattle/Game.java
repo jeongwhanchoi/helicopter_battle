@@ -360,7 +360,9 @@ public class Game {
         		updateStones(gameTime);
         		updateStonesSmoke(gameTime);
         }*/
-        assistanceSystem();
+        if(player.helicopterName == "Chinook" || player.helicopterName == "Black Shark" 
+        		|| player.helicopterName =="SNOC" || player.helicopterName == "Viper")
+        		assistanceSystem();
     }
     
     /**
