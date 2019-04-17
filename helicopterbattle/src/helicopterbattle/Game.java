@@ -331,8 +331,8 @@ public class Game {
         		updateStones(gameTime);
         		updateStonesSmoke(gameTime);
         }*/
-        if(data.getPlayer().data.getHelicopterName() == "Chinook" || data.getPlayer().data.getHelicopterName() == "Black Shark" 
-           || data.getPlayer().data.getHelicopterName() =="SNOC" || data.getPlayer().data.getHelicopterName() == "Viper")
+        if(data.getPlayer().data.getHelicopterName().equals("Chinook") || data.getPlayer().data.getHelicopterName().equals("Black Shark") 
+           || data.getPlayer().data.getHelicopterName().equals("SNOC") || data.getPlayer().data.getHelicopterName().equals("Viper"))
             data.assistanceSystem();
     }
     
