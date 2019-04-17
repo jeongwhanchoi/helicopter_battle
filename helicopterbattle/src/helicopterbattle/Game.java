@@ -21,42 +21,16 @@ public class Game {
 	
 	// Enemy helicopters.
     private static ArrayList<EnemyHelicopter> enemyHelicopterList = new ArrayList<EnemyHelicopter>();
-    public static ArrayList<EnemyHelicopter> getEnemyHelicopterList(){
-    	return enemyHelicopterList;
-    } 
-    
-    // List of all the machine gun bullets.
+ // List of all the machine gun bullets.
     private static ArrayList<Bullet> bulletsList;
-    public static ArrayList<Bullet> getBulletsList(){
-    	return bulletsList;
-    } 
-    
-    // List of all the machine gun bullets of the boss.
-//    private ArrayList<Bullet> bossBulletsList;
-    
     // List of all the missiles
     private static ArrayList<Missile> missilesList;
-    public static ArrayList<Missile> getMissilesList(){
-    	return missilesList;
-    } 
-    
     // List of all the rockets.
     private static ArrayList<Rocket> rocketsList;
-    public static ArrayList<Rocket> getRocketsList(){
-    	return rocketsList;
-    } 
-    
     // List of all the rockets smoke.
     private static ArrayList<RocketSmoke> rocketSmokeList;
-    public static ArrayList<RocketSmoke> getRocketSmokeList(){
-    	return rocketSmokeList;
-    } 
-    
     // List of all the rockets for boss
     private static ArrayList<Rocket> bossRocketsList;
-    public static ArrayList<Rocket> getBossRocketsList(){
-    	return bossRocketsList;
-    } 
     
     public static int level;
     
@@ -64,15 +38,36 @@ public class Game {
     public static int runAwayEnemies;
     public static int destroyedEnemies;
     
-    static GameData data = new GameData(new Shooting());
 	private static int score;
-//    private static String highScore = "";
     public static String highScore = "";
-
-//    public static String getHighScore(){
-//    	return highScore;
-//    }
     
+    public static ArrayList<EnemyHelicopter> getEnemyHelicopterList(){
+    	return enemyHelicopterList;
+    } 
+    
+    public static ArrayList<Bullet> getBulletsList(){
+    	return bulletsList;
+    } 
+    
+    public static ArrayList<Missile> getMissilesList(){
+    	return missilesList;
+    } 
+    
+    public static ArrayList<Rocket> getRocketsList(){
+    	return rocketsList;
+    } 
+
+    public static ArrayList<RocketSmoke> getRocketSmokeList(){
+    	return rocketSmokeList;
+    } 
+
+    public static ArrayList<Rocket> getBossRocketsList(){
+    	return bossRocketsList;
+    } 
+    
+    
+    static GameData data = new GameData(new Shooting());
+
     public Game(int helicopterSelect)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
