@@ -360,7 +360,7 @@ public class Game {
         g2d.setColor(Color.white);
 		g2d.drawString("Score: "+getScore(), Framework.frameWidth/2 - 150, Framework.frameHeight/4 + 140);
     		
-    		if(highScore.equals(""))
+    		if(("").equals(highScore))
     		{
     			//init the highscore
 //    			highScore = Score.getHighScore();

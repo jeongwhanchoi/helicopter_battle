@@ -38,7 +38,7 @@ public class Score {
     
     public static void checkScore()
     {
-    		if(Game.highScore.equals(""))
+    		if(("").equals(Game.highScore))
     			return;
     		//format Choi/:/100
     		if(Game.getScore() > Integer.parseInt((Game.highScore.split(":")[1])))
