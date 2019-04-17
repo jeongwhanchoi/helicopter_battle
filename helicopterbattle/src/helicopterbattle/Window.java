@@ -11,14 +11,14 @@ import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame{
-        
+    private static boolean windowModeFlag = false;     
     private Window()
     {
         // Sets the title for this frame.
         this.setTitle("Helicopter battle");
         
         // Sets size of the frame.
-        if(false) // Full screen mode
+        if(windowModeFlag) // Full screen mode
         {
             // Disables decorations for this frame.
             this.setUndecorated(true);

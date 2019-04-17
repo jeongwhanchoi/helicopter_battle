@@ -22,7 +22,8 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
     
     // Mouse states - Here are stored states for mouse keys - is it down or not.
     private static boolean[] mouseState = new boolean[3];
-        
+    
+    private static boolean removedMouseCursorFlag = true;
 
     public Canvas()
     {
@@ -33,7 +34,7 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
         
         // If you will draw your own mouse cursor or if you just want that mouse cursor disapear, 
         // insert "true" into if condition and mouse cursor will be removed.
-        if(true)
+        if(removedMouseCursorFlag)
         {
             BufferedImage blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
             Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImg, new Point(0, 0), null);
