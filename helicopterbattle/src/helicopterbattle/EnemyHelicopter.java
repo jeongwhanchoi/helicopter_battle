@@ -105,10 +105,8 @@ public class EnemyHelicopter {
      */
     public boolean isLeftScreen()
     {
-        if(xCoordinate < 0 - helicopterBodyImg.getWidth()) // When the entire helicopter is out of the screen.
-            return true;
-        else
-            return false;
+        // When the entire helicopter is out of the screen.    
+        return xCoordinate < 0 - helicopterBodyImg.getWidth();
     }
     
         

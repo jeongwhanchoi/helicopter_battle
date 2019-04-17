@@ -77,10 +77,7 @@ public class RocketSmoke {
     public boolean didSmokeDisapper(long gameTime){
         long currentLifeTime = gameTime - timeOfCreation;
         
-        if(currentLifeTime >= smokeLifeTime)
-            return true;
-        else
-            return false;
+        return currentLifeTime >= smokeLifeTime;
     }
     
     

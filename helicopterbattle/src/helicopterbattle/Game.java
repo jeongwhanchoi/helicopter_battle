@@ -470,10 +470,7 @@ public class Game {
      */
     public static boolean isPlayerAlive()
     {
-        if(data.getPlayer().data.getHealth() <= 0)
-            return false;
-        else
-        		return true;
+        return data.getPlayer().data.getHealth() > 0;
     }
 
     

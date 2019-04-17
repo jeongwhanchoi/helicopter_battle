@@ -68,10 +68,8 @@ public class Rocket {
      */
     public boolean isItLeftScreen()
     {
-        if(xCoordinate > 0 && xCoordinate < Framework.frameWidth) //Rocket moves only on x coordinate so we don't need to check y coordinate.
-            return false;
-        else
-            return true;
+        //Rocket moves only on x coordinate so we don't need to check y coordinate.
+        return !(xCoordinate > 0 && xCoordinate < Framework.frameWidth);
     }
     
     

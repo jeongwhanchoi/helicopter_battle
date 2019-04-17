@@ -87,11 +87,8 @@ public class Bullet {
      */
     public boolean isItLeftScreen()
     {
-        if(xCoordinate > 0 && xCoordinate < Framework.frameWidth &&
-           yCoordinate > 0 && yCoordinate < Framework.frameHeight)
-            return false;
-        else
-            return true;
+        return !(xCoordinate > 0 && xCoordinate < Framework.frameWidth &&
+                yCoordinate > 0 && yCoordinate < Framework.frameHeight);
     }
     
     

@@ -53,10 +53,8 @@ public class Missile {
 		 * @return true if the rocket is left the screen, false otherwise.
 		 */
 		public boolean isItLeftScreen() {
-			if (xCoordinate > 0 && xCoordinate < Framework.frameWidth) //Rocket moves only on x coordinate so we don't need to check y coordinate.
-				return false;
-			else
-				return true;
+			//Rocket moves only on x coordinate so we don't need to check y coordinate.
+			return !(xCoordinate > 0 && xCoordinate < Framework.frameWidth);
 		}
 
 		/**

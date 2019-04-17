@@ -120,13 +120,9 @@ public class PlayerHelicopter {
 	 */
 	public boolean isFiredMissile(long gameTime)
 	{
-//		if (Canvas.mouseButtonState(MouseEvent.BUTTON2)
-		if (Canvas.keyboardKeyState(KeyEvent.VK_SPACE) && 
+		return (Canvas.keyboardKeyState(KeyEvent.VK_SPACE) && 
 				((gameTime - Missile.timeOfLastCreatedRocket) >= Missile.timeBetweenNewRockets) && 
-				this.data.getNumberOfMissiles() > 0)
-			return true; 
-		else 
-			return false;
+				this.data.getNumberOfMissiles() > 0);
 	}
     
     /**
