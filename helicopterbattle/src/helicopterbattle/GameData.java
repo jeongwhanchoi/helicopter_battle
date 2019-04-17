@@ -230,7 +230,6 @@ public class GameData {
     			{
     				EnemyHelicopter eh = Game.getEnemyHelicopterList().get(j);
     				player.preventCrash(eh);
-    				break;
     			}
     		}
     	}
