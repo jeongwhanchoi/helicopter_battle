@@ -32,8 +32,6 @@ public class FrameworkData {
 	private int select;
 	private int selectHeli;
 
-	public FrameworkData() {
-	}
 
 	public Rectangle getPlayButton() {
 		return playButton;
