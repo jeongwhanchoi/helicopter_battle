@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  */
 
 public class PlayerHelicopter {
-    private float healthPercent;
+    
     
     // Position of the helicopter on the screen.
     public int xCoordinate;
@@ -212,6 +212,8 @@ public class PlayerHelicopter {
     
     public void DrawAvatar(Graphics2D g2d)
     {
+    		float healthPercent;
+    		
     		healthPercent = (data.getHealth() * 100.0f) / data.getHealthInit();
     		g2d.drawImage(data.getHelicopterProfileImg(), 10, 17, null);
     		
