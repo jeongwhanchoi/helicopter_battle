@@ -319,12 +319,12 @@ public class Game {
         
         /* Enemies */
         createEnemyHelicopter(gameTime);
-        updateEnemies(gameTime);
+        updateEnemies();
         
         /* Explosions */
         updateExplosions();
         
-        updateBonuses(gameTime);
+        updateBonuses();
         
         /*if(bossFight && boss.rageMode)
         {
@@ -551,7 +551,7 @@ public class Game {
      * Checks if enemy was destroyed.
      * Checks if any enemy collision with player.
      */
-    private void updateEnemies(long gameTime)
+    private void updateEnemies()
     {
     		if(data.isBossFight()) {
     			// Update boss position
@@ -647,7 +647,7 @@ public class Game {
     
 
     
-    private void updateBonuses(long gameTime) {
+    private void updateBonuses() {
     	// Generate new bonuses
     		if(data.getRandom().nextInt() % 500 == 0) {
 //    			double speed = 50 + random.nextDouble() * 2.7001;
@@ -657,7 +657,7 @@ public class Game {
 //    				bonusList.add(new HealthBonus(random.nextInt(Framework.frameWidth - HealthBonus.image.getWidth()),
 //    					-HealthBonus.image.getHeight(), speed, 50));
     				data.getBonusList().add(new HealthBonus(data.getRandom().nextInt(Framework.frameWidth - HealthBonus.image.getWidth()),
-        					data.getRandom().nextInt(Framework.frameHeight - HealthBonus.image.getHeight()), 50));
+        					data.getRandom().nextInt(Framework.frameHeight - HealthBonus.image.getHeight())));
     				break;
     			case 1:
     				data.getBonusList().add(new BulletBonus(data.getRandom().nextInt(Framework.frameWidth - BulletBonus.image.getWidth()),
