@@ -229,12 +229,13 @@ public class PlayerHelicopter {
     		}
     }
     public void preventCrash(EnemyHelicopter enemy) {
-		if(enemy.getYCenter() * 2 - enemy.yCoordinate < Framework.frameHeight / 2) {
-     		if(enemy.getYCenter() * 2 - enemy.yCoordinate > yCoordinate) {
-     			movingYspeed += 1.0;
-     			if(movingYspeed > 5.0)
-     				movingYspeed = 5.0;
-     		}
+		if((enemy.getYCenter() * 2 - enemy.yCoordinate < Framework.frameHeight / 2
+				&& (enemy.getYCenter() * 2 - enemy.yCoordinate > yCoordinate))) {
+			movingYspeed += 1.0;
+			if(movingYspeed > 5.0) {
+				movingYspeed = 5.0;
+			}
+     		
      	}
      	else if(enemy.getYCenter() * 2 - enemy.yCoordinate >= Framework.frameHeight / 2){
      		if(enemy.yCoordinate < yCoordinate + data.getHelicopterBodyImg().getHeight()) {
