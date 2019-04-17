@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class HealthBonus extends Bonus {
 	public static BufferedImage image;
 	
-	public HealthBonus(double xCoordinate, double yCoordinate, int health)
+	public HealthBonus(double xCoordinate, double yCoordinate)
 	{
 //		super(xCoordinate, yCoordinate, 0, fallingSpeed, 0L, HealthBonus.image);
 		super(xCoordinate, yCoordinate, 0, 0L, HealthBonus.image);
