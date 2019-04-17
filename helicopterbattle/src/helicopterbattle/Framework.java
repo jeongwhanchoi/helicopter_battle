@@ -174,10 +174,13 @@ public class Framework extends Canvas {
     private void GameLoop()
     {
         // This two variables are used in VISUALIZING state of the game. We used them to wait some time so that we get correct frame/window resolution.
-        long visualizingTime = 0, lastVisualizingTime = System.nanoTime();
+        long visualizingTime = 0; 
+        long lastVisualizingTime = System.nanoTime();
         
         // This variables are used for calculating the time that defines for how long we should put threat to sleep to meet the GAME_FPS.
-        long beginTime, timeTaken, timeLeft;
+        long beginTime;
+        long timeTaken;
+        long timeLeft;
         
         while(true)
         {

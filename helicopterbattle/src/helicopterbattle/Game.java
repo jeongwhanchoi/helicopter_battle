@@ -432,7 +432,8 @@ public class Game {
             int min = sec / 60;
             sec = sec - (min * 60);
 
-            String minString, secString;
+            String minString; 
+            String secString;
 
             if(min <= 9)
                 minString = "0" + Integer.toString(min);
